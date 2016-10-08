@@ -53,10 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LineType.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelState.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Permission.cs" />
+    <Compile Include="PowerConfig.cs" />
     <Compile Include="PowerRole.cs" />
     <Compile Include="PowerUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

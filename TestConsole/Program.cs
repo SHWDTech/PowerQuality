@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using PowerQualityModel;
 
 namespace TestConsole
 {
@@ -6,11 +8,9 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(DateTime.MinValue.ToString("yyyy-MM-dd HH:mm:ss fff"));
-            Console.WriteLine(DateTime.MinValue.Ticks);
-            Console.WriteLine(DateTime.MaxValue.ToString("yyyy-MM-dd HH:mm:ss fff"));
-            Console.WriteLine(DateTime.MaxValue.Ticks);
-            Console.WriteLine((new TimeSpan(10000)).TotalMilliseconds);
+            var text = File.ReadAllText($"d:\\1.txt");
+            var cfg = new PowerConfig(text);
+            Console.WriteLine(cfg["name"]);
             Console.ReadKey();
         }
     }
