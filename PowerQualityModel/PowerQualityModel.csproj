@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveValue.cs" />
     <Compile Include="LineType.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelState.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="PowerUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Record.cs" />
+    <Compile Include="RecordConfig.cs" />
     <Compile Include="RoleStatus.cs" />
     <Compile Include="SystemModel.cs" />
     <Compile Include="UserStatus.cs" />
