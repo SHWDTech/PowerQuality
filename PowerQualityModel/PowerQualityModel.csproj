@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveValue.cs" />
+    <Compile Include="Harmonic.cs" />
     <Compile Include="LineType.cs" />
     <Compile Include="ModelBase.cs" />
     <Compile Include="ModelState.cs" />
