@@ -53,7 +53,8 @@ namespace TestConsole
                                 {
                                     Id = Guid.NewGuid(),
                                     RecordGuid = record.Id,
-                                    RecordDateTime = record.RecordDateTime.AddMilliseconds(250 * j),
+                                    RecordIndex = index,
+                                    RecordTimeTicks = record.RecordDateTime.AddMilliseconds( 250 * j).Ticks,
                                     Voltage_AN = Math.Round(stand, 2),
                                     Voltage_BN = Math.Round(stand + 0.1, 2),
                                     Voltage_CN = Math.Round(stand - 0.1, 2),
@@ -70,7 +71,7 @@ namespace TestConsole
                             completed += 1;
                             ReduceRunning();
                             Console.WriteLine(
-                                $"EndInsert=> StartIndex：{index} {DateTime.Now:yyyy-MM-dd HH:mm:ss fff}。Completed：{completed}/{345600}。Running：{GetRunning()}");
+                                $"EndInsert=> StartIndex：{index} {DateTime.Now:yyyy-MM-dd HH:mm:ss fff}。Completed：{completed}/{3456}。Running：{GetRunning()}");
                             done = true;
                         }
                     }
@@ -82,7 +83,7 @@ namespace TestConsole
             });
 
             var end = DateTime.Now;
-            Console.WriteLine($"Completed, Used:{(end - start): HH:mm:ss fff}");
+            Console.WriteLine($"Completed, Used:{(end - start).TotalSeconds}");
             Console.ReadKey();
         }
 

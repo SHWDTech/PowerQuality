@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 // ReSharper disable InconsistentNaming
 
 namespace PowerQualityModel
@@ -14,6 +15,7 @@ namespace PowerQualityModel
         /// 所属记录GUID
         /// </summary>
         [Required]
+        [Index("IX_RecordActiveValue", 1, IsClustered = true)]
         public Guid RecordGuid { get; set; }
 
         /// <summary>
@@ -26,7 +28,15 @@ namespace PowerQualityModel
         /// 记录序列号
         /// </summary>
         [Required]
-        public DateTime RecordDateTime { get; set; }
+        [Index("IX_RecordActiveValue", 2, IsClustered = true)]
+        public int RecordIndex { get; set; }
+
+        [Required]
+        public long RecordTimeTicks { get; set; }
+
+        [NotMapped]
+        public DateTime RecordTime 
+            => RecordTimeTicks != 0 ? new DateTime(RecordTimeTicks) : DateTime.MinValue;
 
         /// <summary>
         /// AN电压
