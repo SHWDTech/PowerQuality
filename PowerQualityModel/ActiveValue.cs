@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+// ReSharper disable InconsistentNaming
 
 namespace PowerQualityModel
 {
     /// <summary>
     /// 有效值记录
     /// </summary>
-    public class ActiveValue
+    public class ActiveValue : SystemModel
     {
         /// <summary>
         /// 所属记录GUID
@@ -17,61 +19,80 @@ namespace PowerQualityModel
         /// <summary>
         /// 所属记录
         /// </summary>
+        [ForeignKey("RecordGuid")]
         public Record Record { get; set; }
 
         /// <summary>
         /// 记录序列号
         /// </summary>
         [Required]
-        public int Index { get; set; }
+        public DateTime RecordDateTime { get; set; }
 
         /// <summary>
-        /// 一通道数据
+        /// AN电压
         /// </summary>
         [Required]
-        public double ChannelOne { get; set; }
+        public double Voltage_AN { get; set; }
 
         /// <summary>
-        /// 二通道数据
+        /// BN电压
         /// </summary>
         [Required]
-        public double ChannelTwo { get; set; }
+        public double Voltage_BN { get; set; }
 
         /// <summary>
-        /// 三通道数据
+        /// CN电压
         /// </summary>
         [Required]
-        public double ChannelThree { get; set; }
+        public double Voltage_CN { get; set; }
 
         /// <summary>
-        /// 四通道数据
+        /// 零地线电压
         /// </summary>
         [Required]
-        public double ChannelFour { get; set; }
+        public double Voltage_NG { get; set; }
 
         /// <summary>
-        /// 五通道数据
+        /// AB相电压
         /// </summary>
         [Required]
-        public double ChannelFive { get; set; }
+        public double Voltage_AB { get; set; }
 
         /// <summary>
-        /// 六通道数据
+        /// BC相电压
         /// </summary>
         [Required]
-        public double ChannelSix { get; set; }
+        public double Voltage_BC { get; set; }
 
         /// <summary>
-        /// 七通道数据
+        /// CA相电压
         /// </summary>
         [Required]
-        public double ChannelSeven { get; set; }
+        public double Voltage_CA { get; set; }
 
         /// <summary>
-        /// 八通道数据
+        /// A线电流
         /// </summary>
         [Required]
-        public double ChannelEight { get; set; }
+        public double Current_A { get; set; }
+
+        /// <summary>
+        /// B线电流
+        /// </summary>
+        [Required]
+        public double Current_B { get; set; }
+
+        /// <summary>
+        /// C线电流
+        /// </summary>
+        [Required]
+        public double Current_C { get; set; }
+
+        /// <summary>
+        /// 零线电流
+        /// </summary>
+        [Required]
+        public double Current_N { get; set; }
 
         /// <summary>
         /// 频率

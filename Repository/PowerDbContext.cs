@@ -3,12 +3,18 @@ using PowerQualityModel;
 
 namespace Repository
 {
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class PowerDbContext : DbContext
     {
         /// <summary>
         /// 创建默认的DbContext
         /// </summary>
         public PowerDbContext() : base("Power_Quality")
+        {
+            Database.SetInitializer(new DropCreateDatabaseAlways<PowerDbContext>());
+        }
+
+        public PowerDbContext(bool dropCreate) : base("Power_Quality")
         {
             
         }

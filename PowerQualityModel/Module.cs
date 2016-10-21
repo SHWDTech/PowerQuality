@@ -8,7 +8,7 @@ namespace PowerQualityModel
     /// 模块
     /// </summary>
     [Serializable]
-    public class Module
+    public class Module : SystemModel
     {
         [Display(Name = "所属父模块ID")]
         public virtual Guid? ParentModuleId { get; set; }
