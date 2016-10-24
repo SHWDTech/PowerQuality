@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerQualityModel
 {
@@ -18,6 +19,7 @@ namespace PowerQualityModel
         /// <summary>
         /// 是否新创建对象
         /// </summary>
+        [NotMapped]
         public abstract bool IsNew { get; set; }
 
         /// <summary>

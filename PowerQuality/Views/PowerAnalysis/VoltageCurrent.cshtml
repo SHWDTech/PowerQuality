@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "VoltageCurrent";
+}
+
+<form id="channelOptions" class="form form-horizontal">  
+    <span>显示通道：</span>
+    <input type="checkbox" id="an" checked="checked"/><label for="an">AN(V)</label>
+    <input type="checkbox" id="bn" checked="checked"/><label for="bn">BN(V)</label>
+    <input type="checkbox" id="cn" checked="checked"/><label for="cn">CN(V)</label>
+    <input type="checkbox" id="ng" checked="checked"/><label for="ng">NG(V)</label>
+    <input type="checkbox" id="ab" /><label for="ab">AB(V)</label>
+    <input type="checkbox" id="bc" /><label for="bc">BC(V)</label>
+    <input type="checkbox" id="ca" /><label for="ca">CA(V)</label>
+    <input type="checkbox" id="a" checked="checked"/><label for="a">A(A)</label>
+    <input type="checkbox" id="b" checked="checked"/><label for="b">B(A)</label>
+    <input type="checkbox" id="c" checked="checked"/><label for="c">C(A)</label>
+    <input type="checkbox" id="n" checked="checked"/><label for="n">N(A)</label>
+</form>
+<div id="chartContainer">
+    
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/echarts")
+}

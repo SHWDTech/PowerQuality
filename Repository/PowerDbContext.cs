@@ -11,11 +11,6 @@ namespace Repository
         /// </summary>
         public PowerDbContext() : base("Power_Quality")
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<PowerDbContext>());
-        }
-
-        public PowerDbContext(bool dropCreate) : base("Power_Quality")
-        {
             
         }
 

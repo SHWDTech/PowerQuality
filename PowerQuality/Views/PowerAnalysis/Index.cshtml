@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+@section scripts{
+    <script type="text/javascript">
+        var count = 1200;
+        var current = 0;
+        var datas = [];
+        $(function () {
+            request();
+        });
+
+        var request = function () {
+            $.post('/PowerAnalysis/RecordData', { 'RecordGuid': '884760cf-27b3-4d0a-9174-2ef8bee1c179', 'StartIndex': current, 'EndIndex': current + 200 }, function (ret) {
+                datas = datas.concat(ret);
+                current += 200;
+                if (current < count) {
+                    request();
+                } else {
+                    alert('数据读取完成');
+                }
+            });
+        }
+    </script>
+}

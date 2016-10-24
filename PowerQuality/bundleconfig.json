@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Scripts/Function/voltageCurrent.min.js",
+    "inputFiles": [
+      "Scripts/Function/voltageCurrent.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Function/base.min.js",
+    "inputFiles": [
+      "Scripts/Function/base.js"
+    ]
+  }
+]
