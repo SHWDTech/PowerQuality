@@ -41,7 +41,7 @@ namespace TestConsole
                 {
                     try
                     {
-                        using (var ctx = new PowerDbContext(false))
+                        using (var ctx = new PowerDbContext())
                         {
                             var endIdnex = index + 100;
                             var rd = new Random();

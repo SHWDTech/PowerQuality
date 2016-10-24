@@ -11,12 +11,12 @@ using SHWDTech.Platform.Utility;
 
 namespace Repository
 {
-    public class PowerRepository<T> where T : ModelBase, new()
+    public class PowerRepository<T> : IRepository where T : ModelBase, new()
     {
         /// <summary>
         /// 数据库上下文
         /// </summary>
-        protected PowerDbContext DbContext { get; }
+        public PowerDbContext DbContext { get; set; }
 
         /// <summary>
         /// 进行操作的数据实体
