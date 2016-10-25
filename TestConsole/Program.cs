@@ -3,103 +3,63 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PowerQualityModel;
 using Repository;
+using SHWDTech.Platform.Utility;
 
 namespace TestConsole
 {
     class Program
     {
-        private static int Running { get; set; }
-
         static void Main(string[] args)
         {
+            var recordGuid = new Guid("884760cf-27b3-4d0a-9174-2ef8bee1c179");
             var context = new PowerDbContext();
-            var record = new Record
-            {
-                Id = Guid.NewGuid(),
-                RecordName = "TestOne",
-                RecordDateTime = DateTime.Now,
-                RecordStartDateTime = DateTime.Now
-            };
-            context.Records.Add(record);
+            context.Set<Record>().Add(new Record {Id = recordGuid, RecordName = "测试记录", RecordDateTime = DateTime.Now, RecordStartDateTime = DateTime.Now});
             context.SaveChanges();
 
-            var start = DateTime.Now;
-            var indexs = new List<int>();
-            for (var i = 0; i < 3456; i++)
+            var recordCount = 345600;
+
+            var recordIndexs = new List<int>();
+            var current = 0;
+            while (current < recordCount)
             {
-                indexs.Add(i * 100);
+                recordIndexs.Add(current);
+                current += 200;
             }
 
-            var completed = 0;
-            Running = 0;
-
-            Parallel.ForEach(indexs, (index) =>
+            Parallel.ForEach(recordIndexs, (index) =>
             {
-                AddRunning();
                 var done = false;
                 while (!done)
                 {
                     try
                     {
-                        using (var ctx = new PowerDbContext())
+                        var dbContext = new PowerDbContext();
+                        var rd = new Random();
+                        for (var i = index; i < index + 200; i++)
                         {
-                            var endIdnex = index + 100;
-                            var rd = new Random();
-                            var stand = 220.0d;
-                            for (var j = index; j < endIdnex; j++)
+                            var avg = Math.Round(rd.Next(1, 100) / 100.0 + 220, 2);
+                            dbContext.Set<ActiveValue>().Add(new ActiveValue
                             {
-                                stand += rd.Next(10, 20) / 100.0;
-                                var value = new ActiveValue
-                                {
-                                    Id = Guid.NewGuid(),
-                                    RecordGuid = record.Id,
-                                    RecordIndex = index,
-                                    RecordTimeTicks = record.RecordDateTime.AddMilliseconds( 250 * j).Ticks,
-                                    Voltage_AN = Math.Round(stand, 2),
-                                    Voltage_BN = Math.Round(stand + 0.1, 2),
-                                    Voltage_CN = Math.Round(stand - 0.1, 2),
-                                    Voltage_NG = Math.Round(rd.Next(10, 20) / 100.0, 2)
-                                };
-                                ctx.ActiveValues.Add(value);
-                                index++;
-                            }
-
-                            Console.WriteLine(
-                                $"QuestStarted => StartIndex：{index}， {DateTime.Now:yyyy-MM-dd HH:mm:ss fff}。");
-                            ctx.Configuration.AutoDetectChangesEnabled = false;
-                            ctx.SaveChanges();
-                            completed += 1;
-                            ReduceRunning();
-                            Console.WriteLine(
-                                $"EndInsert=> StartIndex：{index} {DateTime.Now:yyyy-MM-dd HH:mm:ss fff}。Completed：{completed}/{3456}。Running：{GetRunning()}");
-                            done = true;
+                                Id = Globals.NewCombId(),
+                                Voltage_AN = avg,
+                                Voltage_BN = avg + 0.2,
+                                Voltage_CN = avg - 0.2,
+                                RecordGuid = recordGuid,
+                                RecordIndex = i
+                            });
                         }
+
+                        dbContext.SaveChanges();
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"QuestRunFiled => {index}。\r\nException:\r\n{ex}");
+                        LogService.Instance.Error("添加记录数据失败", ex);
+                        Console.WriteLine(ex);
                     }
+
+                    done = true;
                 }
             });
-
-            var end = DateTime.Now;
-            Console.WriteLine($"Completed, Used:{(end - start).TotalSeconds}");
-            Console.ReadKey();
-        }
-
-        static void AddRunning()
-        {
-            Running += 1;
-        }
-
-        static void ReduceRunning()
-        {
-            Running -= 1;
-        }
-
-        static int GetRunning()
-        {
-            return Running;
         }
     }
 }

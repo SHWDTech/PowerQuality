@@ -51,8 +51,15 @@
   <ItemGroup>
     <Compile Include="ProcessBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordCache.cs" />
+    <Compile Include="RecordProcess.cs" />
+    <Compile Include="RecordValues.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WDYunPlatform\Platform.Utility\Platform.Utility.csproj">
+      <Project>{95b28f0d-c7d4-479c-aabf-e0f8b4b0e06c}</Project>
+      <Name>Platform.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PowerQualityModel\PowerQualityModel.csproj">
       <Project>{4d5b7b7d-c291-443d-bbfa-3b7ea944ac54}</Project>
       <Name>PowerQualityModel</Name>

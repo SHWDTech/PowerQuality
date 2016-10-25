@@ -11,7 +11,7 @@ using SHWDTech.Platform.Utility;
 
 namespace Repository
 {
-    public class PowerRepository<T> : IRepository where T : ModelBase, new()
+    public class PowerRepository<T> : RepositoryBase, IRepository where T : ModelBase, new()
     {
         /// <summary>
         /// 数据库上下文
@@ -31,16 +31,16 @@ namespace Repository
         /// <summary>
         /// 创建一个新的数据仓库泛型基类对象
         /// </summary>
-        protected PowerRepository()
+        public PowerRepository()
         {
         }
 
-        protected PowerRepository(string connString) : this()
+        public PowerRepository(string connString) : this()
         {
             DbContext = new PowerDbContext(connString);
         }
 
-        protected PowerRepository(PowerDbContext dbContext)
+        public PowerRepository(PowerDbContext dbContext)
         {
             DbContext = dbContext;
         }

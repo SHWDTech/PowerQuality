@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using PowerQuality.Models.PowerAnalysis;
 
 namespace PowerQuality.Controllers
 {
@@ -6,7 +8,13 @@ namespace PowerQuality.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new RecordSelect()
+            {
+                StartDate = DateTime.Now.AddMonths(-1),
+                EndDate = DateTime.Now
+            };
+
+            return View(model);
         }
 
         public ActionResult About()

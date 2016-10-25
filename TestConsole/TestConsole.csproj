@@ -78,9 +78,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WDYunPlatform\Platform.Utility\Platform.Utility.csproj">
+      <Project>{95b28f0d-c7d4-479c-aabf-e0f8b4b0e06c}</Project>
+      <Name>Platform.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerProcess\PowerProcess.csproj">
+      <Project>{44853aad-b671-46b1-a379-15ae7ec6349d}</Project>
+      <Name>PowerProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PowerQualityModel\PowerQualityModel.csproj">
       <Project>{4d5b7b7d-c291-443d-bbfa-3b7ea944ac54}</Project>
       <Name>PowerQualityModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PowerQuality\PowerQuality.csproj">
+      <Project>{9c94eb3a-c94c-4074-92bc-bc686cbc0629}</Project>
+      <Name>PowerQuality</Name>
     </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{505abfbd-6eb8-4786-b931-3088064a6d0f}</Project>

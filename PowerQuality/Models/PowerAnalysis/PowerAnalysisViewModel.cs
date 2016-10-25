@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PowerQuality.Models.PowerAnalysis
 {
@@ -9,5 +10,14 @@ namespace PowerQuality.Models.PowerAnalysis
         public int StartIndex { get; set; }
 
         public int EndIndex { get; set; }
+    }
+
+    public class RecordSelect
+    {
+        [Display(Name = "起始日期")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "结束日期")]
+        public DateTime EndDate { get; set; }
     }
 }

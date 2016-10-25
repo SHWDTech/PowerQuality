@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using PowerProcess;
 using PowerQuality.Models.PowerAnalysis;
-using PowerQualityModel;
-using Repository;
 
 namespace PowerQuality.Controllers
 {
@@ -15,13 +15,20 @@ namespace PowerQuality.Controllers
 
         public ActionResult RecordData(RecordDataRequest request)
         {
-            using (var ctx = new PowerDbContext())
+            var values = RecordCache.GetRecord(request.RecordGuid);
+            var jsonResult = Json(new
             {
-                var data = ctx.Set<ActiveValue>().Where(obj => obj.RecordGuid == request.RecordGuid
-                                                               && obj.RecordIndex >= request.StartIndex
-                                                               && obj.RecordIndex < request.EndIndex).ToList();
-                return Json(data, JsonRequestBehavior.AllowGet);
-            }
+                data = values.Values.Where(obj => obj.RecordIndex >= request.StartIndex && obj.RecordIndex < request.EndIndex)
+            }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+        }
+
+        public ActionResult LoadPercentage(Guid recordGuid)
+        {
+            var percentage = RecordCache.LoadPercetage(recordGuid);
+
+            return Json(new { percentage }, JsonRequestBehavior.AllowGet);
         }
     }
 }

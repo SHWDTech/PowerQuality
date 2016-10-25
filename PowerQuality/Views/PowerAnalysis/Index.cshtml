@@ -8,22 +8,26 @@
 
 @section scripts{
     <script type="text/javascript">
-        var count = 1200;
-        var current = 0;
         var datas = [];
         $(function () {
             request();
         });
 
         var request = function () {
-            $.post('/PowerAnalysis/RecordData', { 'RecordGuid': '884760cf-27b3-4d0a-9174-2ef8bee1c179', 'StartIndex': current, 'EndIndex': current + 200 }, function (ret) {
-                datas = datas.concat(ret);
-                current += 200;
-                if (current < count) {
-                    request();
+            $.post('/PowerAnalysis/LoadPercentage', { 'recordGuid': '884760cf-27b3-4d0a-9174-2ef8bee1c179' }, function (ret) {
+                console.log(ret.percentage);
+                if (ret.percentage < 1) {
+                    setTimeout(function () { request(); }, 500);
                 } else {
-                    alert('数据读取完成');
+                    loadData();
                 }
+            });
+        }
+
+        var loadData = function () {
+            $.post('/PowerAnalysis/RecordData', { 'RecordGuid': '884760cf-27b3-4d0a-9174-2ef8bee1c179', StartIndex: 0, EndIndex: 14400 }, function (ret) {
+                datas = datas.concat(ret.data);
+                alert('数据读取完成');
             });
         }
     </script>

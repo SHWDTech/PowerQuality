@@ -3,23 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using PowerQualityModel;
 
-namespace PowerQuality.Common
+namespace PowerProcess
 {
     public class RecordCache
     {
         private static readonly Dictionary<Guid, RecordValues> RecordValuesCache = new Dictionary<Guid, RecordValues>();
 
         public static bool Cached(Guid recordGuid)
-            => RecordValuesCache.ContainsKey(recordGuid);
+            => RecordValuesCache.ContainsKey(recordGuid) && RecordValuesCache[recordGuid].LoadCompleted;
 
         public static double LoadPercetage(Guid recordGuid)
-            => RecordValuesCache[recordGuid].Count/ RecordValuesCache[recordGuid].Values.Count;
+        {
+            if (!RecordValuesCache.ContainsKey(recordGuid)) return -1;
+            return RecordValuesCache[recordGuid].Values.Count / RecordValuesCache[recordGuid].Count ;
+        }
 
         public static void PushValue(Guid recordGuid, List<ActiveValue> values)
         {
-            if (RecordValuesCache.ContainsKey(recordGuid))
+            if (!RecordValuesCache.ContainsKey(recordGuid)) return;
+            var recordValue = RecordValuesCache[recordGuid];
+            recordValue.Values.AddRange(values);
+            if (recordValue.Values.Count == Convert.ToInt32(recordValue.Count))
             {
-                RecordValuesCache[recordGuid].Values.AddRange(values);
+                recordValue.LoadCompleted = true;
             }
         }
 
@@ -41,5 +47,8 @@ namespace PowerQuality.Common
                 RecordValuesCache.Remove(RecordValuesCache.Last().Key);
             }
         }
+
+        public static RecordValues GetRecord(Guid recordGuid)
+            => RecordValuesCache[recordGuid];
     }
 }
