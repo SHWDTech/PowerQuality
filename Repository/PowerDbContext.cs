@@ -11,7 +11,7 @@ namespace Repository
         /// </summary>
         public PowerDbContext() : base("Power_Quality")
         {
-            
+            //Database.SetInitializer(new DropCreateDatabaseAlways<PowerDbContext>());
         }
 
         /// <summary>
@@ -57,5 +57,10 @@ namespace Repository
         /// 电力系统记录值
         /// </summary>
         public virtual DbSet<ActiveValue> ActiveValues { get; set; }
+
+        /// <summary>
+        /// 谐波信息记录值
+        /// </summary>
+        public virtual DbSet<Harmonic> Harmonics { get; set; }
     }
 }

@@ -10,8 +10,7 @@ body {
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
     width: 100%;
     position: relative;
 }
@@ -36,6 +35,15 @@ label {
 
 form label {
     margin-right: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.horizontal-control-group {
+    margin-right: 20px;
+    display: inline;
 }
 
 .wapper {
@@ -256,4 +264,23 @@ form label {
     width: 280px;
     min-width: 280px;
     max-width: 280px;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.recordList li {
+    padding: 5px;
+}
+
+.recordList li:hover {
+    background-color: #31b0d5;
+    color: #fff;
+    cursor: pointer;
+}
+
+.recordList li.active {
+    background-color: #31b0d5;
+    color: #fff;
 }

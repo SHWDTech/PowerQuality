@@ -32,5 +32,19 @@ namespace PowerQualityModel
         [DataType(DataType.DateTime)]
         [Display(Name = "记录上传时间")]
         public virtual DateTime RecordStartDateTime { get; set; }
+
+        /// <summary>
+        /// 记录持续时间
+        /// </summary>
+        [DataType(DataType.DateTime)]
+        [Display(Name = "记录持续时间")]
+        public virtual TimeSpan RecordDuration { get; set; }
+
+        /// <summary>
+        /// 记录结束时间
+        /// </summary>
+        [DataType(DataType.DateTime)]
+        [Display(Name = "记录结束时间")]
+        public virtual DateTime RecordEndDateTime { get; set; }
     }
 }

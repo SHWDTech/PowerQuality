@@ -33,6 +33,7 @@ namespace Repository
         /// </summary>
         public PowerRepository()
         {
+            DbContext = new PowerDbContext();
         }
 
         public PowerRepository(string connString) : this()

@@ -273,7 +273,7 @@
     <Content Include="Scripts\function\base.min.js">
       <DependentUpon>base.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\function\voltageCurrent.js" />
+    <Content Include="Scripts\function\powerAnalysis.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -311,8 +311,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\PowerAnalysis\VoltageCurrent.cshtml" />
-    <Content Include="Views\PowerAnalysis\Index.cshtml" />
+    <Content Include="Views\PowerAnalysis\Record.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

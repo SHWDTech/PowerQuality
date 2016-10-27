@@ -1,28 +1,64 @@
-﻿@model PowerQuality.Models.PowerAnalysis.RecordSelect
+﻿@using Newtonsoft.Json
+@model PowerQuality.Models.PowerAnalysis.RecordSelectList
 @{
     ViewBag.Title = "系统首页";
 }
 
-<div class="single-content" style="padding: 20px 0; width: 80%; margin: auto;">
+<div class="single-content" style="width: 60%; margin: auto;">
     <div class="float-card float-card-default float-card-single">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h4 style="text-align: center;">选择记录</h4>
             </div>
             <div class="panel-body">
-                <div class="form-inline" style="border-bottom: 1px solid #e3e3e3; padding-bottom: 15px;">
-                    <div class="form-group">
-                        <span class="glyphicon glyphicon-time" style="font-size: 20px;"></span>
-                        <span style="margin-left: 10px;" class="span100">查询记录范围：</span>
-                        @Html.LabelFor(m => m.StartDate, new { @class = "lbl60" })
-                        @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control control120" })
-                        @Html.LabelFor(m => m.EndDate, new { @class = "lbl60" })
-                        @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control control120" })
+                <form>
+                    <div class="form-inline" style="border-bottom: 1px solid #e3e3e3; padding-bottom: 15px;">
+                        <div class="form-group">
+                            <span class="glyphicon glyphicon-time" style="font-size: 20px;"></span>
+                            <span style="margin-left: 10px;" class="span100">查询记录范围：</span>
+                            <div class="horizontal-control-group">
+                                @Html.LabelFor(m => m.Selection.StartDate, new { @class = "lbl60 no-margin" })
+                                @Html.TextBoxFor(m => m.Selection.StartDate, new { @class = "form-control control120" })
+                            </div>
+                            <div class="horizontal-control-group">
+                                @Html.LabelFor(m => m.Selection.EndDate, new { @class = "lbl60 no-margin" })
+                                @Html.TextBoxFor(m => m.Selection.EndDate, new { @class = "form-control control120" })
+                            </div>
+                            <input type="submit" value="查询" class="btn btn-info" />
+                        </div>
                     </div>
-                </div>
+                </form>
                 <div style="display: flex; margin: 15px 0; position: relative;">
-                    <div style="width: 20%; border: 1px solid #e3e3d3; min-height: 500px;">
-                        
+                    <div style="width: 30%; border: 1px solid #e3e3d3; min-height: 500px; padding: 5px;">
+                        <ul class="recordList" style="padding: 0">
+                            @{
+                                foreach (var record in Model.Records)
+                                {
+                                    <li recordId="@record.Id">@record.RecordName</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div style="margin-left: 10%; width: 60%; position: relative; min-height: 500px;">
+                        <div class="form-group">
+                            <label>记录开始时间：</label>
+                            <input type="text" id="StartDateTime" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>记录持续时间：</label>
+                            <input type="text" id="Duration" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>记录结束时间：</label>
+                            <input type="text" id="EndDateTime" class="form-control" />
+                        </div>
+                        <div style="position: absolute; bottom: 0; right: 0;">
+                            @using (Html.BeginForm("Record", "PowerAnalysis"))
+                            {
+                                <input type="hidden" id="recordId" name="recordId"/>
+                                <input type="submit" class="btn btn-info" id="loadRecord" value="确定" disabled/>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,15 +72,29 @@
 @section scripts{
     @Scripts.Render("~/bundles/datepicker")
     <script type="text/javascript">
+        var records = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(Model.Records))');
+        var jsonData = '@Html.Raw(JsonConvert.SerializeObject(Model.Records))';
+
         $(function () {
-            $('#StartDate').datetimepicker({
+            $('#Selection_StartDate').datetimepicker({
                 locale: 'zh-cn',
                 format: 'L'
             });
 
-            $('#EndDate').datetimepicker({
+            $('#Selection_EndDate').datetimepicker({
                 locale: 'zh-cn',
                 format: 'L'
+            });
+
+            $('.recordList li').on('click', function (li) {
+                $('.recordList li').removeClass('active');
+                $(this).addClass('active');
+                var record = records.find(function (element) { return element.ID === $(li).prop('recordId') });
+                $('#StartDateTime').val(record.RecordStartDateTime.replace('T', ' '));
+                $('#Duration').val(record.RecordDuration);
+                $('#EndDateTime').val(record.RecordEndDateTime.replace('T', ' '));
+                $('#recordId').val(record.Id);
+                $('#loadRecord').prop('disabled', '');
             });
         });
     </script>

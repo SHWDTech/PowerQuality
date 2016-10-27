@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PowerQualityModel;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PowerQuality.Models.PowerAnalysis
@@ -19,5 +21,12 @@ namespace PowerQuality.Models.PowerAnalysis
 
         [Display(Name = "结束日期")]
         public DateTime EndDate { get; set; }
+    }
+
+    public class RecordSelectList
+    {
+        public RecordSelect Selection { get; set; }
+
+        public List<Record> Records { get; set; } = new List<Record>();
     }
 }

@@ -1,9 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerQualityModel
 {
-    public class Harmonic
+    public class Harmonic : SystemModel
     {
+        [Required]
+        public Guid ActiveValueGuid { get; set; }
+
+        [Required]
+        [ForeignKey("ActiveValueGuid")]
+        public ActiveValue ActiveValue { get; set; }
+
         [Required]
         public double VoltageAHarmonic0 { get; set; }
 
@@ -921,7 +930,5 @@ namespace PowerQualityModel
 
         [Required]
         public double CurrentCHarmonic50 { get; set; }
-
-
     }
 }

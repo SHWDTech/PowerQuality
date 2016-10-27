@@ -8,8 +8,10 @@ namespace PowerQuality.Controllers
 {
     public class PowerAnalysisController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Record()
         {
+            if (string.IsNullOrWhiteSpace(Request["recordId"])) return Redirect("/");
+            var id = new Guid(Request["recordId"]);
             return View();
         }
 

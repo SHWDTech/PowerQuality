@@ -13,7 +13,17 @@ namespace TestConsole
         {
             var recordGuid = new Guid("884760cf-27b3-4d0a-9174-2ef8bee1c179");
             var context = new PowerDbContext();
-            context.Set<Record>().Add(new Record {Id = recordGuid, RecordName = "测试记录", RecordDateTime = DateTime.Now, RecordStartDateTime = DateTime.Now});
+            var startDate = DateTime.Now;
+            var duration = TimeSpan.FromMilliseconds(345600*250);
+            context.Set<Record>().Add(new Record
+            {
+                Id = recordGuid,
+                RecordName = "测试记录",
+                RecordDateTime = startDate,
+                RecordStartDateTime = startDate,
+                RecordDuration = duration,
+                RecordEndDateTime = startDate + duration
+            });
             context.SaveChanges();
 
             var recordCount = 345600;
@@ -44,6 +54,7 @@ namespace TestConsole
                                 Voltage_AN = avg,
                                 Voltage_BN = avg + 0.2,
                                 Voltage_CN = avg - 0.2,
+                                Voltage_NG = avg - 220,
                                 RecordGuid = recordGuid,
                                 RecordIndex = i
                             });
