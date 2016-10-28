@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PowerProcess;
 using PowerQuality.Models.PowerAnalysis;
@@ -12,6 +13,13 @@ namespace PowerQuality.Controllers
         {
             if (string.IsNullOrWhiteSpace(Request["recordId"])) return Redirect("/");
             var id = new Guid(Request["recordId"]);
+            Task.Factory.StartNew(() =>
+            {
+                var process = new RecordProcess();
+                process.LoadRecord(id);
+            });
+
+            ViewBag.recordId = id;
             return View();
         }
 
@@ -26,8 +34,11 @@ namespace PowerQuality.Controllers
             return jsonResult;
         }
 
-        public ActionResult LoadPercentage(Guid recordGuid)
+        public ActionResult LoadPercentage()
         {
+            if (string.IsNullOrWhiteSpace(Request["recordGuid"])) return null;
+
+            var recordGuid = new Guid(Request["recordGuid"]);
             var percentage = RecordCache.LoadPercetage(recordGuid);
 
             return Json(new { percentage }, JsonRequestBehavior.AllowGet);

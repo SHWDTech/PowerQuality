@@ -12,18 +12,19 @@ namespace PowerProcess
     {
         public void LoadRecord(Guid recordGuid)
         {
-            if (RecordCache.Cached(recordGuid)) return;
+            if (RecordCache.Cached(recordGuid) || RecordCache.OnLoading(recordGuid)) return;
             var repo = Repo<PowerRepository<ActiveValue>>();
             repo.InitEntitySet();
             var recordCount = repo.GetCount(obj => obj.RecordGuid == recordGuid);
             RecordCache.AddRecord(recordGuid, recordCount);
+            RecordCache.SetLoaingStatus(recordGuid, true);
 
             var recordIndexs = new List<int>();
             var current = 0;
             while (current < recordCount)
             {
                 recordIndexs.Add(current);
-                current += 500;
+                current += 200;
             }
 
             Parallel.ForEach(recordIndexs, (index) =>
@@ -36,7 +37,7 @@ namespace PowerProcess
                         var dbContext = new PowerDbContext();
                         var values =
                             dbContext.Set<ActiveValue>()
-                                .Where(obj => obj.RecordIndex >= index && obj.RecordIndex < index + 500)
+                                .Where(obj => obj.RecordIndex >= index && obj.RecordIndex < index + 200)
                                 .ToList();
                         RecordCache.PushValue(recordGuid, values);
                     }
@@ -53,6 +54,8 @@ namespace PowerProcess
                     done = true;
                 }
             });
+
+            RecordCache.SetLoaingStatus(recordGuid, false);
         }
     }
 }

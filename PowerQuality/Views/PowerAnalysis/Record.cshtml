@@ -3,28 +3,44 @@
     ViewBag.Title = "VoltageCurrent";
 }
 
-<div class="float-card float-card-default" style="padding: 3px; margin-bottom: 5px;">
-    <form id="channelOptions" class="form form-horizontal">
-        <span>显示通道：</span>
-        <input type="checkbox" id="an" checked="checked" /><label for="an">AN(V)</label>
-        <input type="checkbox" id="bn" checked="checked" /><label for="bn">BN(V)</label>
-        <input type="checkbox" id="cn" checked="checked" /><label for="cn">CN(V)</label>
-        <input type="checkbox" id="ng" checked="checked" /><label for="ng">NG(V)</label>
-        <input type="checkbox" id="ab" /><label for="ab">AB(V)</label>
-        <input type="checkbox" id="bc" /><label for="bc">BC(V)</label>
-        <input type="checkbox" id="ca" /><label for="ca">CA(V)</label>
-        <input type="checkbox" id="a" checked="checked" /><label for="a">A(A)</label>
-        <input type="checkbox" id="b" checked="checked" /><label for="b">B(A)</label>
-        <input type="checkbox" id="c" checked="checked" /><label for="c">C(A)</label>
-        <input type="checkbox" id="n" checked="checked" /><label for="n">N(A)</label>
-    </form>
+<div id="pageLoading" style="width: 400px; margin: auto; background-color: #fff; padding: 20px;">
+    <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <div>
+        <h3 style="text-align: center;">后台数据准备中：<span id="percentage" style="font-weight: bolder; color: #dc143c;">0</span>%</h3>
+    </div>
 </div>
 
-<div id="chartContainer" class="float-card float-card-default">
+<div id="mainContent" style="display: none;">
+    <div class="float-card float-card-default" style="padding: 3px; margin-bottom: 5px;">
+        <form id="channelOptions" class="form form-horizontal">
+            <span>显示通道：</span>
+            <input type="checkbox" id="an" checked="checked" /><label for="an">AN(V)</label>
+            <input type="checkbox" id="bn" checked="checked" /><label for="bn">BN(V)</label>
+            <input type="checkbox" id="cn" checked="checked" /><label for="cn">CN(V)</label>
+            <input type="checkbox" id="ng" checked="checked" /><label for="ng">NG(V)</label>
+            <input type="checkbox" id="ab" /><label for="ab">AB(V)</label>
+            <input type="checkbox" id="bc" /><label for="bc">BC(V)</label>
+            <input type="checkbox" id="ca" /><label for="ca">CA(V)</label>
+            <input type="checkbox" id="a" checked="checked" /><label for="a">A(A)</label>
+            <input type="checkbox" id="b" checked="checked" /><label for="b">B(A)</label>
+            <input type="checkbox" id="c" checked="checked" /><label for="c">C(A)</label>
+            <input type="checkbox" id="n" checked="checked" /><label for="n">N(A)</label>
+        </form>
+    </div>
 
+    <div id="chartContainer" class="float-card float-card-default">
+        <input type="hidden" id="recordId" recordId="@ViewBag.recordId"/>
+    </div>
 </div>
+
 
 @section scripts{
     @Scripts.Render("~/bundles/echarts")
-    <script type="text/script" src="~/Scripts/function/powerAnalysis.js"></script>
+    <script src="~/Scripts/function/powerAnalysis.js"></script>
 }

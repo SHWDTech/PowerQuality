@@ -9,6 +9,8 @@ namespace PowerProcess
 
         public bool LoadCompleted { get; set; }
 
+        public bool OnLoading { get; set; }
+
         public List<ActiveValue> Values { get; } = new List<ActiveValue>();
     }
 }
