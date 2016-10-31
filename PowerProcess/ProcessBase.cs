@@ -24,6 +24,7 @@ namespace PowerProcess
         public T Repo<T>() where T : RepositoryBase,IRepository, new()
         {
             var repo = new T { DbContext = DbContext};
+            repo.InitEntitySet();
             return repo;
         }
     }

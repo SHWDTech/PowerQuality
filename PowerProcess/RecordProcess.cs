@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using Repository;
-using PowerQualityModel;
-using SHWDTech.Platform.Utility;
+using PowerQualityModel.DataModel;
+using PowerQualityModel.ViewModel;
 
 namespace PowerProcess
 {
@@ -12,50 +12,46 @@ namespace PowerProcess
     {
         public void LoadRecord(Guid recordGuid)
         {
-            if (RecordCache.Cached(recordGuid) || RecordCache.OnLoading(recordGuid)) return;
+            if (RecordCache.Cached(recordGuid)) return;
             var repo = Repo<PowerRepository<ActiveValue>>();
-            repo.InitEntitySet();
             var recordCount = repo.GetCount(obj => obj.RecordGuid == recordGuid);
             RecordCache.AddRecord(recordGuid, recordCount);
-            RecordCache.SetLoaingStatus(recordGuid, true);
 
-            var recordIndexs = new List<int>();
-            var current = 0;
-            while (current < recordCount)
-            {
-                recordIndexs.Add(current);
-                current += 200;
-            }
+            //repo.Database.CommandTimeout = 244000;
+            var values = repo.GetModels(obj => obj.RecordGuid == recordGuid).ToList();
+            RecordCache.PushValue(recordGuid, values);
+        }
 
-            Parallel.ForEach(recordIndexs, (index) =>
-            {
-                var done = false;
-                while (!done)
-                {
-                    try
-                    {
-                        var dbContext = new PowerDbContext();
-                        var values =
-                            dbContext.Set<ActiveValue>()
-                                .Where(obj => obj.RecordIndex >= index && obj.RecordIndex < index + 200)
-                                .ToList();
-                        RecordCache.PushValue(recordGuid, values);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogService.Instance.Error("读取记录数据失败。", ex);
-                        var innerEx = ex.InnerException;
-                        while(innerEx != null)
-                        {
-                            LogService.Instance.Error("异常详细信息。", innerEx);
-                        }
-                    }
+        public List<Record> GetRecords(Expression<Func<Record, bool>> exp)
+        {
+            var repo = Repo<PowerRepository<Record>>();
 
-                    done = true;
-                }
-            });
+            return repo.GetModels(exp).ToList();
+        }
 
-            RecordCache.SetLoaingStatus(recordGuid, false);
+        public RecordInfo GetRecordInfo(Guid recordGuid)
+        {
+            var info = new RecordInfo();
+            var recordRepo = Repo<PowerRepository<Record>>();
+            info.Record = recordRepo.GetModelById(recordGuid);
+            var infoRepo = Repo<PowerRepository<RecordConfig>>();
+            info.RecordConfig = infoRepo.GetModel(obj => obj.RecordGuid == recordGuid);
+            var dataRepo = Repo<PowerRepository<ActiveValue>>();
+            info.RecordDataCount = dataRepo.GetCount(obj => obj.RecordGuid == recordGuid);
+
+            return info;
+        }
+
+        public List<Harmonic> LoadHarmonic(RequestRange range)
+        {
+            var repo = Repo<PowerRepository<Harmonic>>();
+            return repo.GetModels(obj => obj.RecordIndex >= range.StartIndex).Take(range.RequestCount).ToList();
+        }
+
+        public List<ActiveValue> LoadActiveValues(RequestRange range)
+        {
+            var repo = Repo<PowerRepository<ActiveValue>>();
+            return repo.GetModels(obj => obj.RecordIndex >= range.StartIndex).Take(range.RequestCount).ToList();
         }
     }
 }

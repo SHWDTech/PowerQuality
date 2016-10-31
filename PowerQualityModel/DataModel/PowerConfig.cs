@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     public class PowerConfig
     {

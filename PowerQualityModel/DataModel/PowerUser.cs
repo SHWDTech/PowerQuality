@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Security.Principal;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 用户

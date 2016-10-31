@@ -2,16 +2,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     public class Harmonic : SystemModel
     {
         [Required]
         public Guid ActiveValueGuid { get; set; }
 
-        [Required]
         [ForeignKey("ActiveValueGuid")]
         public ActiveValue ActiveValue { get; set; }
+
+        [Required]
+        [Index("IX_RecordIndex", IsClustered = true)]
+        public int RecordIndex { get; set; }
 
         [Required]
         public double VoltageAHarmonic0 { get; set; }

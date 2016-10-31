@@ -1,12 +1,22 @@
-﻿var getPercentate = function() {
-    base.AjaxGet('/PowerAnalysis/LoadPercentage', { recordGuid: $('#recordId').attr('recordid') }, function (ret) {
-        $('#percentage').html(Math.round(ret.percentage * 10000) / 100);
-        if (ret.percentage >= 1) return;
+﻿var powerDatas = {
+    'activeValues': [],
+    'harmonics': []
+};
 
-        setTimeout(function() { getPercentate(); }, 500);
-    });
-}
+var powerAnalysis = {
+    'fetch': function (url, startIndex, totalRequest, target) {
+        if (totalRequest <= 0) return;
+        var requestCount = totalRequest > 3600 ? 3600 : totalRequest;
+        base.AjaxGet(url, { StartIndex: startIndex, RequestCount: requestCount }, null, function (ret) {
+            ret.recordData.forEach(function (data) {
+                target.push(data);
+            });
+            powerAnalysis.fetch(url, startIndex + requestCount, totalRequest - 3600, target);
+        });
+    }
+};
 
 $(function () {
-    getPercentate();
+    powerAnalysis.fetch('/PowerAnalysis/RecordData', 0, 14400, powerDatas.activeValues);
+    powerAnalysis.fetch('/PowerAnalysis/RecordHarmonic', 0, 14400, powerDatas.harmonics);
 });

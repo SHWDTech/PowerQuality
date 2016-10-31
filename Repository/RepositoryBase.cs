@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using PowerQualityModel;
+using PowerQualityModel.DataModel;
 
 namespace Repository
 {

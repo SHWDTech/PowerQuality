@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
-using PowerQuality.Models.PowerAnalysis;
-using PowerQualityModel;
-using Repository;
+using PowerProcess;
+using PowerQualityModel.ViewModel;
 
 namespace PowerQuality.Controllers
 {
@@ -21,12 +19,10 @@ namespace PowerQuality.Controllers
                 }
             };
 
-            var repo = new PowerRepository<Record>();
-            repo.InitEntitySet();
-
-            model.Records.AddRange(repo.GetModels(obj =>
+            var process = new RecordProcess();
+            model.Records.AddRange(process.GetRecords(obj =>
             obj.RecordStartDateTime >= model.Selection.StartDate
-            && obj.RecordStartDateTime <= model.Selection.EndDate).ToList());
+            && obj.RecordStartDateTime <= model.Selection.EndDate));
 
             return View(model);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 权限

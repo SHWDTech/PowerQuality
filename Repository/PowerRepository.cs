@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
 using EntityFramework.BulkInsert.Extensions;
 using Newtonsoft.Json;
 using PowerQualityModel;
+using PowerQualityModel.DataModel;
 using SHWDTech.Platform.Utility;
 
 namespace Repository
@@ -17,6 +19,16 @@ namespace Repository
         /// 数据库上下文
         /// </summary>
         public PowerDbContext DbContext { get; set; }
+
+        /// <summary>
+        /// 数据库上下文配置信息
+        /// </summary>
+        public DbContextConfiguration Configuration => DbContext.Configuration;
+
+        /// <summary>
+        /// 数据库上下文相关数据库配置项
+        /// </summary>
+        public Database Database => DbContext.Database;
 
         /// <summary>
         /// 进行操作的数据实体

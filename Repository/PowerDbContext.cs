@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using PowerQualityModel;
+using PowerQualityModel.DataModel;
 
 namespace Repository
 {

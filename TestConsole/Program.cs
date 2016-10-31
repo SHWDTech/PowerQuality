@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PowerQualityModel;
+using PowerQualityModel.DataModel;
 using Repository;
 using SHWDTech.Platform.Utility;
 
@@ -23,6 +23,13 @@ namespace TestConsole
                 RecordStartDateTime = startDate,
                 RecordDuration = duration,
                 RecordEndDateTime = startDate + duration
+            });
+            context.Set<RecordConfig>().Add(new RecordConfig
+            {
+                CalcPrecision = 250,
+                Frequency = 256,
+                LineType = LineType.StarWithMiddle,
+                RecordGuid = recordGuid
             });
             context.SaveChanges();
 
@@ -48,7 +55,7 @@ namespace TestConsole
                         for (var i = index; i < index + 200; i++)
                         {
                             var avg = Math.Round(rd.Next(1, 100) / 100.0 + 220, 2);
-                            dbContext.Set<ActiveValue>().Add(new ActiveValue
+                            var activeValue = new ActiveValue
                             {
                                 Id = Globals.NewCombId(),
                                 Voltage_AN = avg,
@@ -56,6 +63,13 @@ namespace TestConsole
                                 Voltage_CN = avg - 0.2,
                                 Voltage_NG = avg - 220,
                                 RecordGuid = recordGuid,
+                                RecordIndex = i
+                            };
+                            dbContext.Set<ActiveValue>().Add(activeValue);
+                            dbContext.Set<Harmonic>().Add(new Harmonic()
+                            {
+                                ActiveValueGuid = activeValue.Id,
+                                Id = Globals.NewCombId(),
                                 RecordIndex = i
                             });
                         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     [Serializable]
     public abstract class ModelBase

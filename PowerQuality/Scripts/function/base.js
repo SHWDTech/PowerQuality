@@ -1,8 +1,14 @@
 ﻿var base = {};
 
 $(function () {
-    base.AjaxGet = function (ajaxUrl, params, callback) {
+    base.AjaxGet = function (ajaxUrl, urlparams, params, callback) {
         ajaxUrl = ajaxUrl + '?t=' + Date.now();
+        var par;
+        for (par in urlparams) {
+            if (urlparams.hasOwnProperty(par)) {
+                ajaxUrl = ajaxUrl + '&' + par + '=' + urlparams[par];
+            }
+        }
         $.ajax(ajaxUrl, {
             type: "GET",
             data: params,

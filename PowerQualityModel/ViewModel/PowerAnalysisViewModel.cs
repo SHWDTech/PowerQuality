@@ -1,9 +1,9 @@
-﻿using PowerQualityModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using PowerQualityModel.DataModel;
 
-namespace PowerQuality.Models.PowerAnalysis
+namespace PowerQualityModel.ViewModel
 {
     public class RecordDataRequest
     {
@@ -28,5 +28,21 @@ namespace PowerQuality.Models.PowerAnalysis
         public RecordSelect Selection { get; set; }
 
         public List<Record> Records { get; set; } = new List<Record>();
+    }
+
+    public class RecordInfo
+    {
+        public Record Record { get; set; }
+
+        public RecordConfig RecordConfig { get; set; }
+
+        public int RecordDataCount { get; set; }
+    }
+
+    public class RequestRange
+    {
+        public int StartIndex { get; set; }
+
+        public int RequestCount { get; set; }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using PowerProcess;
-using PowerQuality.Models.PowerAnalysis;
+using PowerQualityModel.ViewModel;
 
 namespace PowerQuality.Controllers
 {
@@ -13,22 +11,41 @@ namespace PowerQuality.Controllers
         {
             if (string.IsNullOrWhiteSpace(Request["recordId"])) return Redirect("/");
             var id = new Guid(Request["recordId"]);
-            Task.Factory.StartNew(() =>
-            {
-                var process = new RecordProcess();
-                process.LoadRecord(id);
-            });
 
-            ViewBag.recordId = id;
-            return View();
+            var process = new RecordProcess();
+            var model = process.GetRecordInfo(id);
+            return View(model);
+        }
+
+        public ActionResult RecordHarmonic()
+        {
+            var range = new RequestRange()
+            {
+                StartIndex = int.Parse(Request["StartIndex"]),
+                RequestCount = int.Parse(Request["RequestCount"])
+            };
+            var process = new RecordProcess();
+            var harmonics = process.LoadHarmonic(range);
+            var jsonResult = Json(new
+            {
+                recordData = harmonics
+            }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
         }
 
         public ActionResult RecordData(RecordDataRequest request)
         {
-            var values = RecordCache.GetRecord(request.RecordGuid);
+            var range = new RequestRange()
+            {
+                StartIndex = int.Parse(Request["StartIndex"]),
+                RequestCount = int.Parse(Request["RequestCount"])
+            };
+            var process = new RecordProcess();
+            var activeValues = process.LoadActiveValues(range);
             var jsonResult = Json(new
             {
-                data = values.Values.Where(obj => obj.RecordIndex >= request.StartIndex && obj.RecordIndex < request.EndIndex)
+                recordData = activeValues
             }, JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;

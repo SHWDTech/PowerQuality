@@ -1,4 +1,4 @@
-﻿namespace PowerQualityModel
+﻿namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 接线类型

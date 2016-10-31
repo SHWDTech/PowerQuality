@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 系统模型类
@@ -27,6 +28,7 @@ namespace PowerQualityModel
         /// 模型创建时间
         /// </summary>
         [JsonIgnore]
+        [ScriptIgnore]
         [DataType(DataType.DateTime)]
         [Display(Name = "模型创建时间")]
         public virtual DateTime CreateDateTime { get; set; }
@@ -35,6 +37,7 @@ namespace PowerQualityModel
         /// 模型创建用户ID
         /// </summary>
         [JsonIgnore]
+        [ScriptIgnore]
         [Display(Name = "模型创建用户ID")]
         public virtual Guid CreateUserId { get; set; }
 
@@ -50,6 +53,7 @@ namespace PowerQualityModel
         /// 最后修改用户ID
         /// </summary>
         [JsonIgnore]
+        [ScriptIgnore]
         [Display(Name = "最后修改用户ID")]
         public virtual Guid? LastUpdateUserId { get; set; }
 
@@ -57,6 +61,7 @@ namespace PowerQualityModel
         /// 是否标记为删除
         /// </summary>
         [JsonIgnore]
+        [ScriptIgnore]
         [Display(Name = "是否标记为删除")]
         public virtual bool IsDeleted { get; set; }
 

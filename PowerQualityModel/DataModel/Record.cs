@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 电力采集记录

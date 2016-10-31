@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 // ReSharper disable InconsistentNaming
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
     /// 有效值记录

@@ -1,36 +1,36 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PowerQualityModel
+namespace PowerQualityModel.DataModel
 {
     /// <summary>
-    /// 角色状态
+    /// 用户状态
     /// </summary>
     [Serializable]
-    public enum RoleStatus : byte
+    public enum UserStatus : byte
     {
         /// <summary>
-        /// 已启用
+        /// 已经启用
         /// </summary>
         [Display(Name = "已启用")]
-        Enabled = 0x01,
+        Enabled = 0x00,
 
         /// <summary>
-        /// 已禁用
+        /// 已经禁用
         /// </summary>
         [Display(Name = "已禁用")]
-        Disabled = 0x02,
+        Disabled = 0x01,
 
         /// <summary>
-        /// 已暂停
+        /// 已经停用
         /// </summary>
-        [Display(Name = "已暂停")]
-        Stopped = 0x03,
+        [Display(Name = "已停用")]
+        Stopped = 0x02,
 
         /// <summary>
-        /// 已锁定
+        /// 已经锁定
         /// </summary>
         [Display(Name = "已锁定")]
-        Locked = 0x04
+        Locked = 0x03
     }
 }

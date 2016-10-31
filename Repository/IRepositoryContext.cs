@@ -1,4 +1,5 @@
 ﻿using PowerQualityModel;
+using PowerQualityModel.DataModel;
 
 namespace Repository
 {

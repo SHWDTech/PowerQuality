@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 // ReSharper disable InconsistentNaming
 
-namespace PowerQuality.Models.ToolBox
+namespace PowerQualityModel.ViewModel
 {
     public class ToolBoxModel
     {

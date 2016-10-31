@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PowerQualityModel;
+using PowerQualityModel.DataModel;
 
 namespace PowerProcess
 {
@@ -50,11 +51,5 @@ namespace PowerProcess
 
         public static RecordValues GetRecord(Guid recordGuid)
             => RecordValuesCache[recordGuid];
-
-        public static void SetLoaingStatus(Guid recordGuid, bool loadingStatus)
-            => RecordValuesCache[recordGuid].OnLoading = loadingStatus;
-
-        public static bool OnLoading(Guid recordGuid)
-            => RecordValuesCache.ContainsKey(recordGuid) && RecordValuesCache[recordGuid].OnLoading;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PowerQualityModel;
+using PowerQualityModel.DataModel;
 
 namespace PowerProcess
 {
@@ -8,8 +9,6 @@ namespace PowerProcess
         public double Count { get; set; }
 
         public bool LoadCompleted { get; set; }
-
-        public bool OnLoading { get; set; }
 
         public List<ActiveValue> Values { get; } = new List<ActiveValue>();
     }
