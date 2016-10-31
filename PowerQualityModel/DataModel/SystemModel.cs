@@ -22,6 +22,7 @@ namespace PowerQualityModel.DataModel
 
         [NotMapped]
         [Display(Name = "是否新创建对象")]
+        [ScriptIgnore]
         public override bool IsNew { get; set; }
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace PowerQualityModel.DataModel
         /// 最后修改时间
         /// </summary>
         [JsonIgnore]
+        [ScriptIgnore]
         [DataType(DataType.DateTime)]
         [Display(Name = "最后修改时间")]
         public virtual DateTime? LastUpdateDateTime { get; set; }

@@ -42,16 +42,22 @@ namespace PowerProcess
             return info;
         }
 
-        public List<Harmonic> LoadHarmonic(RequestRange range)
+        public Dictionary<string, List<object>> LoadHarmonic(RequestRange range)
         {
             var repo = Repo<PowerRepository<Harmonic>>();
-            return repo.GetModels(obj => obj.RecordIndex >= range.StartIndex).Take(range.RequestCount).ToList();
+            repo.Database.CommandTimeout = 14400;
+            var harmonics = repo.GetModels(obj => obj.RecordIndex >= range.StartIndex && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            return typeof(Harmonic).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
+                .ToDictionary(prop => prop.Name, prop => harmonics.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
 
-        public List<ActiveValue> LoadActiveValues(RequestRange range)
+        public Dictionary<string, List<object>> LoadActiveValues(RequestRange range)
         {
             var repo = Repo<PowerRepository<ActiveValue>>();
-            return repo.GetModels(obj => obj.RecordIndex >= range.StartIndex).Take(range.RequestCount).ToList();
+            repo.Database.CommandTimeout = 14400;
+            var activeValues = repo.GetModels(obj => obj.RecordIndex >= range.StartIndex && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            return typeof(ActiveValue).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
+                .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
     }
 }

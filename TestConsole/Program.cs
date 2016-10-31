@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PowerQualityModel.DataModel;
 using Repository;
@@ -11,10 +12,16 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
+            //PropTest();
+            GenerateData();
+        }
+
+        static void GenerateData()
+        {
             var recordGuid = new Guid("884760cf-27b3-4d0a-9174-2ef8bee1c179");
             var context = new PowerDbContext();
             var startDate = DateTime.Now;
-            var duration = TimeSpan.FromMilliseconds(345600*250);
+            var duration = TimeSpan.FromMilliseconds(345600 * 250);
             context.Set<Record>().Add(new Record
             {
                 Id = recordGuid,
@@ -63,7 +70,8 @@ namespace TestConsole
                                 Voltage_CN = avg - 0.2,
                                 Voltage_NG = avg - 220,
                                 RecordGuid = recordGuid,
-                                RecordIndex = i
+                                RecordIndex = i,
+                                RecordTimeTicks = startDate.AddMilliseconds(i * 250).Ticks
                             };
                             dbContext.Set<ActiveValue>().Add(activeValue);
                             dbContext.Set<Harmonic>().Add(new Harmonic()
@@ -85,6 +93,26 @@ namespace TestConsole
                     done = true;
                 }
             });
+        }
+
+        private static void PropTest()
+        {
+            var har = new List<Harmonic>();
+            var i = 0;
+            while (i < 1)
+            {
+                har.Add(new Harmonic());
+                i++;
+            }
+            foreach (var source in typeof(Harmonic).GetProperties().Where(prop => Globals.IsPrimitive(prop.PropertyType)))
+            {
+                foreach (var harmonic in har)
+                {
+                    Console.WriteLine(source.GetValue(harmonic));
+                }
+            }
+
+            Console.ReadKey();
         }
     }
 }

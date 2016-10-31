@@ -18,31 +18,32 @@
 </div>
 
 <div id="mainContent" style="display: none;">
-    <div class="float-card float-card-default" style="padding: 3px; margin-bottom: 5px;">
+    <input type="hidden" id="recordId" recordId="@Model.Record.Id" />
+    <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
         <form id="channelOptions" class="form form-horizontal">
             <span>显示通道：</span>
-            <input type="checkbox" id="an" checked="checked" /><label for="an">AN(V)</label>
-            <input type="checkbox" id="bn" checked="checked" /><label for="bn">BN(V)</label>
-            <input type="checkbox" id="cn" checked="checked" /><label for="cn">CN(V)</label>
-            <input type="checkbox" id="ng" checked="checked" /><label for="ng">NG(V)</label>
-            <input type="checkbox" id="ab" /><label for="ab">AB(V)</label>
-            <input type="checkbox" id="bc" /><label for="bc">BC(V)</label>
-            <input type="checkbox" id="ca" /><label for="ca">CA(V)</label>
-            <input type="checkbox" id="a" checked="checked" /><label for="a">A(A)</label>
-            <input type="checkbox" id="b" checked="checked" /><label for="b">B(A)</label>
-            <input type="checkbox" id="c" checked="checked" /><label for="c">C(A)</label>
-            <input type="checkbox" id="n" checked="checked" /><label for="n">N(A)</label>
+            <input type="checkbox" id="Voltage_AN" checked="checked"/><label for="Voltage_AN" style="margin-bottom: 0;">AN(V)</label>
+            <input type="checkbox" id="Voltage_BN" checked="checked"/><label for="Voltage_BN" style="margin-bottom: 0;">BN(V)</label>
+            <input type="checkbox" id="Voltage_CN" checked="checked"/><label for="Voltage_CN" style="margin-bottom: 0;">CN(V)</label>
+            <input type="checkbox" id="Voltage_NG" checked="checked"/><label for="Voltage_NG" style="margin-bottom: 0;">NG(V)</label>
+            <input type="checkbox" id="Voltage_AB"/><label for="Voltage_AB" style="margin-bottom: 0;">AB(V)</label>
+            <input type="checkbox" id="Voltage_BC"/><label for="Voltage_BC" style="margin-bottom: 0;">BC(V)</label>
+            <input type="checkbox" id="Voltage_CA"/><label for="Voltage_CA" style="margin-bottom: 0;">CA(V)</label>
+            <input type="checkbox" id="Current_A" checked="checked"/><label for="Current_A" style="margin-bottom: 0;">A(A)</label>
+            <input type="checkbox" id="Current_B" checked="checked"/><label for="Current_B" style="margin-bottom: 0;">B(A)</label>
+            <input type="checkbox" id="Current_C" checked="checked"/><label for="Current_C" style="margin-bottom: 0;">C(A)</label>
+            <input type="checkbox" id="Current_N" checked="checked"/><label for="Current_N" style="margin-bottom: 0;">N(A)</label>
         </form>
     </div>
 
     <div id="chartContainer" class="float-card float-card-default">
-        <input type="hidden" id="recordId" recordId="@Model.Record.Id"/>
     </div>
 </div>
 
 
 @section scripts{
     @Scripts.Render("~/bundles/echarts")
+    <script src="~/Scripts/function/powercharts.js"></script>
     <script src="~/Scripts/function/powerAnalysis.js"></script>
     <script type="text/javascript">
         var recordInfo = @Html.Raw(JsonConvert.SerializeObject(Model));

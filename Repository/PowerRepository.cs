@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using System.Transactions;
 using EntityFramework.BulkInsert.Extensions;
 using Newtonsoft.Json;
-using PowerQualityModel;
 using PowerQualityModel.DataModel;
 using SHWDTech.Platform.Utility;
 
