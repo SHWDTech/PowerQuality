@@ -1,4 +1,5 @@
-﻿var chartsOption = {};
+﻿var powerCharts = [];
+var chartsOption = {};
 
 chartsOption.StepLine = function (params) {
     var opt = {
@@ -33,14 +34,14 @@ chartsOption.StepLine = function (params) {
             axisLabel: {
                 show: params['axisLabel'],
                 formatter: function (value) {
-                    return value.format("yyyy-MM-dd hh:mm:ss S");
+                    return value.format("hh:mm:ss S");
                 }
             }
         },
         yAxis: {
             type: 'value',
-            max: params['max'],
-            min: params['min'],
+            max: params['maxVal'],
+            min: params['minVal'],
             splitNumber: 6,
             minInterval: 0.001,
             interval: params['interval'],
@@ -66,7 +67,7 @@ chartsOption.StepLine = function (params) {
                         width: 1
                     }
                 },
-                data: params['data'][0]
+                data: params['max']
             },
             {
                 name: '平均值',
@@ -79,7 +80,7 @@ chartsOption.StepLine = function (params) {
                         width: 1
                     }
                 },
-                data: params['data'][1]
+                data: params['avg']
             },
             {
                 name: '最小值',
@@ -92,7 +93,7 @@ chartsOption.StepLine = function (params) {
                         width: 1
                     }
                 },
-                data: params['data'][2]
+                data: params['min']
             }
         ]
     };

@@ -47,7 +47,7 @@ namespace TestConsole
             while (current < recordCount)
             {
                 recordIndexs.Add(current);
-                current += 200;
+                current += 100;
             }
 
             Parallel.ForEach(recordIndexs, (index) =>
@@ -59,9 +59,12 @@ namespace TestConsole
                     {
                         var dbContext = new PowerDbContext();
                         var rd = new Random();
-                        for (var i = index; i < index + 200; i++)
+                        var activeValues = new List<ActiveValue>();
+                        var harmonics = new List<Harmonic>();
+                        for (var i = index; i < index + 100; i++)
                         {
                             var avg = Math.Round(rd.Next(1, 100) / 100.0 + 220, 2);
+                            var cur = Math.Round(rd.Next(1, 100) / 100.0 + 120, 2);
                             var activeValue = new ActiveValue
                             {
                                 Id = Globals.NewCombId(),
@@ -69,19 +72,30 @@ namespace TestConsole
                                 Voltage_BN = avg + 0.2,
                                 Voltage_CN = avg - 0.2,
                                 Voltage_NG = avg - 220,
+                                Voltage_AB = avg + 0.3,
+                                Voltage_BC = avg + 0.2,
+                                Voltage_CA = avg + 0.1,
+                                Current_A = cur,
+                                Current_B = cur + 2,
+                                Current_C = cur - 2,
+                                Current_N = cur - 120,
                                 RecordGuid = recordGuid,
                                 RecordIndex = i,
                                 RecordTimeTicks = startDate.AddMilliseconds(i * 250).Ticks
                             };
-                            dbContext.Set<ActiveValue>().Add(activeValue);
-                            dbContext.Set<Harmonic>().Add(new Harmonic()
+                            activeValues.Add(activeValue);
+                            harmonics.Add(new Harmonic()
                             {
                                 ActiveValueGuid = activeValue.Id,
                                 Id = Globals.NewCombId(),
+                                RecordGuid = recordGuid,
                                 RecordIndex = i
                             });
                         }
-
+                        dbContext.Configuration.AutoDetectChangesEnabled = false;
+                        dbContext.Configuration.ValidateOnSaveEnabled = false;
+                        dbContext.ActiveValues.AddRange(activeValues);
+                        dbContext.Harmonics.AddRange(harmonics);
                         dbContext.SaveChanges();
                     }
                     catch (Exception ex)

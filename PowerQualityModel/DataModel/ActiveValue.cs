@@ -35,8 +35,9 @@ namespace PowerQualityModel.DataModel
         public long RecordTimeTicks { get; set; }
 
         [NotMapped]
-        public DateTime RecordTime 
-            => RecordTimeTicks != 0 ? new DateTime(RecordTimeTicks) : DateTime.MinValue;
+        public double RecordTime
+            => new DateTime(RecordTimeTicks).ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+                .TotalMilliseconds;
 
         /// <summary>
         /// AN电压

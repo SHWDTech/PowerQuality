@@ -44,5 +44,7 @@ namespace PowerQualityModel.ViewModel
         public int StartIndex { get; set; }
 
         public int RequestCount { get; set; }
+
+        public Guid RecordGuid { get; set; }
     }
 }

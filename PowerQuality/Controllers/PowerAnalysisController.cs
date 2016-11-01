@@ -22,7 +22,8 @@ namespace PowerQuality.Controllers
             var range = new RequestRange()
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
-                RequestCount = int.Parse(Request["RequestCount"])
+                RequestCount = int.Parse(Request["RequestCount"]),
+                RecordGuid = Guid.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var harmonics = process.LoadHarmonic(range);
@@ -39,13 +40,50 @@ namespace PowerQuality.Controllers
             var range = new RequestRange()
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
-                RequestCount = int.Parse(Request["RequestCount"])
+                RequestCount = int.Parse(Request["RequestCount"]),
+                RecordGuid = Guid.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var activeValues = process.LoadActiveValues(range);
             var jsonResult = Json(new
             {
                 recordData = activeValues
+            }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+        }
+
+        public ActionResult VoltageCurrentSecond(RecordDataRequest request)
+        {
+            var range = new RequestRange()
+            {
+                StartIndex = int.Parse(Request["StartIndex"]),
+                RequestCount = int.Parse(Request["RequestCount"]),
+                RecordGuid = Guid.Parse(Request["RecordGuid"])
+            };
+            var process = new RecordProcess();
+            var voltageCurrent = process.LoadVoltageCurrentSecond(range);
+            var jsonResult = Json(new
+            {
+                recordData = voltageCurrent
+            }, JsonRequestBehavior.AllowGet);
+            jsonResult.MaxJsonLength = int.MaxValue;
+            return jsonResult;
+        }
+
+        public ActionResult VoltageCurrentThreeSecond(RecordDataRequest request)
+        {
+            var range = new RequestRange()
+            {
+                StartIndex = int.Parse(Request["StartIndex"]),
+                RequestCount = int.Parse(Request["RequestCount"]),
+                RecordGuid = Guid.Parse(Request["RecordGuid"])
+            };
+            var process = new RecordProcess();
+            var voltageCurrent = process.LoadVoltageCurrentThreeSecond(range);
+            var jsonResult = Json(new
+            {
+                recordData = voltageCurrent
             }, JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;

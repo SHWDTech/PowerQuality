@@ -64,6 +64,8 @@
     <Compile Include="DataModel\PowerConfig.cs" />
     <Compile Include="DataModel\PowerRole.cs" />
     <Compile Include="DataModel\PowerUser.cs" />
+    <Compile Include="DataModel\VoltageCurrentSecond.cs" />
+    <Compile Include="DataModel\VoltageCurrentThreeSeconds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataModel\Record.cs" />
     <Compile Include="DataModel\RecordConfig.cs" />

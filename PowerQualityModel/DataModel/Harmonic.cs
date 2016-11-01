@@ -7,6 +7,12 @@ namespace PowerQualityModel.DataModel
     public class Harmonic : SystemModel
     {
         [Required]
+        public Guid RecordGuid { get; set; }
+
+        [ForeignKey("RecordGuid")]
+        public Record Record { get; set; }
+
+        [Required]
         public Guid ActiveValueGuid { get; set; }
 
         [ForeignKey("ActiveValueGuid")]

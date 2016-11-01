@@ -46,7 +46,9 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<Harmonic>>();
             repo.Database.CommandTimeout = 14400;
-            var harmonics = repo.GetModels(obj => obj.RecordIndex >= range.StartIndex && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            var harmonics = repo.GetModels(obj => 
+            obj.RecordIndex >= range.StartIndex 
+            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
             return typeof(Harmonic).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => harmonics.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
@@ -55,8 +57,35 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<ActiveValue>>();
             repo.Database.CommandTimeout = 14400;
-            var activeValues = repo.GetModels(obj => obj.RecordIndex >= range.StartIndex && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            var activeValues = repo.GetModels(obj => 
+            obj.RecordGuid == range.RecordGuid
+            && obj.RecordIndex >= range.StartIndex 
+            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
             return typeof(ActiveValue).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
+                .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
+        }
+
+        public Dictionary<string, List<object>> LoadVoltageCurrentSecond(RequestRange range)
+        {
+            var repo = Repo<PowerRepository<VoltageCurrentSecond>>();
+            repo.Database.CommandTimeout = 14400;
+            var activeValues = repo.GetModels(obj => 
+            obj.RecordGuid == range.RecordGuid
+            && obj.RecordIndex >= range.StartIndex 
+            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            return typeof(VoltageCurrentSecond).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
+                .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
+        }
+
+        public Dictionary<string, List<object>> LoadVoltageCurrentThreeSecond(RequestRange range)
+        {
+            var repo = Repo<PowerRepository<VoltageCurrentThreeSeconds>>();
+            repo.Database.CommandTimeout = 14400;
+            var activeValues = repo.GetModels(obj => 
+            obj.RecordGuid == range.RecordGuid
+            && obj.RecordIndex >= range.StartIndex 
+            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            return typeof(VoltageCurrentThreeSeconds).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
     }
