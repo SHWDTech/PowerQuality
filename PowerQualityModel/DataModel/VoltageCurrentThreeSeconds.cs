@@ -24,11 +24,11 @@ namespace PowerQualityModel.DataModel
 
         [NotMapped]
         public double RecordTime
-            => new DateTime(RecordDateTicks).ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+            => new DateTime(RecordTimeTicks).ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                 .TotalMilliseconds;
 
         [Required]
-        public long RecordDateTicks { get; set; }
+        public long RecordTimeTicks { get; set; }
 
         public double Voltage_AN_Max { get; set; }
 
