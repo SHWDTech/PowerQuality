@@ -4,7 +4,14 @@ var chartsOption = {};
 chartsOption.StepLine = function (params) {
     var opt = {
         title: {
-            show: false
+            text: params['titleName'],
+            show: true,
+            textStyle: {
+                color: '#337ab7',
+                fontSize: 14
+            },
+            textAlign: 'center',
+            left: 'center'
         },
         tooltip: {
             trigger: 'axis',
