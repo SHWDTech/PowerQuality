@@ -9,7 +9,7 @@ namespace PowerQualityModel.DataModel
         /// <summary>
         /// 唯一标识符
         /// </summary>
-        public abstract Guid Id { get; set; }
+        public abstract long Id { get; set; }
 
         /// <summary>
         /// 模型状态

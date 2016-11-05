@@ -77,7 +77,7 @@ namespace Repository
         public virtual T GetModel(Expression<Func<T, bool>> exp)
             => EntitySet.SingleOrDefault(exp);
 
-        public virtual T GetModelIncludeById(Guid guid, List<string> includes)
+        public virtual T GetModelIncludeById(long guid, List<string> includes)
         {
             var query = includes.Aggregate(EntitySet, (current, include) => current.Include(include));
 
@@ -91,7 +91,7 @@ namespace Repository
             return query.SingleOrDefault(exp);
         }
 
-        public virtual T GetModelById(Guid guid)
+        public virtual T GetModelById(long guid)
             => EntitySet.SingleOrDefault(obj => obj.Id == guid);
 
         public virtual int GetCount(Expression<Func<T, bool>> exp)
@@ -111,7 +111,7 @@ namespace Repository
 
             if (generateId)
             {
-                model.Id = Globals.NewCombId();
+                model.Id = 0;
             }
 
             return model;
@@ -168,11 +168,11 @@ namespace Repository
             DoAddOrUpdate(models);
         }
 
-        public virtual Guid AddOrUpdateDoCommit(T model)
+        public virtual long AddOrUpdateDoCommit(T model)
         {
             DoAddOrUpdate(model);
 
-            return Submit() != 1 ? Guid.Empty : model.Id;
+            return Submit() != 1 ? 0 : model.Id;
         }
 
         public virtual int AddOrUpdateDoCommit(IEnumerable<T> models)
@@ -228,11 +228,11 @@ namespace Repository
             DoPartialUpdate(models, propertyNames);
         }
 
-        public virtual Guid PartialUpdateDoCommit(T model, List<string> propertyNames)
+        public virtual long PartialUpdateDoCommit(T model, List<string> propertyNames)
         {
             DoPartialUpdate(model, propertyNames);
 
-            return Submit() != 1 ? Guid.Empty : model.Id;
+            return Submit() != 1 ? 0 : model.Id;
         }
 
         public virtual int PartialUpdateDoCommit(List<T> models, List<string> propertyNames)

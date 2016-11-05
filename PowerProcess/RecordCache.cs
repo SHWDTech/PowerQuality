@@ -8,18 +8,18 @@ namespace PowerProcess
 {
     public class RecordCache
     {
-        private static readonly Dictionary<Guid, RecordValues> RecordValuesCache = new Dictionary<Guid, RecordValues>();
+        private static readonly Dictionary<long, RecordValues> RecordValuesCache = new Dictionary<long, RecordValues>();
 
-        public static bool Cached(Guid recordGuid)
+        public static bool Cached(long recordGuid)
             => RecordValuesCache.ContainsKey(recordGuid) && RecordValuesCache[recordGuid].LoadCompleted;
 
-        public static double LoadPercetage(Guid recordGuid)
+        public static double LoadPercetage(long recordGuid)
         {
             if (!RecordValuesCache.ContainsKey(recordGuid)) return -1;
             return RecordValuesCache[recordGuid].Values.Count / RecordValuesCache[recordGuid].Count ;
         }
 
-        public static void PushValue(Guid recordGuid, List<ActiveValue> values)
+        public static void PushValue(long recordGuid, List<ActiveValue> values)
         {
             if (!RecordValuesCache.ContainsKey(recordGuid)) return;
             var recordValue = RecordValuesCache[recordGuid];
@@ -30,7 +30,7 @@ namespace PowerProcess
             }
         }
 
-        public static void AddRecord(Guid recordGuid, int count)
+        public static void AddRecord(long recordGuid, int count)
         {
             if (RecordValuesCache.ContainsKey(recordGuid))
             {
@@ -49,7 +49,7 @@ namespace PowerProcess
             }
         }
 
-        public static RecordValues GetRecord(Guid recordGuid)
+        public static RecordValues GetRecord(long recordGuid)
             => RecordValuesCache[recordGuid];
     }
 }

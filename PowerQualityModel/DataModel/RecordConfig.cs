@@ -31,7 +31,7 @@ namespace PowerQualityModel.DataModel
         /// 记录对应ID
         /// </summary>
         [Required]
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
 
         /// <summary>
         /// 配置项对应采集记录

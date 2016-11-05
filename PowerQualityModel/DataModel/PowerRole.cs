@@ -12,7 +12,7 @@ namespace PowerQualityModel.DataModel
     public class PowerRole : SystemModel
     {
         [Display(Name = "父级角色ID")]
-        public virtual Guid? ParentRoleId { get; set; }
+        public virtual long? ParentRoleId { get; set; }
 
         [Display(Name = "父级角色")]
         [ForeignKey("ParentRoleId")]

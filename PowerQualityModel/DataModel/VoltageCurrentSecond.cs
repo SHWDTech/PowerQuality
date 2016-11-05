@@ -10,10 +10,10 @@ namespace PowerQualityModel.DataModel
         [Key]
         [Display(Name = "唯一标识符")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public override Guid Id { get; set; }
+        public override long Id { get; set; }
 
         [Required]
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
 
         [ForeignKey("RecordGuid")]
         public Record Record { get; set; }

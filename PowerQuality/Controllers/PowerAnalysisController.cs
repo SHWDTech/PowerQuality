@@ -10,7 +10,7 @@ namespace PowerQuality.Controllers
         public ActionResult Record()
         {
             if (string.IsNullOrWhiteSpace(Request["recordId"])) return Redirect("/");
-            var id = new Guid(Request["recordId"]);
+            var id = long.Parse(Request["recordId"]);
 
             var process = new RecordProcess();
             var model = process.GetRecordInfo(id);
@@ -23,7 +23,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = Guid.Parse(Request["RecordGuid"])
+                RecordGuid = long.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var harmonics = process.LoadHarmonic(range);
@@ -41,7 +41,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = Guid.Parse(Request["RecordGuid"])
+                RecordGuid = long.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var activeValues = process.LoadActiveValues(range);
@@ -59,7 +59,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = Guid.Parse(Request["RecordGuid"])
+                RecordGuid = long.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var voltageCurrent = process.LoadVoltageCurrentSecond(range);
@@ -77,7 +77,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = Guid.Parse(Request["RecordGuid"])
+                RecordGuid = long.Parse(Request["RecordGuid"])
             };
             var process = new RecordProcess();
             var voltageCurrent = process.LoadVoltageCurrentThreeSecond(range);
@@ -93,7 +93,7 @@ namespace PowerQuality.Controllers
         {
             if (string.IsNullOrWhiteSpace(Request["recordGuid"])) return null;
 
-            var recordGuid = new Guid(Request["recordGuid"]);
+            var recordGuid = long.Parse(Request["recordGuid"]);
             var percentage = RecordCache.LoadPercetage(recordGuid);
 
             return Json(new { percentage }, JsonRequestBehavior.AllowGet);

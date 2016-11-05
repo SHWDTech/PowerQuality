@@ -22,7 +22,7 @@ namespace PowerQualityModel.DataModel
         public virtual string PermissionDisplayName { get; set; }
 
         [Display(Name = "父级权限ID")]
-        public virtual Guid? ParentPermissionId { get; set; }
+        public virtual long? ParentPermissionId { get; set; }
 
         [Display(Name = "父级权限")]
         [ForeignKey("ParentPermissionId")]

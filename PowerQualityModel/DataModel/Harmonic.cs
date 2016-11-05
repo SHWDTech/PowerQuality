@@ -1,19 +1,23 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerQualityModel.DataModel
 {
     public class Harmonic : SystemModel
     {
+        [Key]
+        [Display(Name = "唯一标识符")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override long Id { get; set; }
+
         [Required]
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
 
         [ForeignKey("RecordGuid")]
         public Record Record { get; set; }
 
         [Required]
-        public Guid ActiveValueGuid { get; set; }
+        public long ActiveValueGuid { get; set; }
 
         [ForeignKey("ActiveValueGuid")]
         public ActiveValue ActiveValue { get; set; }

@@ -7,7 +7,7 @@ namespace PowerQualityModel.ViewModel
 {
     public class RecordDataRequest
     {
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
 
         public int StartIndex { get; set; }
 
@@ -45,6 +45,6 @@ namespace PowerQualityModel.ViewModel
 
         public int RequestCount { get; set; }
 
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
     }
 }

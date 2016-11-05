@@ -14,7 +14,7 @@ namespace PowerQualityModel.DataModel
     {
         [Key]
         [Display(Name = "唯一标识符")]
-        public override Guid Id { get; set; }
+        public override long Id { get; set; }
 
         [NotMapped]
         [Display(Name = "模型状态")]
@@ -24,54 +24,6 @@ namespace PowerQualityModel.DataModel
         [Display(Name = "是否新创建对象")]
         [ScriptIgnore]
         public override bool IsNew { get; set; }
-
-        /// <summary>
-        /// 模型创建时间
-        /// </summary>
-        [JsonIgnore]
-        [ScriptIgnore]
-        [DataType(DataType.DateTime)]
-        [Display(Name = "模型创建时间")]
-        public virtual DateTime CreateDateTime { get; set; }
-
-        /// <summary>
-        /// 模型创建用户ID
-        /// </summary>
-        [JsonIgnore]
-        [ScriptIgnore]
-        [Display(Name = "模型创建用户ID")]
-        public virtual Guid CreateUserId { get; set; }
-
-        /// <summary>
-        /// 最后修改时间
-        /// </summary>
-        [JsonIgnore]
-        [ScriptIgnore]
-        [DataType(DataType.DateTime)]
-        [Display(Name = "最后修改时间")]
-        public virtual DateTime? LastUpdateDateTime { get; set; }
-
-        /// <summary>
-        /// 最后修改用户ID
-        /// </summary>
-        [JsonIgnore]
-        [ScriptIgnore]
-        [Display(Name = "最后修改用户ID")]
-        public virtual Guid? LastUpdateUserId { get; set; }
-
-        /// <summary>
-        /// 是否标记为删除
-        /// </summary>
-        [JsonIgnore]
-        [ScriptIgnore]
-        [Display(Name = "是否标记为删除")]
-        public virtual bool IsDeleted { get; set; }
-
-        /// <summary>
-        /// 是否标记为启用
-        /// </summary>
-        [Display(Name = "是否启用")]
-        public virtual bool IsEnabled { get; set; }
 
         public override string ToJson()
         {

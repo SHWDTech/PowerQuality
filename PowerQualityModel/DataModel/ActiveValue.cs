@@ -11,12 +11,17 @@ namespace PowerQualityModel.DataModel
     /// </summary>
     public class ActiveValue : SystemModel
     {
+        [Key]
+        [Display(Name = "唯一标识符")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override long Id { get; set; }
+
         /// <summary>
         /// 所属记录GUID
         /// </summary>
         [Required]
         [Index("IX_RecordActiveValue", 1, IsClustered = true)]
-        public Guid RecordGuid { get; set; }
+        public long RecordGuid { get; set; }
 
         /// <summary>
         /// 所属记录

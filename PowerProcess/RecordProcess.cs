@@ -10,7 +10,7 @@ namespace PowerProcess
 {
     public class RecordProcess : ProcessBase
     {
-        public void LoadRecord(Guid recordGuid)
+        public void LoadRecord(long recordGuid)
         {
             if (RecordCache.Cached(recordGuid)) return;
             var repo = Repo<PowerRepository<ActiveValue>>();
@@ -29,7 +29,7 @@ namespace PowerProcess
             return repo.GetModels(exp).ToList();
         }
 
-        public RecordInfo GetRecordInfo(Guid recordGuid)
+        public RecordInfo GetRecordInfo(long recordGuid)
         {
             var info = new RecordInfo();
             var recordRepo = Repo<PowerRepository<Record>>();

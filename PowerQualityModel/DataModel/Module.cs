@@ -11,7 +11,7 @@ namespace PowerQualityModel.DataModel
     public class Module : SystemModel
     {
         [Display(Name = "所属父模块ID")]
-        public virtual Guid? ParentModuleId { get; set; }
+        public virtual long? ParentModuleId { get; set; }
 
         [Display(Name = "所属父模块")]
         [ForeignKey("ParentModuleId")]
@@ -45,7 +45,7 @@ namespace PowerQualityModel.DataModel
         public virtual string Action { get; set; }
 
         [Display(Name = "模块所属权限ID")]
-        public virtual Guid? PermissionId { get; set; }
+        public virtual long? PermissionId { get; set; }
 
         [Display(Name = "模块所属权限")]
         [ForeignKey("PermissionId")]
