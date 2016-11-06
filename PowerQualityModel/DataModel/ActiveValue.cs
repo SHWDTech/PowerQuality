@@ -21,12 +21,12 @@ namespace PowerQualityModel.DataModel
         /// </summary>
         [Required]
         [Index("IX_RecordActiveValue", 1, IsClustered = true)]
-        public long RecordGuid { get; set; }
+        public long RecordId { get; set; }
 
         /// <summary>
         /// 所属记录
         /// </summary>
-        [ForeignKey("RecordGuid")]
+        [ForeignKey("RecordId")]
         public Record Record { get; set; }
 
         /// <summary>
@@ -36,13 +36,15 @@ namespace PowerQualityModel.DataModel
         [Index("IX_RecordActiveValue", 2, IsClustered = true)]
         public int RecordIndex { get; set; }
 
+        [NotMapped]
         [Required]
         public long RecordTimeTicks { get; set; }
 
         [NotMapped]
         public double RecordTime
-            => new DateTime(RecordTimeTicks).ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                .TotalMilliseconds;
+            => Record.RecordStartDateTime.AddMilliseconds(RecordIndex * 250)
+            .ToUniversalTime()
+            .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
         /// <summary>
         /// AN电压

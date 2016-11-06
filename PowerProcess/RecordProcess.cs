@@ -14,11 +14,11 @@ namespace PowerProcess
         {
             if (RecordCache.Cached(recordGuid)) return;
             var repo = Repo<PowerRepository<ActiveValue>>();
-            var recordCount = repo.GetCount(obj => obj.RecordGuid == recordGuid);
+            var recordCount = repo.GetCount(obj => obj.RecordId == recordGuid);
             RecordCache.AddRecord(recordGuid, recordCount);
 
             //repo.Database.CommandTimeout = 244000;
-            var values = repo.GetModels(obj => obj.RecordGuid == recordGuid).ToList();
+            var values = repo.GetModels(obj => obj.RecordId == recordGuid).ToList();
             RecordCache.PushValue(recordGuid, values);
         }
 
@@ -35,9 +35,9 @@ namespace PowerProcess
             var recordRepo = Repo<PowerRepository<Record>>();
             info.Record = recordRepo.GetModelById(recordGuid);
             var infoRepo = Repo<PowerRepository<RecordConfig>>();
-            info.RecordConfig = infoRepo.GetModel(obj => obj.RecordGuid == recordGuid);
+            info.RecordConfig = infoRepo.GetModel(obj => obj.RecordId == recordGuid);
             var dataRepo = Repo<PowerRepository<ActiveValue>>();
-            info.RecordDataCount = dataRepo.GetCount(obj => obj.RecordGuid == recordGuid);
+            info.RecordDataCount = dataRepo.GetCount(obj => obj.RecordId == recordGuid);
 
             return info;
         }
@@ -46,9 +46,10 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<Harmonic>>();
             repo.Database.CommandTimeout = 14400;
-            var harmonics = repo.GetModels(obj => 
+            var harmonics = repo.GetModelsInclude(obj => 
             obj.RecordIndex >= range.StartIndex 
-            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            && obj.RecordIndex < range.StartIndex + range.RequestCount,
+            new List<string>() { "Record" }).ToList();
             return typeof(Harmonic).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => harmonics.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
@@ -57,10 +58,11 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<ActiveValue>>();
             repo.Database.CommandTimeout = 14400;
-            var activeValues = repo.GetModels(obj => 
-            obj.RecordGuid == range.RecordGuid
+            var activeValues = repo.GetModelsInclude(obj => 
+            obj.RecordId == range.RecordId
             && obj.RecordIndex >= range.StartIndex 
-            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            && obj.RecordIndex < range.StartIndex + range.RequestCount,
+            new List<string>() { "Record" }).ToList();
             return typeof(ActiveValue).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
@@ -69,10 +71,11 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<VoltageCurrentSecond>>();
             repo.Database.CommandTimeout = 14400;
-            var activeValues = repo.GetModels(obj => 
-            obj.RecordGuid == range.RecordGuid
+            var activeValues = repo.GetModelsInclude(obj => 
+            obj.RecordId == range.RecordId
             && obj.RecordIndex >= range.StartIndex 
-            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            && obj.RecordIndex < range.StartIndex + range.RequestCount,
+            new List<string>() { "Record" }).ToList();
             return typeof(VoltageCurrentSecond).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
@@ -81,10 +84,11 @@ namespace PowerProcess
         {
             var repo = Repo<PowerRepository<VoltageCurrentThreeSeconds>>();
             repo.Database.CommandTimeout = 14400;
-            var activeValues = repo.GetModels(obj => 
-            obj.RecordGuid == range.RecordGuid
+            var activeValues = repo.GetModelsInclude(obj => 
+            obj.RecordId == range.RecordId
             && obj.RecordIndex >= range.StartIndex 
-            && obj.RecordIndex < range.StartIndex + range.RequestCount).ToList();
+            && obj.RecordIndex < range.StartIndex + range.RequestCount,
+            new List<string>() { "Record" }).ToList();
             return typeof(VoltageCurrentThreeSeconds).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }

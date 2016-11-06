@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PowerProcess;
 using PowerQualityModel.ViewModel;
 
@@ -23,7 +22,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = long.Parse(Request["RecordGuid"])
+                RecordId = long.Parse(Request["RecordId"])
             };
             var process = new RecordProcess();
             var harmonics = process.LoadHarmonic(range);
@@ -41,7 +40,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = long.Parse(Request["RecordGuid"])
+                RecordId = long.Parse(Request["RecordId"])
             };
             var process = new RecordProcess();
             var activeValues = process.LoadActiveValues(range);
@@ -59,7 +58,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = long.Parse(Request["RecordGuid"])
+                RecordId = long.Parse(Request["RecordId"])
             };
             var process = new RecordProcess();
             var voltageCurrent = process.LoadVoltageCurrentSecond(range);
@@ -77,7 +76,7 @@ namespace PowerQuality.Controllers
             {
                 StartIndex = int.Parse(Request["StartIndex"]),
                 RequestCount = int.Parse(Request["RequestCount"]),
-                RecordGuid = long.Parse(Request["RecordGuid"])
+                RecordId = long.Parse(Request["RecordId"])
             };
             var process = new RecordProcess();
             var voltageCurrent = process.LoadVoltageCurrentThreeSecond(range);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerQualityModel.DataModel
@@ -11,20 +12,20 @@ namespace PowerQualityModel.DataModel
         public override long Id { get; set; }
 
         [Required]
-        public long RecordGuid { get; set; }
+        public long RecordId { get; set; }
 
-        [ForeignKey("RecordGuid")]
+        [ForeignKey("RecordId")]
         public Record Record { get; set; }
-
-        [Required]
-        public long ActiveValueGuid { get; set; }
-
-        [ForeignKey("ActiveValueGuid")]
-        public ActiveValue ActiveValue { get; set; }
 
         [Required]
         [Index("IX_RecordIndex", IsClustered = true)]
         public int RecordIndex { get; set; }
+
+        [NotMapped]
+        public double RecordTime
+            => Record.RecordStartDateTime.AddMilliseconds(RecordIndex * 250)
+            .ToUniversalTime()
+            .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
         [Required]
         public double VoltageAHarmonic0 { get; set; }

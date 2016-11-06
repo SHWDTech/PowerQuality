@@ -13,9 +13,9 @@ namespace PowerQualityModel.DataModel
         public override long Id { get; set; }
 
         [Required]
-        public long RecordGuid { get; set; }
+        public long RecordId { get; set; }
 
-        [ForeignKey("RecordGuid")]
+        [ForeignKey("RecordId")]
         public Record Record { get; set; }
 
         [Required]
@@ -23,11 +23,9 @@ namespace PowerQualityModel.DataModel
 
         [NotMapped]
         public double RecordTime
-            => new DateTime(RecordTimeTicks).ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                .TotalMilliseconds;
-
-        [Required]
-        public long RecordTimeTicks { get; set; }
+            => Record.RecordStartDateTime.AddMilliseconds(RecordIndex * 250)
+            .ToUniversalTime()
+            .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 
         public double Voltage_AN_Max { get; set; }
 

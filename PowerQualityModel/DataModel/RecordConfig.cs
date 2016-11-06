@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PowerQualityModel.DataModel
@@ -31,12 +30,12 @@ namespace PowerQualityModel.DataModel
         /// 记录对应ID
         /// </summary>
         [Required]
-        public long RecordGuid { get; set; }
+        public long RecordId { get; set; }
 
         /// <summary>
         /// 配置项对应采集记录
         /// </summary>
-        [ForeignKey("RecordGuid")]
+        [ForeignKey("RecordId")]
         public Record Record { get; set; }
     }
 }

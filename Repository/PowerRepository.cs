@@ -91,6 +91,12 @@ namespace Repository
             return query.SingleOrDefault(exp);
         }
 
+        public virtual IQueryable<T> GetModelsInclude(Expression<Func<T, bool>> exp, List<string> includes)
+            => includes.Aggregate(EntitySet, (current, include) => current.Include(include)).Where(exp);
+
+        public virtual IList<T> GetModelsListInclude(Expression<Func<T, bool>> exp, List<string> includes)
+            => includes.Aggregate(EntitySet, (current, include) => current.Include(include)).Where(exp).ToList();
+
         public virtual T GetModelById(long guid)
             => EntitySet.SingleOrDefault(obj => obj.Id == guid);
 

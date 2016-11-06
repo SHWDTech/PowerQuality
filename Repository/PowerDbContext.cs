@@ -11,7 +11,7 @@ namespace Repository
         /// </summary>
         public PowerDbContext() : base("Power_Quality")
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<PowerDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<PowerDbContext>());
             //ProviderFactory.Register<MySqlProvider>("MySql.Data.MySqlClient.MySqlConnection");
         }
 
@@ -73,6 +73,11 @@ namespace Repository
         /// 电流电压三秒统计值
         /// </summary>
         public virtual DbSet<VoltageCurrentThreeSeconds> VoltageCurrentThreeSecondses { get; set; }
+
+        /// <summary>
+        /// 系统配置信息
+        /// </summary>
+        public virtual DbSet<SystemConfig> SystemConfigs { get; set; }
 
     }
 }

@@ -46,5 +46,10 @@ namespace PowerQualityModel.DataModel
         [DataType(DataType.DateTime)]
         [Display(Name = "记录结束时间")]
         public virtual DateTime RecordEndDateTime { get; set; }
+
+        /// <summary>
+        /// 该记录已经处理完成
+        /// </summary>
+        public virtual bool Finalized { get; set; }
     }
 }

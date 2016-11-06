@@ -63,7 +63,7 @@ var powerAnalysis = {
             return;
         }
         var requestCount = totalRequest > 3600 ? 3600 : totalRequest;
-        base.AjaxGet(url, { StartIndex: startIndex, RequestCount: requestCount, RecordGuid: $('#recordId').attr('recordId') }, null, function (ret) {
+        base.AjaxGet(url, { StartIndex: startIndex, RequestCount: requestCount, RecordId: $('#recordId').attr('recordId') }, null, function (ret) {
             $.each(ret.recordData, function (key, value) {
                 target.pusuRange(key, value);
             });

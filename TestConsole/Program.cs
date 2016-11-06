@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PowerProcess;
 using PowerQualityModel.DataModel;
 using Repository;
 using SHWDTech.Platform.Utility;
@@ -13,8 +14,10 @@ namespace TestConsole
         static void Main(string[] args)
         {
             //PropTest();
-            GenerateData();
-            GenerateFileForMySql();
+            //GenerateData();
+            var exe = new RecordDataInitializer();
+            exe.InitialRecordData(1);
+            //GenerateFileForMySql();
         }
 
         private static void GenerateData()
@@ -24,7 +27,7 @@ namespace TestConsole
             var duration = TimeSpan.FromMilliseconds(345600 * 250);
             context.Set<Record>().Add(new Record
             {
-                Id = 0,
+                Id = 1,
                 RecordName = "测试记录",
                 RecordDateTime = startDate,
                 RecordStartDateTime = startDate,
@@ -36,7 +39,7 @@ namespace TestConsole
                 CalcPrecision = 250,
                 Frequency = 256,
                 LineType = LineType.StarWithMiddle,
-                RecordGuid = 0
+                RecordId = 1
             });
             context.SaveChanges();
 
@@ -67,7 +70,6 @@ namespace TestConsole
             //                var cur = Math.Round(rd.Next(1, 100) / 100.0 + 120, 2);
             //                var activeValue = new ActiveValue
             //                {
-            //                    Id = Globals.NewCombId(),
             //                    Voltage_AN = avg,
             //                    Voltage_BN = avg + 0.2,
             //                    Voltage_CN = avg - 0.2,
@@ -79,16 +81,14 @@ namespace TestConsole
             //                    Current_B = cur + 2,
             //                    Current_C = cur - 2,
             //                    Current_N = cur - 120,
-            //                    RecordGuid = recordGuid,
+            //                    RecordId = 1,
             //                    RecordIndex = i,
             //                    RecordTimeTicks = startDate.AddMilliseconds(i * 250).Ticks
             //                };
             //                activeValues.Add(activeValue);
             //                harmonics.Add(new Harmonic()
             //                {
-            //                    ActiveValueGuid = activeValue.Id,
-            //                    Id = Globals.NewCombId(),
-            //                    RecordGuid = recordGuid,
+            //                    RecordId = 1,
             //                    RecordIndex = i
             //                });
             //            }
@@ -134,7 +134,7 @@ namespace TestConsole
             var active = new ActiveValue
             {
                 Id = 1,
-                RecordGuid = 1,
+                RecordId = 1,
                 RecordIndex = 0,
                 RecordTimeTicks = DateTime.Now.Ticks,
                 Voltage_AN = 221.51,
