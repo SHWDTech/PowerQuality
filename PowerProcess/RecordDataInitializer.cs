@@ -56,7 +56,7 @@ namespace PowerProcess
                             {
                                 DbType = DbType.Int64,
                                 Direction = ParameterDirection.Input,
-                                ParameterName = "record",
+                                ParameterName = "relativeRecordId",
                                 Value = recordId
                             });
                             cmd.ExecuteNonQuery();

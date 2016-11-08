@@ -23,7 +23,7 @@ namespace PowerQualityModel.DataModel
 
         [NotMapped]
         public double RecordTime
-            => Record.RecordStartDateTime.AddMilliseconds(RecordIndex * 250)
+            => Record.RecordStartDateTime.AddMilliseconds(RecordIndex * 1000)
             .ToUniversalTime()
             .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
 

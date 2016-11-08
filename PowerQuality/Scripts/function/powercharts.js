@@ -18,8 +18,8 @@ chartsOption.StepLine = function (params) {
             formatter: function (formatParams) {
                 return params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S")
                 + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[0].color + '"></span>' + formatParams[0]['seriesName'] + '：' + formatParams[0].data
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[0].data
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[2].color + '"></span>' + formatParams[2]['seriesName'] + '：' + formatParams[0].data;
+                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[1].data
+                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[2].color + '"></span>' + formatParams[2]['seriesName'] + '：' + formatParams[2].data;
             }
         },
         legend: {
@@ -141,7 +141,8 @@ chartsOption.LineChart = function (params) {
             formatter: function (formatParams) {
                 return params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S")
                 + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[0].color + '"></span>' + formatParams[0]['seriesName'] + '：' + formatParams[0].data + '%'
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[1].data + '%';
+                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[1].data + '%'
+                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[2].color + '"></span>' + formatParams[2]['seriesName'] + '：' + formatParams[2].data + '%';
             }
         },
         legend: {
@@ -208,6 +209,7 @@ chartsOption.LineSeries = function(params) {
     var serier = {
         name: params['name'],
         type: 'line',
+        step: 'start',
         xAxisIndex: 0,
         yAxisIndex: 0,
         lineStyle: {

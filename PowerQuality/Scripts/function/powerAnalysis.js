@@ -223,7 +223,7 @@ var powerAnalysis = {
             'legend': powerAnalysis.harmonicClass
         }
 
-        if (index < powerAnalysis.voltageCurrentChannel.length - 1) {
+        if (index < powerAnalysis.harmonicChannel.length - 1) {
             par['axisLabel'] = false;
         }
 
@@ -235,7 +235,7 @@ var powerAnalysis = {
             var params = {
                 'name': harmonicClass,
                 'data': chartsConfig.harmonicDataSource[channel + 'Harmonic' + harmonicClass].map(function (har) {
-                    return har * 100;
+                    return Math.round(har * 10000) / 100;
                 })
             }
             series.push(chartsOption.LineSeries(params));
