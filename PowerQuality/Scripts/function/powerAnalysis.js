@@ -293,6 +293,20 @@ $(function () {
         powerAnalysis.setVoltageCurrentChannels();
         powerAnalysis.initVoltageCurrentCharts();
     });
+    $('#harmonicChannelOptions input[type="checkbox"]').on('change', function () {
+        powerAnalysis.setHarmonicChannels();
+        powerAnalysis.initHarmonicCharts();
+    });
+    $('#harmonicClassOptions input[type="checkbox"]').on('change', function () {
+        powerAnalysis.harmonicClass = [];
+        var classSelects = $('#harmonicClassOptions input[type="checkbox"]');
+        $.each(classSelects, function (key, value) {
+            if ($(value).is(':checked')) {
+                powerAnalysis.harmonicClass.push($(value).attr('id'));
+            }
+        });
+        powerAnalysis.initHarmonicCharts();
+    });
     $('.navtab').on('click', function (nav) {
         $('.navtab').removeClass('active');
         $('.presentDiv').hide();

@@ -16,10 +16,21 @@ chartsOption.StepLine = function (params) {
         tooltip: {
             trigger: 'axis',
             formatter: function (formatParams) {
-                return params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S")
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[0].color + '"></span>' + formatParams[0]['seriesName'] + '：' + formatParams[0].data
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[1].data
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[2].color + '"></span>' + formatParams[2]['seriesName'] + '：' + formatParams[2].data;
+                var view = params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S");
+                formatParams.forEach(function (par, index) {
+                    if (index > 3) return;
+                    view = view +
+                        '<br/>' +
+                        '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' +
+                        par.color +
+                        '"></span>' +
+                        par['seriesName'] +
+                        '：' +
+                        par.data +
+                        '%';
+                });
+
+                return view;
             }
         },
         legend: {
@@ -139,10 +150,21 @@ chartsOption.LineChart = function (params) {
         tooltip: {
             trigger: 'axis',
             formatter: function (formatParams) {
-                return params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S")
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[0].color + '"></span>' + formatParams[0]['seriesName'] + '：' + formatParams[0].data + '%'
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[1].color + '"></span>' + formatParams[1]['seriesName'] + '：' + formatParams[1].data + '%'
-                + '<br/>' + '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + formatParams[2].color + '"></span>' + formatParams[2]['seriesName'] + '：' + formatParams[2].data + '%';
+                var view = params['category'][formatParams[0]['dataIndex']].format("yyyy-MM-dd hh:mm:ss S");
+                formatParams.forEach(function (par, index) {
+                    if (index > 3) return;
+                    view = view +
+                        '<br/>' +
+                        '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' +
+                        par.color +
+                        '"></span>' +
+                        par['seriesName'] +
+                        '：' +
+                        par.data +
+                        '%';
+                });
+
+                return view;
             }
         },
         legend: {
