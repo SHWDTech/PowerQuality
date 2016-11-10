@@ -74,6 +74,7 @@
     <Compile Include="DataModel\SystemModel.cs" />
     <Compile Include="DataModel\UserStatus.cs" />
     <Compile Include="ViewModel\PowerAnalysisViewModel.cs" />
+    <Compile Include="ViewModel\RecordFile.cs" />
     <Compile Include="ViewModel\ToolBoxModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
+﻿(function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
@@ -971,7 +971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    zr.add(view.group);
 	                }
 	                else {
-	                    // Error
+	                    // Fail
 	                    return;
 	                }
 	            }
@@ -5600,7 +5600,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *
 	     * If 'xAxis' or 'yAxis' is absent in componentTypeList, just ignore it in topology.
 	     *
-	     * If there is circle dependencey, Error will be thrown.
+	     * If there is circle dependencey, Fail will be thrown.
 	     *
 	     */
 	    componentUtil.enableTopologicalTravel = function (entity, dependencyGetter) {
@@ -17691,7 +17691,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            else if (length1 === 0) {
 	                throw new Error();
-	                // throw new Error('mergeLow preconditions were not respected');
+	                // throw new Fail('mergeLow preconditions were not respected');
 	            }
 	            else {
 	                for (i = 0; i < length1; i++) {
@@ -17858,7 +17858,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            else if (length2 === 0) {
 	                throw new Error();
-	                // throw new Error('mergeHigh preconditions were not respected');
+	                // throw new Fail('mergeHigh preconditions were not respected');
 	            }
 	            else {
 	                customCursor = dest - (length2 - 1);
@@ -46482,7 +46482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var inRangeVisuals = visualMapModel.targetVisuals.inRange;
 	            var outOfRangeVisuals = visualMapModel.targetVisuals.outOfRange;
 	            // if (!visualMapping) {
-	            //     throw new Error('Data range must have color visuals');
+	            //     throw new Fail('Data range must have color visuals');
 	            // }
 
 	            var data = seriesModel.getData();
@@ -63421,7 +63421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        try {
 	            textPathEl.style.font = font;
 	        }
-	        // Error font format
+	        // Fail font format
 	        catch (e) {}
 
 	        updateFillAndStroke(textVmlEl, 'fill', {

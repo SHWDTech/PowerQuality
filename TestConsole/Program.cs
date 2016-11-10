@@ -100,7 +100,7 @@ namespace TestConsole
             //        }
             //        catch (Exception ex)
             //        {
-            //            LogService.Instance.Error("添加记录数据失败", ex);
+            //            LogService.Instance.Fail("添加记录数据失败", ex);
             //            Console.WriteLine(ex);
             //        }
 
