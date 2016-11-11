@@ -92,5 +92,9 @@ namespace PowerProcess
             return typeof(VoltageCurrentThreeSeconds).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")
                 .ToDictionary(prop => prop.Name, prop => activeValues.Select(obj => obj.GetType().GetProperty(prop.Name).GetValue(obj, null)).ToList());
         }
+
+        public Dictionary<string, string> GetRecordRequirements()
+            => Repo<PowerRepository<SystemConfig>>().GetModels(obj => obj.ConfigType == "RecordConfigRequirements")
+                    .ToDictionary(obj => obj.ConfigName, item => item.ConfigValue);
     }
 }

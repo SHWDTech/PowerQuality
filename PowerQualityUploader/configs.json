@@ -1,0 +1,9 @@
+﻿{
+  "Frequency": "负载频率",
+  "LineType": "接线方式",
+  "CurrentModal": "电流最大量程",
+  "VoltageStep": "电压最大量程",
+  "CurrentRestore": "电流还原比",
+  "VoltageRestore": "电压还原比",
+  "RecordName": "记录名称"
+}

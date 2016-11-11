@@ -12,7 +12,7 @@ namespace PowerQualityModel.ViewModel
         /// <summary>
         /// 文件字节集合
         /// </summary>
-        public List<byte> FileDataBytes { get; set; }
+        public byte[] FileDataBytes { get; set; }
 
         /// <summary>
         /// 文件配置项

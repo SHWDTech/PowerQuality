@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+﻿using System.Configuration;
 using System.Windows;
 
 namespace PowerQualityUploader
@@ -10,7 +6,14 @@ namespace PowerQualityUploader
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            FileUpLoader.LoadRequirements();
+            FileUpLoader.ServerAddr = ConfigurationManager.AppSettings["serverAddr"];
+            FileUpLoader.UpdateConfigRequirements();
+            base.OnStartup(e);
+        }
     }
 }

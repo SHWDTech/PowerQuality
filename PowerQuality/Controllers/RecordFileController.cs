@@ -13,13 +13,13 @@ namespace PowerQuality.Controllers
         {
             try
             {
-                using (var localFile = File.CreateText($"d:\\power_quality\\app\\data\\{file.FileName}"))
+                using (var localFile = File.CreateText($"d:\\power_quality\\app\\data\\{file.FileName}.txt"))
                 {
                     var currentIndex = 0;
                     var channel = 0;
-                    var currentModel = int.Parse(file.Configs["CurrentModal"]);
-                    var voltageStop = int.Parse(file.Configs["VoltageStep"]);
-                    while (currentIndex < file.FileDataBytes.Count)
+                    var currentModel = double.Parse(file.Configs["CurrentModal"]);
+                    var voltageStop = double.Parse(file.Configs["VoltageStep"]);
+                    while (currentIndex < file.FileDataBytes.Length)
                     {
                         var value = new byte[2];
                         value[0] = file.FileDataBytes[currentIndex];
@@ -27,11 +27,11 @@ namespace PowerQuality.Controllers
                         double result;
                         if (channel < 4)
                         {
-                            result = Globals.BytesToInt16(value, 0, true) / 32768.0d * 5.0d * currentModel;
+                            result = Globals.BytesToInt16(value, 0, false) / 32768.0d * 5.0d * currentModel;
                         }
                         else
                         {
-                            result = -(Globals.BytesToInt16(value, 0, true)/32768.0d * 5.0d * voltageStop);
+                            result = -(Globals.BytesToInt16(value, 0, false) /32768.0d * 5.0d * voltageStop);
                         }
                         localFile.Write(result.ToString("F8"));
                         if (channel == 7)
@@ -39,7 +39,7 @@ namespace PowerQuality.Controllers
                             localFile.Write("\r\n");
                             channel = 0;
                         }
-                        else if (currentIndex != file.FileDataBytes.Count - 2)
+                        else if (currentIndex != file.FileDataBytes.Length - 2)
                         {
                             localFile.Write("\t");
                             channel++;

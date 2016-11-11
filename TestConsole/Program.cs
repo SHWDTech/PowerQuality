@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PowerProcess;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json;
 using PowerQualityModel.DataModel;
 using Repository;
 using SHWDTech.Platform.Utility;
@@ -15,9 +17,36 @@ namespace TestConsole
         {
             //PropTest();
             //GenerateData();
-            var exe = new RecordDataInitializer();
-            exe.InitialRecordData(1);
+            //var exe = new RecordDataInitializer();
+            //exe.InitialRecordData(1);
             //GenerateFileForMySql();
+            var str = RandomString(7);
+            var dic = new Dictionary<string, string>()
+            {
+                {"Frequency", "负载频率" },
+                {"LineType", "接线方式" },
+                {"CurrentModal", "电流最大量程" },
+                {"VoltageStep", "电压最大量程" },
+                {"CurrentRestore", "电流还原比" },
+                {"VoltageRestore", "电压还原比" },
+                {"RecordName", "记录名称" },
+                {"RequirementsTag",str }
+            };
+
+            var jsonString = JsonConvert.SerializeObject(dic, Formatting.Indented);
+            Console.WriteLine(jsonString);
+            File.WriteAllText("d:\\configs.json", jsonString);
+            var md5 = new MD5CryptoServiceProvider();
+            Console.WriteLine(BitConverter.ToString(md5.ComputeHash(Encoding.Unicode.GetBytes(jsonString))).Replace("-", string.Empty));
+            Console.ReadKey();
+        }
+
+        public static string RandomString(int length)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         private static void GenerateData()
