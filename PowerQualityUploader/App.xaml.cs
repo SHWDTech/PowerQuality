@@ -15,6 +15,7 @@ namespace PowerQualityUploader
         {
             FileUpLoader.LoadRequirements();
             AppConfig.ServerAddr = ConfigurationManager.AppSettings["serverAddr"];
+            AppConfig.MaxUploadThread = int.Parse(ConfigurationManager.AppSettings["maxUploadThread"]);
             base.OnStartup(e);
         }
 

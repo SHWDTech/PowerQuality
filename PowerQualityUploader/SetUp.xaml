@@ -14,11 +14,19 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="5"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid Row="0">
                     <DockPanel HorizontalAlignment="Stretch">
                         <Label Content="服务器地址："></Label>
                         <TextBox x:Name="TxtServerAddr" VerticalContentAlignment="Center"></TextBox>
+                    </DockPanel>
+                </Grid>
+                <Grid Row="2">
+                    <DockPanel>
+                        <Label Content="最大并发数："></Label>
+                        <TextBox x:Name="TxtMaxThread" VerticalContentAlignment="Center" TextChanged="TextNumCheck"></TextBox>
                     </DockPanel>
                 </Grid>
             </Grid>

@@ -82,7 +82,7 @@ namespace PowerQualityUploader
             _fileCount = recordFiles.Length;
             _fileProcessed = 0;
             Parallel.ForEach(recordFiles,
-                 new ParallelOptions { MaxDegreeOfParallelism = 25 },
+                 new ParallelOptions { MaxDegreeOfParallelism = AppConfig.MaxUploadThread },
                 (fileName) =>
                 {
                     var client = new PostClient($"{ServerAddr}RecordFile");
