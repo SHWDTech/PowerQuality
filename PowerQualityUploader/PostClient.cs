@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using SHWDTech.Platform.Utility;
 
 namespace PowerQualityUploader
 {
@@ -37,6 +38,7 @@ namespace PowerQualityUploader
             catch (Exception ex)
             {
                 _requestExceptions = ex;
+                LogService.Instance.Error("HTTP POST请求失败。", ex);
                 return "error";
             }
         }
@@ -52,6 +54,7 @@ namespace PowerQualityUploader
             catch (Exception ex)
             {
                 _requestExceptions = ex;
+                LogService.Instance.Error("HTTP GET请求失败。", ex);
                 return "error";
             }
         }

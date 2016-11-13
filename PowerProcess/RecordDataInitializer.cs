@@ -29,7 +29,7 @@ namespace PowerProcess
                 RecordEndDateTime = DateTime.Parse(recordParams.RecordConfigs["EndDateTime"])
             };
             recordRepo.AddOrUpdateDoCommit(newRecord);
-            newRecord.ModelState = ModelState.UnChanged;
+            newRecord.ModelState = ModelState.Changed;
 
             var configRepo = Repo<PowerRepository<SystemConfig>>();
             var configs = configRepo.GetModelList(obj => obj.ConfigType == "RecordInitial")
@@ -41,7 +41,7 @@ namespace PowerProcess
             {
                 if(!recordParams.FileList.Contains(Path.GetFileNameWithoutExtension(file)))
                 {
-                    File.Delete($"{configs["dataDirectory"]}\\{file}");
+                    File.Delete(file);
                 }
             }
 

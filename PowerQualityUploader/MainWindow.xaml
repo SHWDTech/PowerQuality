@@ -4,18 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="电力分析文件上传工具" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Circle-icons-upload.svg.png.ico">
     <Grid Background="#e1e1e1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="21"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Row="0">
-            <Menu Background="White" Height="20">
-                <MenuItem Header="文件" Height="20">
-                    <MenuItem Header="读取内存卡记录信息" Click="LoadFlashRecord"></MenuItem>
-                </MenuItem>
-            </Menu>
+            <Border BorderBrush="LightGray" BorderThickness="0, 0, 0, 1">
+                <Menu Background="White" Height="20">
+                    <MenuItem Header="文件" Height="20">
+                        <MenuItem Header="读取内存卡记录信息" Click="LoadFlashRecord"></MenuItem>
+                        <MenuItem Header="设置" Click="OpenSetUp"></MenuItem>
+                    </MenuItem>
+                </Menu>
+            </Border>
         </Grid>
     </Grid>
 </Window>

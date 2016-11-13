@@ -13,7 +13,7 @@ namespace PowerQualityUploader
     {
         public static Dictionary<string, string> ConfigRequirements { get; private set; }
 
-        public static string ServerAddr { get; set; } = string.Empty;
+        public static string ServerAddr => AppConfig.ServerAddr;
 
         private static int _fileCount;
 

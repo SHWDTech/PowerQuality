@@ -22,5 +22,11 @@ namespace PowerQualityUploader
             var recordList = new RecoreLoader(records) {Owner = this};
             recordList.ShowDialog();
         }
+
+        private void OpenSetUp(object sender, RoutedEventArgs e)
+        {
+            var setUp = new SetUp {Owner = this};
+            setUp.ShowDialog();
+        }
     }
 }
