@@ -1,0 +1,75 @@
+﻿<Window x:Class="PowerQualityUploader.RecoreLoader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="内存卡记录信息" Height="600" Width="500" ShowInTaskbar="False" ResizeMode="CanMinimize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Column="0">
+                <Label FontWeight="bold" FontSize="14">选择记录</Label>
+                <ListBox x:Name="RecordNameList" Margin="0,25,0,0" SelectionChanged="ViewRecordDetail"></ListBox>
+            </Grid>
+            <Grid Column="1">
+                <GroupBox Header="预览" FontSize="14">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid Row="0">
+                            <Label>配置</Label>
+                        </Grid>
+                        <Grid Row="1">
+                            <TextBox x:Name="TxtLineType"></TextBox>
+                        </Grid>
+                        <Grid Row="2">
+                            <Label>间隔</Label>
+                        </Grid>
+                        <Grid Row="3">
+                            <TextBox x:Name="TxtPeroid"></TextBox>
+                        </Grid>
+                        <Grid Row="4">
+                            <Label>持续时间</Label>
+                        </Grid>
+                        <Grid Row="5">
+                            <TextBox x:Name="TxtDuration"></TextBox>
+                        </Grid>
+                        <Grid Row="6">
+                            <Label>开始时间</Label>
+                        </Grid>
+                        <Grid Row="7">
+                            <TextBox x:Name="TxtStartDateTime"></TextBox>
+                        </Grid>
+                        <Grid Row="8">
+                            <Label>结束时间</Label>
+                        </Grid>
+                        <Grid Row="9">
+                            <TextBox x:Name="TxtEndDateTime"></TextBox>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+        <Grid Row="1">
+            <Button x:Name="BtnSubmit" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Height="30" Content="上传" Margin="0, 0, 10, 0" FontSize="14" Click="StartUpLoad"></Button>
+        </Grid>
+    </Grid>
+</Window>

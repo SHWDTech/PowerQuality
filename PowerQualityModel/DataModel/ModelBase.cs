@@ -20,7 +20,7 @@ namespace PowerQualityModel.DataModel
         /// 是否新创建对象
         /// </summary>
         [NotMapped]
-        public abstract bool IsNew { get; set; }
+        public abstract bool IsNew { get; }
 
         /// <summary>
         /// 转化为JSON字符串

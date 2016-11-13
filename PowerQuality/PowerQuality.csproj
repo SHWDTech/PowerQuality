@@ -155,6 +155,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PowerAnalysisController.cs" />
     <Compile Include="Controllers\RecordConfigController.cs" />
+    <Compile Include="Controllers\RecordController.cs" />
     <Compile Include="Controllers\RecordFileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

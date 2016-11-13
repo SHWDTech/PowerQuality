@@ -1,0 +1,32 @@
+﻿<Window x:Class="PowerQualityUploader.Progress"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="上传进度" 
+        Height="140" 
+        Width="500" 
+        ShowInTaskbar="False" 
+        WindowStyle="SingleBorderWindow" 
+        WindowStartupLocation="CenterOwner" 
+        ResizeMode="NoResize"
+        Loaded="OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Row="0">
+            <Label x:Name="LblMessage" FontSize="14"></Label>
+        </Grid>
+        <Grid Row="2">
+            <ProgressBar x:Name="BarUpload"></ProgressBar>
+        </Grid>
+        <Grid Row="3">
+            <Button VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0, 0, 10, 0" Content="确定" IsEnabled="False" Width="100" Height="30" FontSize="14" x:Name="BtnConfirm" Click="BtnClose"></Button>
+        </Grid>
+    </Grid>
+</Window>

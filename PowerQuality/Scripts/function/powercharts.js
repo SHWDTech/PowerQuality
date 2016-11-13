@@ -26,8 +26,7 @@ chartsOption.StepLine = function (params) {
                         '"></span>' +
                         par['seriesName'] +
                         '：' +
-                        par.data +
-                        '%';
+                        par.data;
                 });
 
                 return view;

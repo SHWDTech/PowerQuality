@@ -86,10 +86,10 @@
                 format: 'L'
             });
 
-            $('.recordList li').on('click', function (li) {
+            $('.recordList li').on('click', function (event) {
                 $('.recordList li').removeClass('active');
                 $(this).addClass('active');
-                var record = records.find(function (element) { return element.ID === $(li).prop('recordId') });
+                var record = records.find(function (element) { return element.Id === parseInt($(event.target).attr('recordid')) });
                 $('#StartDateTime').val(record.RecordStartDateTime.replace('T', ' '));
                 $('#Duration').val(record.RecordDuration);
                 $('#EndDateTime').val(record.RecordEndDateTime.replace('T', ' '));

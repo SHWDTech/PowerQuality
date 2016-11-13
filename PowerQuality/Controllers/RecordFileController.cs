@@ -19,6 +19,8 @@ namespace PowerQuality.Controllers
                     var channel = 0;
                     var currentModel = double.Parse(file.Configs["CurrentModal"]);
                     var voltageStop = double.Parse(file.Configs["VoltageStep"]);
+                    var currentRestore = double.Parse(file.Configs["CurrentRestore"]);
+                    var voltageRestore = double.Parse(file.Configs["VoltageRestore"]);
                     while (currentIndex < file.FileDataBytes.Length)
                     {
                         var value = new byte[2];
@@ -27,11 +29,11 @@ namespace PowerQuality.Controllers
                         double result;
                         if (channel < 4)
                         {
-                            result = Globals.BytesToInt16(value, 0, false) / 32768.0d * 5.0d * currentModel;
+                            result = Globals.BytesToInt16(value, 0, false) / 32768.0d * 5.0d * currentModel * currentRestore;
                         }
                         else
                         {
-                            result = -(Globals.BytesToInt16(value, 0, false) /32768.0d * 5.0d * voltageStop);
+                            result = -(Globals.BytesToInt16(value, 0, false) /32768.0d * 5.0d * voltageStop * voltageRestore);
                         }
                         localFile.Write(result.ToString("F8"));
                         if (channel == 7)

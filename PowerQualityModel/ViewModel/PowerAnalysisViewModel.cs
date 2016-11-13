@@ -47,4 +47,13 @@ namespace PowerQualityModel.ViewModel
 
         public long RecordId { get; set; }
     }
+
+    public class RecordParams
+    {
+        public string RecordName { get; set; }
+
+        public Dictionary<string, string> RecordConfigs { get; set; }
+
+        public List<string> FileList { get; set; }
+    }
 }

@@ -19,6 +19,9 @@ namespace PowerQualityModel.DataModel
         /// 未改变
         /// </summary>
         [Display(Name = "未改变")]
-        UnChanged = 0x01
+        UnChanged = 0x01,
+
+        [Display(Name = "已改变")]
+        Changed = 0x02,
     }
 }

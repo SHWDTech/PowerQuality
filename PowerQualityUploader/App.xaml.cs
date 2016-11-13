@@ -12,7 +12,6 @@ namespace PowerQualityUploader
         {
             FileUpLoader.LoadRequirements();
             FileUpLoader.ServerAddr = ConfigurationManager.AppSettings["serverAddr"];
-            FileUpLoader.UpdateConfigRequirements();
             base.OnStartup(e);
         }
     }

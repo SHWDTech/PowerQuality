@@ -18,12 +18,12 @@ namespace PowerQualityModel.DataModel
 
         [NotMapped]
         [Display(Name = "模型状态")]
-        public override ModelState ModelState { get; set; }
+        public override ModelState ModelState { get; set; } = ModelState.Added;
 
         [NotMapped]
         [Display(Name = "是否新创建对象")]
         [ScriptIgnore]
-        public override bool IsNew { get; set; }
+        public override bool IsNew => ModelState == ModelState.Added;
 
         public override string ToJson()
         {

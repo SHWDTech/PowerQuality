@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 
 namespace PowerQualityUploader
@@ -6,6 +7,10 @@ namespace PowerQualityUploader
     public class PostClient
     {
         private readonly HttpWebRequest _request;
+
+        private Exception _requestExceptions;
+
+        public string PostData { get; private set; }
 
         public PostClient(string requestUrl)
         {
@@ -15,28 +20,48 @@ namespace PowerQualityUploader
 
         public string Post(string postData)
         {
-            _request.Method = "POST";
-            using (var streamWriter = new StreamWriter(_request.GetRequestStream()))
+            try
             {
-                streamWriter.Write(postData);
-                streamWriter.Flush();
-                streamWriter.Close();
-
-                var streamReader = ((HttpWebResponse) _request.GetResponse()).GetResponseStream();
-                if (streamReader != null)
+                PostData = postData;
+                _request.Method = "POST";
+                using (var streamWriter = new StreamWriter(_request.GetRequestStream()))
                 {
-                    return new StreamReader(streamReader).ReadToEnd();
+                    streamWriter.Write(PostData);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+
+                    var streamReader = ((HttpWebResponse) _request.GetResponse()).GetResponseStream();
+                    return streamReader != null ? new StreamReader(streamReader).ReadToEnd() : string.Empty;
                 }
             }
-
-            return string.Empty;
+            catch (Exception ex)
+            {
+                _requestExceptions = ex;
+                return "error";
+            }
         }
 
         public string Get()
         {
-            _request.Method = "GET";
-            var streamReader = ((HttpWebResponse)_request.GetResponse()).GetResponseStream();
-            return streamReader != null ? new StreamReader(streamReader).ReadToEnd() : string.Empty;
+            try
+            {
+                _request.Method = "GET";
+                var streamReader = ((HttpWebResponse)_request.GetResponse()).GetResponseStream();
+                return streamReader != null ? new StreamReader(streamReader).ReadToEnd() : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                _requestExceptions = ex;
+                return "error";
+            }
         }
+
+        public void SetParams(string paramData)
+        {
+            PostData = paramData;
+        }
+
+        public Exception LastException()
+            => _requestExceptions;
     }
 }
