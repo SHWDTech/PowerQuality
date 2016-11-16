@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
+using PowerQualityUploader.Controller;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

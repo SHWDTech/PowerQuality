@@ -1,0 +1,73 @@
+﻿<Window x:Class="PowerQualityUploader.View.WavePreview"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="波形预览" 
+        Height="768" 
+        Width="1024" 
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
+    <Grid>
+        <DockPanel>
+            <Grid DockPanel.Dock="Top">
+                <Border BorderBrush="LightGray" BorderThickness="0, 0, 0, 1" Padding="5">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0, 0, 0, 5">
+                            <Label Content="Start"></Label>
+                            <TextBox x:Name="TxtStartTime" 
+                                     IsReadOnly="True" 
+                                     Width="200" 
+                                     VerticalContentAlignment="Center" 
+                                     GotFocus="FocusOnTime"></TextBox>
+                            <Label Content="Stop"></Label>
+                            <TextBox x:Name="TxtEndTime" 
+                                     IsReadOnly="True" 
+                                     Width="200" 
+                                     VerticalContentAlignment="Center" 
+                                     GotFocus="FocusOnTime"></TextBox>
+                            <Button x:Name="BtnRefreash" Margin="20,0,0,0" Content="刷新" Width="60" Click="ResfreashChart"></Button>
+                        </StackPanel>
+                        <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0" Padding="5">
+                            <DockPanel x:Name="DpSlider" VerticalAlignment="Center">
+                                <Label x:Name="LblSlider" Content="开始时间"></Label>
+                                <Slider x:Name="SldTimeRange" HorizontalAlignment="Stretch" ValueChanged="AdjustTextTimeRange" IsSnapToTickEnabled="True"></Slider>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Column="0">
+                    <Border BorderBrush="LightGray" BorderThickness="0,0,1,0" >
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type CheckBox}">
+                                    <Setter Property="Margin" Value="0,10,0,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <CheckBox Tag="AN" IsChecked="True" VerticalAlignment="Center" Content="AN(V)"></CheckBox>
+                            <CheckBox Tag="BN" IsChecked="True" VerticalAlignment="Center" Content="BN(V)"></CheckBox>
+                            <CheckBox Tag="CN" IsChecked="True" VerticalAlignment="Center" Content="CN(V)"></CheckBox>
+                            <CheckBox Tag="NG" IsChecked="True" VerticalAlignment="Center" Content="NG(V)"></CheckBox>
+                            <CheckBox Tag="A" IsChecked="True" VerticalAlignment="Center" Content="A(A)"></CheckBox>
+                            <CheckBox Tag="B" IsChecked="True" VerticalAlignment="Center" Content="B(A)"></CheckBox>
+                            <CheckBox Tag="C" IsChecked="True" VerticalAlignment="Center" Content="C(A)"></CheckBox>
+                            <CheckBox Tag="N" IsChecked="True" VerticalAlignment="Center" Content="N(A)"></CheckBox>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Grid Column="1">
+                    <oxy:PlotView x:Name="PvWavePreview"></oxy:PlotView>
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

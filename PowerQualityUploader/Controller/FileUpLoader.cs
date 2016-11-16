@@ -6,12 +6,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PowerQualityModel.ViewModel;
+using PowerQualityUploader.Model;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.Controller
 {
     public class FileUpLoader
     {
         public static Dictionary<string, string> ConfigRequirements { get; private set; }
+
+        public static Dictionary<string, string> ConfigDictionary { get; private set; }
 
         public static string ServerAddr => AppConfig.ServerAddr;
 
@@ -42,6 +45,13 @@ namespace PowerQualityUploader
             ConfigRequirements = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText($"{Directory.GetCurrentDirectory()}\\configs.json"));
         }
 
+        public static void LoadDict()
+        {
+            ConfigDictionary =
+                JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                    File.ReadAllText($"{Directory.GetCurrentDirectory()}\\dict.json"));
+        }
+
         public static Dictionary<Guid, Dictionary<string, string>> LoadRecord(string directory)
         {
             var directories = Directory.GetDirectories(directory);
@@ -65,7 +75,7 @@ namespace PowerQualityUploader
         private static TimeSpan GetDuration(Dictionary<string, string> configs, int fileCount)
         {
             var interval = 20.0 / int.Parse(configs["SampleRate"]);
-            return new TimeSpan(Convert.ToInt64(16384 * interval * 10000) * fileCount);
+            return new TimeSpan(Convert.ToInt64(16385 * interval * 10000) * fileCount);
         }
 
         public static void UpdateConfigRequirements()
@@ -76,7 +86,7 @@ namespace PowerQualityUploader
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\configs.json", JsonConvert.SerializeObject(ConfigRequirements, Formatting.Indented));
         }
 
-        public static void UploadRecordFiles(Dictionary<string, string> recordConfigs, Progress progress)
+        public static void UploadRecordFiles(Dictionary<string, string> recordConfigs, View.Progress progress)
         {
             var recordFiles = Directory.GetFiles(recordConfigs["Directory"], "*.CSV", SearchOption.AllDirectories);
             _fileCount = recordFiles.Length;
@@ -108,7 +118,7 @@ namespace PowerQualityUploader
             StartRecordProcess(recordConfigs, progress);
         }
 
-        private static void StartRecordProcess(Dictionary<string, string> recordConfigs, Progress progress)
+        private static void StartRecordProcess(Dictionary<string, string> recordConfigs, View.Progress progress)
         {
             var client = new PostClient($"{ServerAddr}Record");
             var files =

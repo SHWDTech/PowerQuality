@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using SHWDTech.Platform.Utility;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.Controller
 {
     public class PostClient
     {

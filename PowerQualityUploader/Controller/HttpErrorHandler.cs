@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Windows;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.Controller
 {
     public class HttpErrorHandler
     {

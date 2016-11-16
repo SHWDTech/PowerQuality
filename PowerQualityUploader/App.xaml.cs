@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Windows;
 using System.Windows.Threading;
+using PowerQualityUploader.Controller;
+using PowerQualityUploader.Model;
 using SHWDTech.Platform.Utility;
 
 namespace PowerQualityUploader
@@ -14,6 +16,7 @@ namespace PowerQualityUploader
         protected override void OnStartup(StartupEventArgs e)
         {
             FileUpLoader.LoadRequirements();
+            FileUpLoader.LoadDict();
             AppConfig.ServerAddr = ConfigurationManager.AppSettings["serverAddr"];
             AppConfig.MaxUploadThread = int.Parse(ConfigurationManager.AppSettings["maxUploadThread"]);
             base.OnStartup(e);

@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
+using PowerQualityUploader.Model;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.View
 {
     /// <summary>
     /// Interaction logic for SetUp.xaml

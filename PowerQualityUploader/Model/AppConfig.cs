@@ -1,4 +1,4 @@
-﻿namespace PowerQualityUploader
+﻿namespace PowerQualityUploader.Model
 {
     public class AppConfig
     {

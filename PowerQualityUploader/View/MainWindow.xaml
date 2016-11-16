@@ -1,10 +1,10 @@
-﻿<Window x:Class="PowerQualityUploader.MainWindow"
+﻿<Window x:Class="PowerQualityUploader.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="电力分析文件上传工具" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="Circle-icons-upload.svg.png.ico">
+        Title="电力分析文件上传工具" Height="350" Width="525" WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
     <Grid Background="#e1e1e1">
         <Grid.RowDefinitions>
             <RowDefinition Height="21"></RowDefinition>

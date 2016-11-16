@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using PowerQualityUploader.Controller;
 
-namespace PowerQualityUploader
+namespace PowerQualityUploader.View
 {
     /// <summary>
     /// Interaction logic for RecoreLoader.xaml
@@ -30,8 +31,8 @@ namespace PowerQualityUploader
         private void ViewRecordDetail(object sender, RoutedEventArgs e)
         {
             var record = _records[Guid.Parse(((ListBoxItem) RecordNameList.SelectedItem).Tag.ToString())];
-            TxtLineType.Text = record["LineType"];
-            TxtPeroid.Text = record["Period"];
+            TxtLineType.Text = FileUpLoader.ConfigDictionary[record["LineType"]];
+            TxtPeroid.Text = $"{record["Period"]}ms";
             TxtDuration.Text = record["Duration"];
             TxtStartDateTime.Text = record["StartDateTime"];
             TxtEndDateTime.Text = record["EndDateTime"];
@@ -53,6 +54,21 @@ namespace PowerQualityUploader
             });
             progress.Owner = Application.Current.MainWindow;
             progress.ShowDialog();
+        }
+
+        private void StartPreView(object sender, RoutedEventArgs e)
+        {
+            if (RecordNameList.SelectedIndex < 0)
+            {
+                MessageBox.Show("请先选择一个记录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var record = _records[Guid.Parse(((ListBoxItem)RecordNameList.SelectedItem).Tag.ToString())];
+            var wavePreview = new WavePreview(record) {Owner = Owner};
+            Visibility = Visibility.Hidden;
+            wavePreview.ShowDialog();
+            Visibility = Visibility.Visible;
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿<Window x:Class="PowerQualityUploader.SetUp"
+﻿<Window x:Class="PowerQualityUploader.View.SetUp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="设置" Height="300" Width="600" ShowInTaskbar="False" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="Circle-icons-upload.svg.png.ico">
+        Title="设置" Height="300" Width="600" ShowInTaskbar="False" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
