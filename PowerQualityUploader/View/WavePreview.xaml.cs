@@ -4,7 +4,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
+using SHWDTech.Platform.Utility;
 
 namespace PowerQualityUploader.View
 {
@@ -27,6 +29,14 @@ namespace PowerQualityUploader.View
 
         private readonly double _recordTick;
 
+        private readonly double _currentModel;
+
+        private readonly double _voltageStep;
+
+        private readonly double _currentRestore;
+
+        private readonly double _voltageRestore;
+
         public WavePreview()
         {
             InitializeComponent();
@@ -37,6 +47,10 @@ namespace PowerQualityUploader.View
             _record = record;
             _startDateTime = DateTime.Parse(_record["StartDateTime"]);
             _recordTick = 20 * 10000.0 / int.Parse(_record["SampleRate"]);
+            _currentModel = double.Parse(record["CurrentModal"]);
+            _voltageStep = double.Parse(record["VoltageStep"]);
+            _currentRestore = double.Parse(record["CurrentRestore"]);
+            _voltageRestore = double.Parse(record["VoltageRestore"]);
             PrepareChart();
         }
 
@@ -77,12 +91,21 @@ namespace PowerQualityUploader.View
 
         private void ResfreashChart(object sender, RoutedEventArgs e)
         {
+            PvWavePreview.Model.Series.Clear();
+            foreach (var child in SpCheck.Children)
+            {
+                var box = child as CheckBox;
+                if (box != null && box.IsChecked == true)
+                {
+                    PvWavePreview.Model.Series.Add(new LineSeries());
+                }
+            }
             var startLine = _sliderMaxValue < _sliderMinValue ? (int)_sliderMaxValue : (int)_sliderMinValue;
             var endLine = _sliderMaxValue < _sliderMinValue ? (int)_sliderMinValue : (int)_sliderMaxValue;
             var currentFileIndex = startLine / SingleFileLine;
             var offset = (startLine % SingleFileLine);
             var files = Directory.GetFiles(_record["Directory"], "*.CSV", SearchOption.AllDirectories);
-            var currentLine = startLine;
+            var currentLine = startLine + 1;
             while (currentLine < endLine)
             {
                 var currentFile = files[currentFileIndex];
@@ -93,15 +116,36 @@ namespace PowerQualityUploader.View
                     while (reader.BaseStream.Position < reader.BaseStream.Length)
                     {
                         reader.Read(buffer, 0, 16);
+                        UpdatePowerData(buffer, currentLine);
                         currentLine++;
                     }
-
+                    currentFileIndex++;
                     offset = 0;
                 }
-                currentFileIndex++;
             }
 
+            PvWavePreview.InvalidatePlot();
+        }
 
+        private void UpdatePowerData(byte[] fileBytes, int currentLine)
+        {
+            for (var i = 0; i < SpCheck.Children.Count; i++)
+            {
+                var box = (CheckBox)SpCheck.Children[i];
+                if (box.IsChecked == false) continue;
+                if (int.Parse(box.Tag.ToString()) < 4)
+                {
+                    ((LineSeries) PvWavePreview.Model.Series[i]).Points.Add(
+                        new DataPoint(DateTimeAxis.ToDouble(_startDateTime.AddTicks((long) (currentLine*_recordTick))),
+                            Globals.BytesToInt16(fileBytes, 0, false) / 32768.0d * 5.0 * _currentModel * _currentRestore));
+                }
+                else
+                {
+                    ((LineSeries)PvWavePreview.Model.Series[i]).Points.Add(
+                         new DataPoint(DateTimeAxis.ToDouble(_startDateTime.AddTicks((long)(currentLine * _recordTick))),
+                             -Globals.BytesToInt16(fileBytes, 0, false) / 32768.0d * 5.0 * _voltageStep * _voltageRestore));
+                }
+            }
         }
     }
 }

@@ -47,20 +47,20 @@
                 </Grid.ColumnDefinitions>
                 <Grid Column="0">
                     <Border BorderBrush="LightGray" BorderThickness="0,0,1,0" >
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical" x:Name="SpCheck">
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type CheckBox}">
                                     <Setter Property="Margin" Value="0,10,0,0"/>
                                 </Style>
                             </StackPanel.Resources>
-                            <CheckBox Tag="AN" IsChecked="True" VerticalAlignment="Center" Content="AN(V)"></CheckBox>
-                            <CheckBox Tag="BN" IsChecked="True" VerticalAlignment="Center" Content="BN(V)"></CheckBox>
-                            <CheckBox Tag="CN" IsChecked="True" VerticalAlignment="Center" Content="CN(V)"></CheckBox>
-                            <CheckBox Tag="NG" IsChecked="True" VerticalAlignment="Center" Content="NG(V)"></CheckBox>
-                            <CheckBox Tag="A" IsChecked="True" VerticalAlignment="Center" Content="A(A)"></CheckBox>
-                            <CheckBox Tag="B" IsChecked="True" VerticalAlignment="Center" Content="B(A)"></CheckBox>
-                            <CheckBox Tag="C" IsChecked="True" VerticalAlignment="Center" Content="C(A)"></CheckBox>
-                            <CheckBox Tag="N" IsChecked="True" VerticalAlignment="Center" Content="N(A)"></CheckBox>
+                            <CheckBox Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)"></CheckBox>
+                            <CheckBox Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)"></CheckBox>
+                            <CheckBox Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)"></CheckBox>
+                            <CheckBox Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)"></CheckBox>
+                            <CheckBox Tag="4" IsChecked="True" VerticalAlignment="Center" Content="A(A)"></CheckBox>
+                            <CheckBox Tag="5" IsChecked="True" VerticalAlignment="Center" Content="B(A)"></CheckBox>
+                            <CheckBox Tag="6" IsChecked="True" VerticalAlignment="Center" Content="C(A)"></CheckBox>
+                            <CheckBox Tag="7" IsChecked="True" VerticalAlignment="Center" Content="N(A)"></CheckBox>
                         </StackPanel>
                     </Border>
                 </Grid>
