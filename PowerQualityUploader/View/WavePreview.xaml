@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="波形预览" 
         Height="768" 
@@ -21,50 +22,70 @@
                             <TextBox x:Name="TxtStartTime" 
                                      IsReadOnly="True" 
                                      Width="200" 
-                                     VerticalContentAlignment="Center" 
-                                     GotFocus="FocusOnTime"></TextBox>
+                                     VerticalContentAlignment="Center"></TextBox>
                             <Label Content="Stop"></Label>
                             <TextBox x:Name="TxtEndTime" 
                                      IsReadOnly="True" 
                                      Width="200" 
-                                     VerticalContentAlignment="Center" 
-                                     GotFocus="FocusOnTime"></TextBox>
+                                     VerticalContentAlignment="Center"></TextBox>
+                            <Label Content="Range"></Label>
+                            <ComboBox Width="60" x:Name="CmbRange" SelectionChanged="ResetDateText">
+                                <ComboBoxItem Content="20ms" IsSelected="True">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>256</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                                <ComboBoxItem Content="40ms">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>512</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                                <ComboBoxItem Content="80ms">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>1024</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                                <ComboBoxItem Content="100ms">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>1280</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                            </ComboBox>
                             <Button x:Name="BtnRefreash" Margin="20,0,0,0" Content="刷新" Width="60" Click="ResfreashChart"></Button>
                         </StackPanel>
                         <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0" Padding="5">
                             <DockPanel x:Name="DpSlider" VerticalAlignment="Center">
                                 <Label x:Name="LblSlider" Content="开始时间"></Label>
-                                <Slider x:Name="SldTimeRange" HorizontalAlignment="Stretch" ValueChanged="AdjustTextTimeRange" IsSnapToTickEnabled="True"></Slider>
+                                <Slider x:Name="SldTimeRange" 
+                                        HorizontalAlignment="Stretch" 
+                                        ValueChanged="SliderValueChange" 
+                                        TickFrequency ="1"
+                                        IsSnapToTickEnabled="True"></Slider>
                             </DockPanel>
                         </Border>
                     </StackPanel>
                 </Border>
             </Grid>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid Column="0">
-                    <Border BorderBrush="LightGray" BorderThickness="0,0,1,0" >
-                        <StackPanel Orientation="Vertical" x:Name="SpCheck">
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type CheckBox}">
-                                    <Setter Property="Margin" Value="0,10,0,0"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <CheckBox Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)"></CheckBox>
-                            <CheckBox Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)"></CheckBox>
-                            <CheckBox Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)"></CheckBox>
-                            <CheckBox Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)"></CheckBox>
-                            <CheckBox Tag="4" IsChecked="True" VerticalAlignment="Center" Content="A(A)"></CheckBox>
-                            <CheckBox Tag="5" IsChecked="True" VerticalAlignment="Center" Content="B(A)"></CheckBox>
-                            <CheckBox Tag="6" IsChecked="True" VerticalAlignment="Center" Content="C(A)"></CheckBox>
-                            <CheckBox Tag="7" IsChecked="True" VerticalAlignment="Center" Content="N(A)"></CheckBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Row="0">
+                    <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" >
+                        <StackPanel Orientation="Horizontal" x:Name="SpCheck" VerticalAlignment="Center">
+                            <CheckBox Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="4" IsChecked="True" VerticalAlignment="Center" Content="A(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="5" IsChecked="True" VerticalAlignment="Center" Content="B(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="6" IsChecked="True" VerticalAlignment="Center" Content="C(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="7" IsChecked="True" VerticalAlignment="Center" Content="N(A)" Click="RefreashChartOnChannelChange"></CheckBox>
                         </StackPanel>
                     </Border>
                 </Grid>
-                <Grid Column="1">
+                <Grid Row="1">
                     <oxy:PlotView x:Name="PvWavePreview"></oxy:PlotView>
                 </Grid>
             </Grid>

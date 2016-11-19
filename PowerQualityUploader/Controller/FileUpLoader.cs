@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PowerQualityModel.ViewModel;
 using PowerQualityUploader.Model;
@@ -86,49 +85,67 @@ namespace PowerQualityUploader.Controller
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\configs.json", JsonConvert.SerializeObject(ConfigRequirements, Formatting.Indented));
         }
 
-        public static void UploadRecordFiles(Dictionary<string, string> recordConfigs, View.Progress progress)
+        public static void UploadRecordFiles(Dictionary<string, string> recordConfigs, View.Progress progress, int startLine, int endLine)
         {
-            var recordFiles = Directory.GetFiles(recordConfigs["Directory"], "*.CSV", SearchOption.AllDirectories);
-            _fileCount = recordFiles.Length;
-            _fileProcessed = 0;
-            Parallel.ForEach(recordFiles,
-                 new ParallelOptions { MaxDegreeOfParallelism = AppConfig.MaxUploadThread },
-                (fileName) =>
+            var currentFileIndex = startLine / 16384;
+            var offset = (startLine % 16384);
+            var files = Directory.GetFiles(recordConfigs["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var currentLine = startLine;
+            var fileList = new List<Dictionary<string, int>>();
+            var fileName = 1;
+            while (currentLine < endLine)
+            {
+                fileList.Add(new Dictionary<string, int>
                 {
-                    var client = new PostClient($"{ServerAddr}RecordFile");
-                    var file = new RecordFile
-                    {
-                        FileName = Path.GetFileNameWithoutExtension(fileName),
-                        FileDataBytes = File.ReadAllBytes(fileName),
-                        Configs = recordConfigs
-                    };
-
-                    var response = string.Empty;
-                    var tryTimes = 0;
-                    while (response != "255")
-                    {
-                        if (tryTimes > 10) return;
-                        response = client.Post(JsonConvert.SerializeObject(file));
-                        tryTimes++;
-                    }
-
-                    _fileProcessed++;
-                    progress.UpdateProgressBar((_fileProcessed / (_fileCount * 1.0)) * 100);
+                    { "file", currentFileIndex },
+                    { "offset", offset },
+                    { "fileName",  fileName}
                 });
-            StartRecordProcess(recordConfigs, progress);
+                fileName++;
+                offset = 0;
+                currentLine += 16384;
+            }
+            _fileCount = (endLine - startLine) / 16384;
+            _fileProcessed = 0;
+            var fileNameList = new List<string>();
+            foreach (var uploadFile in fileList)
+            {
+                var client = new PostClient($"{ServerAddr}RecordFile");
+                var file = new RecordFile
+                {
+                    FileName = uploadFile["fileName"].ToString("D8"),
+                    Configs = recordConfigs
+                };
+                fileNameList.Add(uploadFile["fileName"].ToString("D8"));
+                using (var reader = new BinaryReader(new FileStream(files[uploadFile["file"]], FileMode.Open)))
+                {
+                    file.FileDataBytes = new byte[(int)(reader.BaseStream.Length - uploadFile["offset"] * 16)];
+                    reader.BaseStream.Seek(uploadFile["offset"] * 16, SeekOrigin.Begin);
+                    reader.Read(file.FileDataBytes, 0, (int)(reader.BaseStream.Length - uploadFile["offset"] * 16));
+                }
+
+                var response = string.Empty;
+                var tryTimes = 0;
+                while (response != "255")
+                {
+                    if (tryTimes > 10) return;
+                    response = client.Post(JsonConvert.SerializeObject(file));
+                    tryTimes++;
+                }
+
+                _fileProcessed++;
+                progress.UpdateProgressBar((_fileProcessed / (_fileCount * 1.0)) * 100);
+            }
+            StartRecordProcess(recordConfigs, progress, fileNameList);
         }
 
-        private static void StartRecordProcess(Dictionary<string, string> recordConfigs, View.Progress progress)
+        private static void StartRecordProcess(Dictionary<string, string> recordConfigs, View.Progress progress, List<string> fileList )
         {
             var client = new PostClient($"{ServerAddr}Record");
-            var files =
-                Directory.GetFiles(recordConfigs["Directory"], "*.CSV", SearchOption.AllDirectories)
-                    .Select(Path.GetFileNameWithoutExtension)
-                    .ToList();
             var recordParams = new RecordParams
             {
                 RecordConfigs = recordConfigs,
-                FileList = files,
+                FileList = fileList,
                 RecordName = recordConfigs["RecordName"]
             };
 

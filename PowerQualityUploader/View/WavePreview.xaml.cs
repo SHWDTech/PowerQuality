@@ -17,13 +17,9 @@ namespace PowerQualityUploader.View
     {
         private readonly Dictionary<string, string> _record;
 
-        private const ushort SingleFileLine = 16385;
+        private const ushort SingleFileLine = 16384;
 
-        private double _sliderMaxValue;
-
-        private double _sliderMinValue;
-
-        private TextBox _currentTimeBox;
+        private double SliderValue => SldTimeRange.Value;
 
         private readonly DateTime _startDateTime;
 
@@ -36,6 +32,10 @@ namespace PowerQualityUploader.View
         private readonly double _currentRestore;
 
         private readonly double _voltageRestore;
+
+        private int DataRange => int.Parse(((ComboBoxItem) CmbRange.SelectedItem).Tag.ToString());
+
+        private int DataRangeEnd => (int) SldTimeRange.Value + DataRange;
 
         public WavePreview()
         {
@@ -51,100 +51,124 @@ namespace PowerQualityUploader.View
             _voltageStep = double.Parse(record["VoltageStep"]);
             _currentRestore = double.Parse(record["CurrentRestore"]);
             _voltageRestore = double.Parse(record["VoltageRestore"]);
+            SldTimeRange.Minimum = 1;
             PrepareChart();
         }
 
         private void PrepareChart()
         {
-            PvWavePreview.Model = new PlotModel();
-            PvWavePreview.Model.Series.Add(new LineSeries());
-            TxtStartTime.Text = _record["StartDateTime"];
-            TxtEndTime.Text = _record["EndDateTime"];
+            PvWavePreview.Model = new PlotModel
+            {
+                Title = "电压电流实时波形"
+            };
+            PvWavePreview.Model.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "HH:mm:ss.fff",
+                Title = "Wave Date",
+                MinorIntervalType = DateTimeIntervalType.Milliseconds,
+                IntervalType = DateTimeIntervalType.Seconds,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.None,
+            });
+            ResetDateText(null, null);
             var recordFiles = Directory.GetFiles(_record["Directory"], "*.CSV", SearchOption.AllDirectories);
             var lineCount = recordFiles.Length * SingleFileLine;
-            SldTimeRange.Maximum = _sliderMinValue = lineCount;
-            _currentTimeBox = TxtStartTime;
+            SldTimeRange.Maximum = lineCount;
         }
 
-        private void FocusOnTime(object sender, RoutedEventArgs e)
+        private void SliderValueChange(object sender, RoutedEventArgs e)
         {
-            if (!(sender is TextBox)) return;
-            var txtBox = (TextBox)sender;
-            LblSlider.Content = txtBox.Name == "TxtStartTime" ? "开始时间" : "结束时间";
-            SldTimeRange.Value = txtBox.Name == "TxtStartTime" ? _sliderMaxValue : _sliderMinValue;
-            _currentTimeBox = txtBox;
+            ResetDateText(sender, e);
         }
 
-        private void AdjustTextTimeRange(object sender, RoutedEventArgs e)
+        private void ResetDateText(object sender, RoutedEventArgs e)
         {
-            if (!SldTimeRange.IsFocused) return;
-            _currentTimeBox.Text = $"{_startDateTime + new TimeSpan((long)(SldTimeRange.Value * _recordTick)): yyyy-MM-dd HH:mm:ss fff}";
-            if (_currentTimeBox.Name == "TxtStartTime")
+            if (SldTimeRange == null) return;
+            TxtStartTime.Text = $"{_startDateTime + new TimeSpan((long)(SldTimeRange.Value * _recordTick)): yyyy-MM-dd HH:mm:ss.fff}";
+            TxtEndTime.Text = $"{_startDateTime + new TimeSpan((long)(_recordTick * DataRangeEnd)):yyyy-MM-dd HH:mm:ss.fff}";
+        }
+
+        private void RefreashChartOnChannelChange(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < SpCheck.Children.Count; i++)
             {
-                _sliderMaxValue = SldTimeRange.Value;
+                var box = (CheckBox) SpCheck.Children[i];
+                box.IsEnabled = false;
             }
-            else
+            ResfreashChart(sender, e);
+            for (var i = 0; i < SpCheck.Children.Count; i++)
             {
-                _sliderMinValue = SldTimeRange.Value;
+                var box = (CheckBox)SpCheck.Children[i];
+                box.IsEnabled = true;
             }
         }
 
         private void ResfreashChart(object sender, RoutedEventArgs e)
         {
+            if ((int) SliderValue == (int) SldTimeRange.Maximum) return;
             PvWavePreview.Model.Series.Clear();
             foreach (var child in SpCheck.Children)
             {
                 var box = child as CheckBox;
                 if (box != null && box.IsChecked == true)
                 {
-                    PvWavePreview.Model.Series.Add(new LineSeries());
+                    PvWavePreview.Model.Series.Add(new LineSeries {Title = box.Content.ToString()});
                 }
             }
-            var startLine = _sliderMaxValue < _sliderMinValue ? (int)_sliderMaxValue : (int)_sliderMinValue;
-            var endLine = _sliderMaxValue < _sliderMinValue ? (int)_sliderMinValue : (int)_sliderMaxValue;
+            var startLine = (int)SliderValue;
+            var endLine = startLine + DataRange;
+            if (endLine > SldTimeRange.Maximum)
+            {
+                endLine = (int) SldTimeRange.Maximum;
+            }
             var currentFileIndex = startLine / SingleFileLine;
             var offset = (startLine % SingleFileLine);
             var files = Directory.GetFiles(_record["Directory"], "*.CSV", SearchOption.AllDirectories);
-            var currentLine = startLine + 1;
+            var currentLine = startLine;
+            var currentFile = files[currentFileIndex];
+            var reader = new BinaryReader(File.Open(currentFile, FileMode.Open));
+            reader.BaseStream.Seek(offset * 16, SeekOrigin.Begin);
+            var buffer = new byte[16];
             while (currentLine < endLine)
             {
-                var currentFile = files[currentFileIndex];
-                using (var reader = new BinaryReader(File.Open(currentFile, FileMode.Open)))
+                if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 {
-                    var buffer = new byte[16];
-                    reader.BaseStream.Seek(offset * 16, SeekOrigin.Begin);
-                    while (reader.BaseStream.Position < reader.BaseStream.Length)
-                    {
-                        reader.Read(buffer, 0, 16);
-                        UpdatePowerData(buffer, currentLine);
-                        currentLine++;
-                    }
+                    reader.Dispose();
                     currentFileIndex++;
+                    currentFile = files[currentFileIndex];
                     offset = 0;
+                    reader = new BinaryReader(File.Open(currentFile, FileMode.Open));
+                    reader.BaseStream.Seek(offset * 16, SeekOrigin.Begin);
                 }
+                reader.Read(buffer, 0, 16);
+                UpdatePowerData(buffer, currentLine);
+                currentLine++;
             }
-
+            reader.Dispose();
             PvWavePreview.InvalidatePlot();
         }
 
         private void UpdatePowerData(byte[] fileBytes, int currentLine)
         {
+            var seriesIndex = 0;
             for (var i = 0; i < SpCheck.Children.Count; i++)
             {
                 var box = (CheckBox)SpCheck.Children[i];
                 if (box.IsChecked == false) continue;
                 if (int.Parse(box.Tag.ToString()) < 4)
                 {
-                    ((LineSeries) PvWavePreview.Model.Series[i]).Points.Add(
+                    ((LineSeries) PvWavePreview.Model.Series[seriesIndex]).Points.Add(
                         new DataPoint(DateTimeAxis.ToDouble(_startDateTime.AddTicks((long) (currentLine*_recordTick))),
-                            Globals.BytesToInt16(fileBytes, 0, false) / 32768.0d * 5.0 * _currentModel * _currentRestore));
+                            Globals.BytesToInt16(fileBytes, i * 2, false) / 32768.0d * 5.0 * _currentModel * _currentRestore));
                 }
                 else
                 {
-                    ((LineSeries)PvWavePreview.Model.Series[i]).Points.Add(
+                    ((LineSeries)PvWavePreview.Model.Series[seriesIndex]).Points.Add(
                          new DataPoint(DateTimeAxis.ToDouble(_startDateTime.AddTicks((long)(currentLine * _recordTick))),
-                             -Globals.BytesToInt16(fileBytes, 0, false) / 32768.0d * 5.0 * _voltageStep * _voltageRestore));
+                             -Globals.BytesToInt16(fileBytes, i * 2, false) / 32768.0d * 5.0 * _voltageStep * _voltageRestore));
                 }
+                seriesIndex++;
             }
         }
     }

@@ -8,6 +8,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="55"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Row="0">
@@ -69,6 +70,24 @@
             </Grid>
         </Grid>
         <Grid Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="上传起始时间"></Label>
+                    <TextBox IsReadOnly="True" Width="180" x:Name="TxtUploadStartDate" VerticalContentAlignment="Center"></TextBox>
+                    <Label Content="上传长度"></Label>
+                    <TextBox x:Name="TxtUploadLength" Width="40" VerticalContentAlignment="Center">5</TextBox>
+                    <Label Content="(分钟)"></Label>
+                </StackPanel>
+            </Grid>
+            <Grid Row="1">
+                <Slider x:Name="SldUpload" ValueChanged="SetStartDate"></Slider>
+            </Grid>
+        </Grid>
+        <Grid Row="2">
             <Button x:Name="BtnPreview" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Height="30" Content="预览" Margin="0, 0, 120, 0" FontSize="14" Click="StartPreView"></Button>
             <Button x:Name="BtnSubmit" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Height="30" Content="上传" Margin="0, 0, 10, 0" FontSize="14" Click="StartUpLoad"></Button>
         </Grid>

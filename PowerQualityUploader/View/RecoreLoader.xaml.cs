@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,10 +13,17 @@ namespace PowerQualityUploader.View
     /// </summary>
     public partial class RecoreLoader
     {
+        private const ushort SingleFileLine = 16384;
+
+        private double _recordTick;
+
+        private DateTime _startDateTime;
+
         private readonly Dictionary<Guid, Dictionary<string, string>> _records;
         public RecoreLoader()
         {
             InitializeComponent();
+            SldUpload.Minimum = 0;
         }
 
         public RecoreLoader(Dictionary<Guid, Dictionary<string, string>> records) : this()
@@ -34,8 +42,20 @@ namespace PowerQualityUploader.View
             TxtLineType.Text = FileUpLoader.ConfigDictionary[record["LineType"]];
             TxtPeroid.Text = $"{record["Period"]}ms";
             TxtDuration.Text = record["Duration"];
-            TxtStartDateTime.Text = record["StartDateTime"];
+            TxtStartDateTime.Text = TxtUploadStartDate.Text = record["StartDateTime"];
             TxtEndDateTime.Text = record["EndDateTime"];
+            _recordTick = 20 * 10000.0 / int.Parse(record["SampleRate"]);
+            var recordFiles = Directory.GetFiles(record["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var lineCount = recordFiles.Length * SingleFileLine;
+            SldUpload.Maximum = lineCount;
+            _startDateTime = DateTime.Parse(record["StartDateTime"]);
+            SldUpload.Value = 0;
+        }
+
+        private void SetStartDate(object sender, RoutedEventArgs e)
+        {
+            if (_startDateTime == DateTime.MinValue) return;
+            TxtUploadStartDate.Text = $"{_startDateTime + new TimeSpan((long)(SldUpload.Value * _recordTick)): yyyy-MM-dd HH:mm:ss.fff}";
         }
 
         private void StartUpLoad(object sender, RoutedEventArgs e)
@@ -46,11 +66,14 @@ namespace PowerQualityUploader.View
                 return;
             }
             var record = _records[Guid.Parse(((ListBoxItem)RecordNameList.SelectedItem).Tag.ToString())];
+            var start = (int) SldUpload.Value;
+            var endMark = new TimeSpan(0, int.Parse(TxtUploadLength.Text), 0).Ticks / _recordTick  + SldUpload.Value;
+            var end = endMark > SldUpload.Maximum ? (int) SldUpload.Maximum : (int) endMark;
 
             var progress = new Progress { LblMessage = { Content = "正在上传文件。" } };
             Task.Factory.StartNew(() =>
             {
-                FileUpLoader.UploadRecordFiles(record, progress);
+                FileUpLoader.UploadRecordFiles(record, progress, start, end);
             });
             progress.Owner = Application.Current.MainWindow;
             progress.ShowDialog();
