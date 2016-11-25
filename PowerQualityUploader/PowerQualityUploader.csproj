@@ -83,6 +83,9 @@
     </ApplicationDefinition>
     <Compile Include="Model\AppConfig.cs" />
     <Compile Include="Controller\HttpErrorHandler.cs" />
+    <Compile Include="View\DeviceConfig.xaml.cs">
+      <DependentUpon>DeviceConfig.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Progress.xaml.cs">
       <DependentUpon>Progress.xaml</DependentUpon>
     </Compile>
@@ -95,6 +98,10 @@
     <Compile Include="View\WavePreview.xaml.cs">
       <DependentUpon>WavePreview.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\DeviceConfig.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

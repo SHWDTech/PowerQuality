@@ -17,6 +17,9 @@
                         <MenuItem Header="读取内存卡记录信息" Click="LoadFlashRecord"></MenuItem>
                         <MenuItem Header="设置" Click="OpenSetUp"></MenuItem>
                     </MenuItem>
+                    <MenuItem Header="设备" Height="20">
+                        <MenuItem Header="配置" Click="DeviceConfig"></MenuItem>
+                    </MenuItem>
                 </Menu>
             </Border>
         </Grid>

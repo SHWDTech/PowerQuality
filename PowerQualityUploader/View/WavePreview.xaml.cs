@@ -72,7 +72,7 @@ namespace PowerQualityUploader.View
                 MinorGridlineStyle = LineStyle.None,
             });
             ResetDateText(null, null);
-            var recordFiles = Directory.GetFiles(_record["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var recordFiles = Directory.GetFiles(_record["Directory"], "*.HEX", SearchOption.AllDirectories);
             var lineCount = recordFiles.Length * SingleFileLine;
             SldTimeRange.Maximum = lineCount;
         }
@@ -124,7 +124,7 @@ namespace PowerQualityUploader.View
             }
             var currentFileIndex = startLine / SingleFileLine;
             var offset = (startLine % SingleFileLine);
-            var files = Directory.GetFiles(_record["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(_record["Directory"], "*.HEX", SearchOption.AllDirectories);
             var currentLine = startLine;
             var currentFile = files[currentFileIndex];
             var reader = new BinaryReader(File.Open(currentFile, FileMode.Open));

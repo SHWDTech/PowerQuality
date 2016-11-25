@@ -29,5 +29,11 @@ namespace PowerQualityUploader.View
             var setUp = new SetUp {Owner = this};
             setUp.ShowDialog();
         }
+
+        private void DeviceConfig(object sender, RoutedEventArgs e)
+        {
+            var deviceCfg = new DeviceConfig{ Owner = this };
+            deviceCfg.ShowDialog();
+        }
     }
 }

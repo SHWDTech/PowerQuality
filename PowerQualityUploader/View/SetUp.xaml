@@ -6,33 +6,39 @@
         mc:Ignorable="d"
         Title="设置" Height="300" Width="600" ShowInTaskbar="False" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
-        </Grid.RowDefinitions>
-        <GroupBox Header="服务器设置">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"></RowDefinition>
-                    <RowDefinition Height="5"></RowDefinition>
-                    <RowDefinition Height="30"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Row="0">
-                    <DockPanel HorizontalAlignment="Stretch">
-                        <Label Content="服务器地址："></Label>
-                        <TextBox x:Name="TxtServerAddr" VerticalContentAlignment="Center"></TextBox>
-                    </DockPanel>
+        <TabControl>
+            <TabItem Header="基础设置">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="服务器设置">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="5"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid Row="0">
+                                <DockPanel HorizontalAlignment="Stretch">
+                                    <Label Content="服务器地址："></Label>
+                                    <TextBox x:Name="TxtServerAddr" VerticalContentAlignment="Center"></TextBox>
+                                </DockPanel>
+                            </Grid>
+                            <Grid Row="2">
+                                <DockPanel>
+                                    <Label Content="最大并发数："></Label>
+                                    <TextBox x:Name="TxtMaxThread" VerticalContentAlignment="Center" TextChanged="TextNumCheck"></TextBox>
+                                </DockPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <Grid Row="1">
+                        <Button x:Name="BtnConfirm" Content="确定" VerticalAlignment="Center" HorizontalAlignment="Right" Height="30" Margin="0, 0, 10, 0" Width="80" Click="OnConfirm"></Button>
+                    </Grid>
                 </Grid>
-                <Grid Row="2">
-                    <DockPanel>
-                        <Label Content="最大并发数："></Label>
-                        <TextBox x:Name="TxtMaxThread" VerticalContentAlignment="Center" TextChanged="TextNumCheck"></TextBox>
-                    </DockPanel>
-                </Grid>
-            </Grid>
-        </GroupBox>
-        <Grid Row="1">
-            <Button x:Name="BtnConfirm" Content="确定" VerticalAlignment="Center" HorizontalAlignment="Right" Height="30" Margin="0, 0, 10, 0" Width="80" Click="OnConfirm"></Button>
-        </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

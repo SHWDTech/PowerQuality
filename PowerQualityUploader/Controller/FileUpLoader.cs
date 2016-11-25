@@ -57,7 +57,7 @@ namespace PowerQualityUploader.Controller
             var records = new Dictionary<Guid, Dictionary<string, string>>();
             foreach (var dir in directories.Where(obj => File.Exists($"{obj}\\power.cfg")))
             {
-                var fileCount = Directory.GetFiles(dir, "*.csv", SearchOption.AllDirectories).Length;
+                var fileCount = Directory.GetFiles(dir, "*.HEX", SearchOption.AllDirectories).Length;
                 Dictionary<string, string> recordConfigs;
                 if (!TryParseConfig(File.ReadAllText($"{dir}\\power.cfg"), out recordConfigs)) continue;
                 var duration = GetDuration(recordConfigs, fileCount);
@@ -89,10 +89,10 @@ namespace PowerQualityUploader.Controller
         {
             var currentFileIndex = startLine / 16384;
             var offset = (startLine % 16384);
-            var files = Directory.GetFiles(recordConfigs["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(recordConfigs["Directory"], "*.HEX", SearchOption.AllDirectories);
             var currentLine = startLine;
             var fileList = new List<Dictionary<string, int>>();
-            var fileName = 1;
+            var fileName = 0;
             while (currentLine < endLine)
             {
                 fileList.Add(new Dictionary<string, int>

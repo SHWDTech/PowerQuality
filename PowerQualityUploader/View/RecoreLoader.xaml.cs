@@ -45,7 +45,7 @@ namespace PowerQualityUploader.View
             TxtStartDateTime.Text = TxtUploadStartDate.Text = record["StartDateTime"];
             TxtEndDateTime.Text = record["EndDateTime"];
             _recordTick = 20 * 10000.0 / int.Parse(record["SampleRate"]);
-            var recordFiles = Directory.GetFiles(record["Directory"], "*.CSV", SearchOption.AllDirectories);
+            var recordFiles = Directory.GetFiles(record["Directory"], "*.HEX", SearchOption.AllDirectories);
             var lineCount = recordFiles.Length * SingleFileLine;
             SldUpload.Maximum = lineCount;
             _startDateTime = DateTime.Parse(record["StartDateTime"]);
@@ -69,6 +69,11 @@ namespace PowerQualityUploader.View
             var start = (int) SldUpload.Value;
             var endMark = new TimeSpan(0, int.Parse(TxtUploadLength.Text), 0).Ticks / _recordTick  + SldUpload.Value;
             var end = endMark > SldUpload.Maximum ? (int) SldUpload.Maximum : (int) endMark;
+            var startDateTime = _startDateTime + new TimeSpan((long) (SldUpload.Value*_recordTick));
+            var duration = new TimeSpan((long) ((end - start)*_recordTick));
+            record["Duration"] = string.Format("{0:dd}d {0:hh}h {0:mm}m {0:ss}s {0:fff}ms", duration);
+            record["RecordDuration"] = $"{duration:G}";
+            record["EndDateTime"] = $"{startDateTime + duration: yyyy-MM-dd HH:mm:ss.fff}";
 
             var progress = new Progress { LblMessage = { Content = "正在上传文件。" } };
             Task.Factory.StartNew(() =>
