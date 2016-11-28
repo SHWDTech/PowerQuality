@@ -33,6 +33,8 @@ namespace PowerQualityUploader.View
 
         private readonly double _voltageRestore;
 
+        private double _previewSldValue;
+
         private int DataRange => int.Parse(((ComboBoxItem) CmbRange.SelectedItem).Tag.ToString());
 
         private int DataRangeEnd => (int) SldTimeRange.Value + DataRange;
@@ -52,6 +54,14 @@ namespace PowerQualityUploader.View
             _currentRestore = double.Parse(record["CurrentRestore"]);
             _voltageRestore = double.Parse(record["VoltageRestore"]);
             SldTimeRange.Minimum = 1;
+            if (record["LineType"] != "34")
+            {
+                VolA.Content = "AB(V)";
+                VolB.Content = "BC(V)";
+                VolC.Content = "CA(V)";
+                VolN.IsChecked = false;
+                VolN.Visibility = Visibility.Hidden;
+            }
             PrepareChart();
         }
 
@@ -169,6 +179,19 @@ namespace PowerQualityUploader.View
                              -Globals.BytesToInt16(fileBytes, i * 2, false) / 32768.0d * 5.0 * _voltageStep * _voltageRestore));
                 }
                 seriesIndex++;
+            }
+        }
+
+        private void SliderMouseDown(object sender, RoutedEventArgs e)
+        {
+            _previewSldValue = SldTimeRange.Value;
+        }
+
+        private void SliderMouseUp(object sender, RoutedEventArgs e)
+        {
+            if ((int) _previewSldValue != (int) SldTimeRange.Value)
+            {
+                ResfreashChart(sender, e);
             }
         }
     }

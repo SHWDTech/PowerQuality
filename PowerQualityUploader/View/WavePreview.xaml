@@ -50,6 +50,21 @@
                                         <system:Int32>1280</system:Int32>
                                     </ComboBoxItem.Tag>
                                 </ComboBoxItem>
+                                <ComboBoxItem Content="200ms">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>2560</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                                <ComboBoxItem Content="500ms">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>6400</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
+                                <ComboBoxItem Content="1s">
+                                    <ComboBoxItem.Tag>
+                                        <system:Int32>12800</system:Int32>
+                                    </ComboBoxItem.Tag>
+                                </ComboBoxItem>
                             </ComboBox>
                             <Button x:Name="BtnRefreash" Margin="20,0,0,0" Content="刷新" Width="60" Click="ResfreashChart"></Button>
                         </StackPanel>
@@ -60,7 +75,9 @@
                                         HorizontalAlignment="Stretch" 
                                         ValueChanged="SliderValueChange" 
                                         TickFrequency ="1"
-                                        IsSnapToTickEnabled="True"></Slider>
+                                        IsSnapToTickEnabled="True"
+                                        PreviewMouseDown="SliderMouseDown"
+                                        PreviewMouseUp="SliderMouseUp"></Slider>
                             </DockPanel>
                         </Border>
                     </StackPanel>
@@ -74,10 +91,10 @@
                 <Grid Row="0">
                     <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" >
                         <StackPanel Orientation="Horizontal" x:Name="SpCheck" VerticalAlignment="Center">
-                            <CheckBox Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolA" Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolB" Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolC" Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolN" Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)" Click="RefreashChartOnChannelChange"></CheckBox>
                             <CheckBox Tag="4" IsChecked="True" VerticalAlignment="Center" Content="A(A)" Click="RefreashChartOnChannelChange"></CheckBox>
                             <CheckBox Tag="5" IsChecked="True" VerticalAlignment="Center" Content="B(A)" Click="RefreashChartOnChannelChange"></CheckBox>
                             <CheckBox Tag="6" IsChecked="True" VerticalAlignment="Center" Content="C(A)" Click="RefreashChartOnChannelChange"></CheckBox>
