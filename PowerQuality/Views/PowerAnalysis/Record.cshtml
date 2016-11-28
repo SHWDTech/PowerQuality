@@ -23,6 +23,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active navtab"><a href="#" data-linkdiv="voltageCurrent">电压和电流</a></li>
         <li role="presentation" class="navtab"><a href="#" data-linkdiv="harmonics" id="harTab">谐波</a></li>
+        <li role="presentation" class="navtab"><a href="#" data-linkdiv="powers">功率</a></li>
     </ul>
     <div id="voltageCurrent" style="display: none;" class="presentDiv">
         <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
@@ -78,6 +79,27 @@
             </form>
         </div>
         <div id="harmonicCharts" class="float-card float-card-default" style="padding: 10px;">
+        </div>
+    </div>
+    <div id="powers" style="display: none;" class="presentDiv">
+        <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
+            <form id="powersCategory" class="form form-horizontal">
+                <input type="checkbox" id="ActivePower" checked="checked"/><label for="ActivePower"  style="margin-bottom: 0;">有功功率</label>
+                <input type="checkbox" id="ReactivePower" /><label for="ReactivePower" style="margin-bottom: 0;">无功功率</label>
+                <input type="checkbox" id="ApparentPower" /><label for="ApparentPower" style="margin-bottom: 0;">视在功率</label>
+                <input type="checkbox" id="PowerFactor" /><label for="PowerFactor" style="margin-bottom: 0;">功率因素</label>
+            </form>
+        </div>
+        <div id="powersCharts" class="float-card float-card-default" style="padding: 10px;">
+            <div id="_A" style="height: 200px;" data-title="AN" class="powerChart">
+                
+            </div>
+            <div id="_B" style="height: 200px;" data-title="BN" class="powerChart">
+
+            </div>
+            <div id="_C" style="height: 200px;" data-title="CN" class="powerChart">
+
+            </div>
         </div>
     </div>
 </div>

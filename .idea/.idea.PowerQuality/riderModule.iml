@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.exe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.exe.config" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.rsp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csi.exe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csi.rsp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.Build.Tasks.CodeAnalysis.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.CSharp.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.CSharp.Scripting.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.Scripting.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.VisualBasic.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CSharp.Core.targets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.DiaSymReader.Native.amd64.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.DiaSymReader.Native.x86.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.VisualBasic.Core.targets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.AppContext.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Collections.Immutable.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Diagnostics.StackTrace.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.IO.FileSystem.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.IO.FileSystem.Primitives.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Reflection.Metadata.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.exe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.exe.config" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.rsp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/VBCSCompiler.exe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/VBCSCompiler.exe.config" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../PowerProcess" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../PowerQuality" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../PowerQualityModel" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../PowerQualityUploader" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Repository" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../TestConsole" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerProcess/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerProcess/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQuality/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQuality/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQualityModel/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQualityModel/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQualityUploader/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../PowerQualityUploader/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Repository/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Repository/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../TestConsole/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../TestConsole/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../WDYunPlatform/Platform.Utility">
+      <sourceFolder url="file://$MODULE_DIR$/../../../WDYunPlatform/Platform.Utility" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../WDYunPlatform/Platform.Utility/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../WDYunPlatform/Platform.Utility/obj" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

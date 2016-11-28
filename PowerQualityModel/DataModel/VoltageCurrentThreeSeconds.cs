@@ -93,5 +93,77 @@ namespace PowerQualityModel.DataModel
         public double Current_N_Avg { get; set; }
 
         public double Current_N_Min { get; set; }
+
+        public double ActivePower_A_Max { get; set; }
+
+        public double ActivePower_A_Avg { get; set; }
+
+        public double ActivePower_A_Min { get; set; }
+
+        public double ActivePower_B_Max { get; set; }
+
+        public double ActivePower_B_Avg { get; set; }
+
+        public double ActivePower_B_Min { get; set; }
+
+        public double ActivePower_C_Max { get; set; }
+
+        public double ActivePower_C_Avg { get; set; }
+
+        public double ActivePower_C_Min { get; set; }
+
+        public double ReactivePower_A_Max { get; set; }
+
+        public double ReactivePower_A_Avg { get; set; }
+
+        public double ReactivePower_A_Min { get; set; }
+
+        public double ReactivePower_B_Max { get; set; }
+
+        public double ReactivePower_B_Avg { get; set; }
+
+        public double ReactivePower_B_Min { get; set; }
+
+        public double ReactivePower_C_Max { get; set; }
+
+        public double ReactivePower_C_Avg { get; set; }
+
+        public double ReactivePower_C_Min { get; set; }
+
+        public double ApparentPower_A_Max { get; set; }
+
+        public double ApparentPower_A_Avg { get; set; }
+
+        public double ApparentPower_A_Min { get; set; }
+
+        public double ApparentPower_B_Max { get; set; }
+
+        public double ApparentPower_B_Avg { get; set; }
+
+        public double ApparentPower_B_Min { get; set; }
+
+        public double ApparentPower_C_Max { get; set; }
+
+        public double ApparentPower_C_Avg { get; set; }
+
+        public double ApparentPower_C_Min { get; set; }
+
+        public double PowerFactor_A_Max { get; set; }
+
+        public double PowerFactor_A_Avg { get; set; }
+
+        public double PowerFactor_A_Min { get; set; }
+
+        public double PowerFactor_B_Max { get; set; }
+
+        public double PowerFactor_B_Avg { get; set; }
+
+        public double PowerFactor_B_Min { get; set; }
+
+        public double PowerFactor_C_Max { get; set; }
+
+        public double PowerFactor_C_Avg { get; set; }
+
+        public double PowerFactor_C_Min { get; set; }
     }
 }

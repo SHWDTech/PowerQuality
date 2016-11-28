@@ -2,11 +2,12 @@
 
 var voltageCurrentCharts = [];
 var harmonicCharts = [];
+var powerCharts = [];
 
 var chartsConfig = {
     'scale': 0,
     'maxPoint': 0,
-    'voltageCUrrentDataSource': null,
+    'voltageCurrentDataSource': null,
     'harmonicDataSource': null,
     start: 0,
     end: 14400
@@ -62,6 +63,7 @@ var powerAnalysis = {
     'voltageCurrentChannel': [],
     'harmonicChannel': [],
     'harmonicClass': [],
+    'powerCategory': [],
     'fetch': function (url, startIndex, totalRequest, target) {
         if (totalRequest <= 0) {
             loadPercentage += 25;
@@ -82,6 +84,7 @@ var powerAnalysis = {
             powerAnalysis.setupConfig();
             powerAnalysis.initVoltageCurrentCharts();
             powerAnalysis.initHarmonicCharts();
+            powerAnalysis.initPowersCharts(),
             $('#pageLoading').hide('slow');
             $('#voltageCurrent').show();
             $('#mainContent').show('slow');
@@ -115,7 +118,7 @@ var powerAnalysis = {
                 var start = params.batch[0].startValue;
                 var end = params.batch[0].endValue;
                 if (chartsConfig.scale === 3 && (end - start) * 3 < chartsConfig.maxPoint) {
-                    chartsConfig.voltageCUrrentDataSource = powerDatas.voltageCurrentSecond;
+                    chartsConfig.voltageCurrentDataSource = powerDatas.voltageCurrentSecond;
                     chartsConfig.start = start * 3;
                     chartsConfig.end = end * 3;
                     chartsConfig.scale = 1;
@@ -182,15 +185,32 @@ var powerAnalysis = {
             });
         });
     },
+    'initPowersCharts': function () {
+        powerCharts.forEach(function (chart) {
+            chart.dispose();
+        });
+
+        $.each($('.powerChart'), function (index, div) {
+            $(div).width($('#chartHolder').width() - 50);
+            var current = echarts.init(div);
+            if (index !== 0) {
+                $(div).css('margin-top', '-20px');
+            }
+            powerCharts.push(current);
+            current.setOption(powerAnalysis.getPowerChartOption(div, index));
+        });
+
+        echarts.connect(powerCharts);
+    },
     'getVoltageCurrentChartOption': function (channel, index) {
-        var max = chartsConfig.voltageCUrrentDataSource[channel + '_Max'].slice(chartsConfig.start, chartsConfig.end);
-        var avg = chartsConfig.voltageCUrrentDataSource[channel + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
-        var min = chartsConfig.voltageCUrrentDataSource[channel + '_Min'].slice(chartsConfig.start, chartsConfig.end);
+        var max = chartsConfig.voltageCurrentDataSource[channel + '_Max'].slice(chartsConfig.start, chartsConfig.end);
+        var avg = chartsConfig.voltageCurrentDataSource[channel + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
+        var min = chartsConfig.voltageCurrentDataSource[channel + '_Min'].slice(chartsConfig.start, chartsConfig.end);
         var maxVal = Math.round(Math.max.apply(null, max.concat(avg).concat(min)) * 100) / 100;
         var minVal = Math.round(Math.min.apply(null, max.concat(avg).concat(min)) * 100) / 100;
         var interval = Math.round((maxVal - minVal) / 4 * 100) / 100;
         var par = {
-            'category': chartsConfig.voltageCUrrentDataSource['RecordTime'].slice(chartsConfig.start, chartsConfig.end).map(function (date) {
+            'category': chartsConfig.voltageCurrentDataSource['RecordTime'].slice(chartsConfig.start, chartsConfig.end).map(function (date) {
                 return new Date(date);
             }),
             'max': max,
@@ -229,9 +249,34 @@ var powerAnalysis = {
 
         return chartsOption.LineChart(par);
     },
+    'getPowerChartOption': function (div, index) {
+        var series = powerAnalysis.preparePowerSeries(div);
+        var legend = [];
+        powerAnalysis.powerCategory.forEach(function (cat) {
+            legend.push(cat + $(div).attr('id') + '_Max');
+            legend.push(cat + $(div).attr('id') + '_Avg');
+            legend.push(cat + $(div).attr('id') + '_Min');
+        });
+        var par = {
+            'category': chartsConfig.voltageCurrentDataSource['RecordTime'].slice(chartsConfig.start, chartsConfig.end).map(function (date) {
+                return new Date(date);
+            }),
+            'axisLabel': true,
+            'index': index,
+            'titleName': $(div).attr('data-title'),
+            'series': series,
+            'legend': legend
+        }
+
+        if (index < powerAnalysis.harmonicChannel.length - 1) {
+            par['axisLabel'] = false;
+        }
+
+        return chartsOption.StepLinePower(par);
+    },
     'prepareSeries': function (channel) {
         var series = [];
-        powerAnalysis.harmonicClass.forEach(function(harmonicClass) {
+        powerAnalysis.harmonicClass.forEach(function (harmonicClass) {
             var params = {
                 'name': harmonicClass,
                 'data': chartsConfig.harmonicDataSource[channel + 'Harmonic' + harmonicClass].map(function (har) {
@@ -241,6 +286,24 @@ var powerAnalysis = {
             series.push(chartsOption.LineSeries(params));
         });
 
+        return series;
+    },
+    'preparePowerSeries': function (div) {
+        var series = [];
+        powerAnalysis.powerCategory.forEach(function (cat) {
+            var max = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Max'].slice(chartsConfig.start, chartsConfig.end);
+            var avg = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
+            var min = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Min'].slice(chartsConfig.start, chartsConfig.end);
+            var params = {
+                'name': [cat + $(div).attr('id') + '_Max', cat + $(div).attr('id') + '_Avg', cat + $(div).attr('id') + '_Min'],
+                'data': { 'max': max, 'avg': avg, 'min': min },
+                'yAxisIndex': 0
+            }
+            if (cat === 'PowerFactor') {
+                params['yAxisIndex'] = 1;
+            }
+            series = series.concat(chartsOption.StepSeries(params));
+        });
         return series;
     },
     'setVoltageCurrentChannels': function () {
@@ -268,15 +331,24 @@ var powerAnalysis = {
             }
         });
     },
+    'setPowerCategory': function () {
+        powerAnalysis.powerCategory = [];
+        $.each($('#powersCategory input[type="checkbox"]'), function (key, value) {
+            if ($(value).is(':checked')) {
+                powerAnalysis.powerCategory.push($(value).attr('id'));
+            }
+        });
+    },
     'setupConfig': function () {
         powerAnalysis.setVoltageCurrentChannels();
         powerAnalysis.setHarmonicChannels();
+        powerAnalysis.setPowerCategory();
         chartsConfig.maxPoint = $('#chartHolder').width() - 100;
         if (powerDatas.voltageCurrentSecond['RecordTime'].length > chartsConfig.maxPoint) {
-            chartsConfig.voltageCUrrentDataSource = powerDatas.voltageCurrentThreeSecond;
+            chartsConfig.voltageCurrentDataSource = powerDatas.voltageCurrentThreeSecond;
             chartsConfig.scale = 3;
         } else {
-            chartsConfig.voltageCUrrentDataSource = powerDatas.voltageCurrentSecond;
+            chartsConfig.voltageCurrentDataSource = powerDatas.voltageCurrentSecond;
             chartsConfig.scale = 1;
         }
         chartsConfig.harmonicDataSource = powerDatas.harmonics;
@@ -296,6 +368,10 @@ $(function () {
     $('#harmonicChannelOptions input[type="checkbox"]').on('change', function () {
         powerAnalysis.setHarmonicChannels();
         powerAnalysis.initHarmonicCharts();
+    });
+    $('#powersCategory input[type="checkbox"]').on('change', function () {
+        powerAnalysis.setPowerCategory();
+        powerAnalysis.initPowersCharts();
     });
     $('#harmonicClassOptions input[type="checkbox"]').on('change', function () {
         powerAnalysis.harmonicClass = [];
