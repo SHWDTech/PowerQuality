@@ -47,7 +47,7 @@
         <Grid Row="2">
             <DockPanel VerticalAlignment="Center" HorizontalAlignment="Left">
                 <Label Content="电流上限" Width="100"></Label>
-                <ComboBox x:Name="CurrentModal" Width="100" VerticalContentAlignment="Center">
+                <ComboBox x:Name="CurrentModel" Width="100" VerticalContentAlignment="Center">
                     <ComboBoxItem Tag="333.3">1000</ComboBoxItem>
                     <ComboBoxItem Tag="2000">6000</ComboBoxItem>
                 </ComboBox>

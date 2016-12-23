@@ -17,7 +17,7 @@ namespace PowerQuality.Controllers
                 {
                     var currentIndex = 0;
                     var channel = 0;
-                    var currentModel = double.Parse(file.Configs["CurrentModal"]);
+                    var currentModel = double.Parse(file.Configs["CurrentModel"]);
                     var voltageStep = double.Parse(file.Configs["VoltageStep"]);
                     var currentRestore = double.Parse(file.Configs["CurrentRestore"]);
                     var voltageRestore = double.Parse(file.Configs["VoltageRestore"]);

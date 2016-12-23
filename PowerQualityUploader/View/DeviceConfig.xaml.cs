@@ -24,6 +24,8 @@ namespace PowerQualityUploader.View
 
         private bool _isRead;
 
+        private bool _readTaskRunning;
+
         private int _lastWriteLength;
 
         private bool _processWaiting;
@@ -87,16 +89,21 @@ namespace PowerQualityUploader.View
             if (!_processWaiting) return;
             lock (_serialPortReceiveBuffer)
             {
-                _serialPortReceiveBuffer.AddRange(Encoding.GetEncoding("GBK").GetBytes(_currentSerialPort.ReadExisting()));
+                while (_currentSerialPort.BytesToRead > 0)
+                {
+                    _serialPortReceiveBuffer.Add((byte)_currentSerialPort.ReadByte());
+                }
             }
 
-            if (_isRead)
+            if (_isRead && !_readTaskRunning)
             {
                 Task.Factory.StartNew(ReadCheck);
+                _readTaskRunning = true;
             }
-            else
+            else if(!_readTaskRunning)
             {
                 Task.Factory.StartNew(WriteCheck);
+                _readTaskRunning = true;
             }
         }
 
@@ -107,8 +114,7 @@ namespace PowerQualityUploader.View
                 Thread.Sleep(1000);
                 _processWaiting = false;
                 if (_serialPortReceiveBuffer.Count < 2
-                    || (_serialPortReceiveBuffer[0] != 23 && _serialPortReceiveBuffer[1] != 23)
-                    || _serialPortReceiveBuffer.Count - 2 != _lastWriteLength)
+                    || (_serialPortReceiveBuffer[0] != 0x23 && _serialPortReceiveBuffer[1] != 0x23))
                 {
                     MessageBox.Show("读取配置失败。");
                 }
@@ -120,24 +126,25 @@ namespace PowerQualityUploader.View
                         var items = Encoding.GetEncoding("GBK")
                                 .GetString(_serialPortReceiveBuffer.ToArray())
                                 .Split(new[] {"\r\n"}, StringSplitOptions.None);
-                        var config = items.Select(cfg => cfg.Split('=')).ToDictionary(values => values[0], values => values[1]);
+                        var config = items.Where(obj => obj != string.Empty).Select(cfg => cfg.Split('=')).ToDictionary(values => values[0], values => values[1]);
                         Frequency.Text = config["Frequency"];
-                        LineType.SelectedValue = config["LineType"];
-                        CurrentModal.SelectedValue = config["CurrentModal"];
-                        VoltageStep.SelectedValue = config["VoltageStep"];
+                        LineType.SelectedItem = GetSelectedItem(LineType.Items, config["LineType"]);
+                        CurrentModel.SelectedItem = GetSelectedItem(CurrentModel.Items, config["CurrentModel"]);
+                        VoltageStep.SelectedItem = GetSelectedItem(VoltageStep.Items, config["VoltageStep"]);
                         TxtCurrentRestore.Text = config["CurrentRestore"];
                         TxtVoltageRestore.Text = config["VoltageRestore"];
-                        Period.SelectedValue = config["Period"];
-                        SampleRate.SelectedValue = config["SampleRate"];
+                        Period.SelectedItem = GetSelectedItem(Period.Items, config["Period"]);
+                        SampleRate.SelectedItem = GetSelectedItem(SampleRate.Items, config["SampleRate"]);
                         TxtComment.Text = config["Comment"];
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("读取配置失败。");
+                        MessageBox.Show($"读取配置失败。{ex}");
                     }
                     
                 }
 
+                _readTaskRunning = false;
             });
         }
 
@@ -147,16 +154,8 @@ namespace PowerQualityUploader.View
             {
                 Thread.Sleep(1000);
                 _processWaiting = false;
-                if (_serialPortReceiveBuffer.Count < 2
-                    || (_serialPortReceiveBuffer[0] != 23 && _serialPortReceiveBuffer[1] != 23)
-                    || _serialPortReceiveBuffer.Count - 2 != _lastWriteLength)
-                {
-                    MessageBox.Show("写入配置失败。");
-                }
-                else
-                {
-                    MessageBox.Show("写入配置成功。");
-                }
+                MessageBox.Show(_serialPortReceiveBuffer.Count != _lastWriteLength ? "写入配置失败。" : "写入配置成功。");
+                _readTaskRunning = false;
             });
         }
 
@@ -176,13 +175,14 @@ namespace PowerQualityUploader.View
 
         private void WriteConfig(object sender, RoutedEventArgs e)
         {
+            _isRead = false;
             try
             {
                 var configBuilder = new StringBuilder();
                 configBuilder.Append("WriteConfig=\r\n");
                 configBuilder.Append($"Frequency={Frequency.Text}\r\n");
                 configBuilder.Append($"LineType={((ComboBoxItem) LineType.SelectedItem).Tag}\r\n");
-                configBuilder.Append($"CurrentModal={((ComboBoxItem) CurrentModal.SelectedItem).Tag}\r\n");
+                configBuilder.Append($"CurrentModel={((ComboBoxItem) CurrentModel.SelectedItem).Tag}\r\n");
                 configBuilder.Append($"VoltageStep={((ComboBoxItem) VoltageStep.SelectedItem).Tag}\r\n");
                 configBuilder.Append($"CurrentRestore={TxtCurrentRestore.Text}\r\n");
                 configBuilder.Append($"VoltageRestore={TxtVoltageRestore.Text}\r\n");
@@ -213,7 +213,7 @@ namespace PowerQualityUploader.View
             try
             {
                 var configBuilder = new StringBuilder();
-                configBuilder.Append("WriteConfig=\r\n");
+                configBuilder.Append("ReadConfig=?\r\n");
                 var protocolBytes = Encoding.GetEncoding("GBK").GetBytes(configBuilder.ToString());
                 _currentSerialPort.Write(protocolBytes, 0, protocolBytes.Length);
             }
@@ -241,6 +241,21 @@ namespace PowerQualityUploader.View
             }
 
             return BitConverter.GetBytes(regCrc);
+        }
+
+        private object GetSelectedItem(ItemCollection collection, string value)
+        {
+            foreach (var item in collection)
+            {
+                if (!(item is ComboBoxItem)) return null;
+                var cmbItem = item as ComboBoxItem;
+                if (cmbItem.Tag.ToString() == value)
+                {
+                    return cmbItem;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace PowerQualityUploader.View
             _record = record;
             _startDateTime = DateTime.Parse(_record["StartDateTime"]);
             _recordTick = 20 * 10000.0 / int.Parse(_record["SampleRate"]);
-            _currentModel = double.Parse(record["CurrentModal"]);
+            _currentModel = double.Parse(record["CurrentModel"]);
             _voltageStep = double.Parse(record["VoltageStep"]);
             _currentRestore = double.Parse(record["CurrentRestore"]);
             _voltageRestore = double.Parse(record["VoltageRestore"]);
