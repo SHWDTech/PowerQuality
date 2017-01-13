@@ -87,7 +87,7 @@ namespace PowerProcess
                         using (var cmd = connection.CreateCommand())
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandText = "calcvoltageseconds";
+                            cmd.CommandText = "transferPowers";
                             cmd.CommandTimeout = int.MaxValue;
                             cmd.Parameters.Add(new MySqlParameter()
                             {
@@ -96,6 +96,8 @@ namespace PowerProcess
                                 ParameterName = "relativeRecordId",
                                 Value = newRecord.Id
                             });
+                            cmd.ExecuteNonQuery();
+                            cmd.CommandText = "calcvoltageseconds";
                             cmd.ExecuteNonQuery();
                             cmd.CommandText = "calcvoltagethreeseconds";
                             cmd.ExecuteNonQuery();
