@@ -18,8 +18,15 @@
 </div>
 <div id="chartHolder"></div>
 
-<div id="mainContent" style="display: none;">
-    <input type="hidden" id="recordId" recordId="@Model.Record.Id" />
+<div id="mainContent" style="display: none; position: relative;">
+    <div style="position: absolute; height: 40px; width: 500px; right: 10px; background-color: #fff; padding: 10px;">
+        <form id="valueTypeOptions">
+            <label for="showMax" style="margin-bottom: 0; margin-right: 5px;">最大值</label><input type="checkbox" checked="checked" id="showMax" style="margin-top: 0; margin-right: 15px;"/>
+            <label for="showAvg" style="margin-bottom: 0; margin-right: 5px;">平均值</label><input type="checkbox" checked="checked" id="showAvg" style="margin-top: 0; margin-right: 15px;"/>
+            <label for="showMin" style="margin-bottom: 0; margin-right: 5px;">最小值</label><input type="checkbox" checked="checked" id="showMin" style="margin-top: 0; margin-right: 15px;"/>
+        </form>
+    </div>
+    <input type="hidden" id="recordId" recordId="@Model.Record.Id"/>
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active navtab"><a href="#" data-linkdiv="voltageCurrent">电压和电流</a></li>
         <li role="presentation" class="navtab"><a href="#" data-linkdiv="harmonics" id="harTab">谐波</a></li>
@@ -29,17 +36,17 @@
         <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
             <form id="channelOptions" class="form form-horizontal">
                 <span>显示通道：</span>
-                <input type="checkbox" id="Voltage_AN" data-order="0" data-vol-type="star" checked="checked" /><label for="Voltage_AN" style="margin-bottom: 0;">AN(V)</label>
-                <input type="checkbox" id="Voltage_BN" data-order="1" data-vol-type="star" checked="checked" /><label for="Voltage_BN" style="margin-bottom: 0;">BN(V)</label>
-                <input type="checkbox" id="Voltage_CN" data-order="2" data-vol-type="star" checked="checked" /><label for="Voltage_CN" style="margin-bottom: 0;">CN(V)</label>
-                <input type="checkbox" id="Voltage_NG" data-order="3" data-vol-type="star" checked="checked" /><label for="Voltage_NG" style="margin-bottom: 0;">NG(V)</label>
-                <input type="checkbox" id="Voltage_AB" data-order="4" data-vol-type="triangle" /><label for="Voltage_AB" style="margin-bottom: 0;">AB(V)</label>
-                <input type="checkbox" id="Voltage_BC" data-order="5" data-vol-type="triangle" /><label for="Voltage_BC" style="margin-bottom: 0;">BC(V)</label>
-                <input type="checkbox" id="Voltage_CA" data-order="6" data-vol-type="triangle" /><label for="Voltage_CA" style="margin-bottom: 0;">CA(V)</label>
-                <input type="checkbox" id="Current_A" data-order="7" checked="checked" /><label for="Current_A" style="margin-bottom: 0;">A(A)</label>
-                <input type="checkbox" id="Current_B" data-order="8" checked="checked" /><label for="Current_B" style="margin-bottom: 0;">B(A)</label>
-                <input type="checkbox" id="Current_C" data-order="9" checked="checked" /><label for="Current_C" style="margin-bottom: 0;">C(A)</label>
-                <input type="checkbox" id="Current_N" data-order="10" checked="checked" /><label for="Current_N" style="margin-bottom: 0;">N(A)</label>
+                <input type="checkbox" id="Voltage_AN" data-order="0" data-vol-type="star" checked="checked"/><label for="Voltage_AN" style="margin-bottom: 0;">AN(V)</label>
+                <input type="checkbox" id="Voltage_BN" data-order="1" data-vol-type="star" checked="checked"/><label for="Voltage_BN" style="margin-bottom: 0;">BN(V)</label>
+                <input type="checkbox" id="Voltage_CN" data-order="2" data-vol-type="star" checked="checked"/><label for="Voltage_CN" style="margin-bottom: 0;">CN(V)</label>
+                <input type="checkbox" id="Voltage_NG" data-order="3" data-vol-type="star" checked="checked"/><label for="Voltage_NG" style="margin-bottom: 0;">NG(V)</label>
+                <input type="checkbox" id="Voltage_AB" data-order="4" data-vol-type="triangle"/><label for="Voltage_AB" style="margin-bottom: 0;">AB(V)</label>
+                <input type="checkbox" id="Voltage_BC" data-order="5" data-vol-type="triangle"/><label for="Voltage_BC" style="margin-bottom: 0;">BC(V)</label>
+                <input type="checkbox" id="Voltage_CA" data-order="6" data-vol-type="triangle"/><label for="Voltage_CA" style="margin-bottom: 0;">CA(V)</label>
+                <input type="checkbox" id="Current_A" data-order="7" checked="checked"/><label for="Current_A" style="margin-bottom: 0;">A(A)</label>
+                <input type="checkbox" id="Current_B" data-order="8" checked="checked"/><label for="Current_B" style="margin-bottom: 0;">B(A)</label>
+                <input type="checkbox" id="Current_C" data-order="9" checked="checked"/><label for="Current_C" style="margin-bottom: 0;">C(A)</label>
+                <input type="checkbox" id="Current_N" data-order="10" checked="checked"/><label for="Current_N" style="margin-bottom: 0;">N(A)</label>
             </form>
         </div>
         <div id="voltageCurrentCharts" class="float-card float-card-default" style="padding: 10px;">
@@ -49,19 +56,19 @@
         <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
             <form id="harmonicChannelOptions" class="form form-horizontal">
                 <span>显示通道：</span>
-                <input type="checkbox" id="VoltageA" data-order="0" data-vol-type="star" checked="checked" /><label for="VoltageA" style="margin-bottom: 0;">AN(V)</label>
-                <input type="checkbox" id="VoltageB" data-order="1" data-vol-type="star" checked="checked" /><label for="VoltageB" style="margin-bottom: 0;">BN(V)</label>
-                <input type="checkbox" id="VoltageC" data-order="2" data-vol-type="star" checked="checked" /><label for="VoltageC" style="margin-bottom: 0;">CN(V)</label>
-                <input type="checkbox" id="CurrentA" data-order="7" checked="checked" /><label for="CurrentA" style="margin-bottom: 0;">A(A)</label>
-                <input type="checkbox" id="CurrentB" data-order="8" checked="checked" /><label for="CurrentB" style="margin-bottom: 0;">B(A)</label>
-                <input type="checkbox" id="CurrentC" data-order="9" checked="checked" /><label for="CurrentC" style="margin-bottom: 0;">C(A)</label>
+                <input type="checkbox" id="VoltageA" data-order="0" data-vol-type="star" checked="checked"/><label for="VoltageA" style="margin-bottom: 0;">AN(V)</label>
+                <input type="checkbox" id="VoltageB" data-order="1" data-vol-type="star" checked="checked"/><label for="VoltageB" style="margin-bottom: 0;">BN(V)</label>
+                <input type="checkbox" id="VoltageC" data-order="2" data-vol-type="star" checked="checked"/><label for="VoltageC" style="margin-bottom: 0;">CN(V)</label>
+                <input type="checkbox" id="CurrentA" data-order="7" checked="checked"/><label for="CurrentA" style="margin-bottom: 0;">A(A)</label>
+                <input type="checkbox" id="CurrentB" data-order="8" checked="checked"/><label for="CurrentB" style="margin-bottom: 0;">B(A)</label>
+                <input type="checkbox" id="CurrentC" data-order="9" checked="checked"/><label for="CurrentC" style="margin-bottom: 0;">C(A)</label>
             </form>
         </div>
         <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
             <form id="harmonicClassOptions" class="form form-horizontal">
-                <input type="radio" name="type" id="bar" />
+                <input type="radio" name="type" id="bar"/>
                 <label for="bar">直方图</label>
-                <input type="radio" name="type" id="line" />
+                <input type="radio" name="type" id="line"/>
                 <label for="line">折线图</label>
                 <input type="checkbox" id="thd"/><label for="thd">THD</label>
                 <input type="checkbox" id="0"/><label for="0">0</label>
@@ -80,19 +87,21 @@
         </div>
         <div id="harmonicCharts" class="float-card float-card-default" style="padding: 10px;">
         </div>
+        <div id="harmonicBarCharts" class="float-card float-card-default" style="padding: 10px; display: none;">
+        </div>
     </div>
     <div id="powers" style="display: none;" class="presentDiv">
         <div class="float-card float-card-default" style="padding: 3px 15px; margin-bottom: 5px;">
             <form id="powersCategory" class="form form-horizontal">
-                <input type="checkbox" id="ActivePower" checked="checked"/><label for="ActivePower"  style="margin-bottom: 0;">有功功率</label>
-                <input type="checkbox" id="ReactivePower" /><label for="ReactivePower" style="margin-bottom: 0;">无功功率</label>
-                <input type="checkbox" id="ApparentPower" /><label for="ApparentPower" style="margin-bottom: 0;">视在功率</label>
-                <input type="checkbox" id="PowerFactor" /><label for="PowerFactor" style="margin-bottom: 0;">功率因素</label>
+                <input type="checkbox" id="ActivePower" checked="checked"/><label for="ActivePower" style="margin-bottom: 0;">有功功率</label>
+                <input type="checkbox" id="ReactivePower"/><label for="ReactivePower" style="margin-bottom: 0;">无功功率</label>
+                <input type="checkbox" id="ApparentPower"/><label for="ApparentPower" style="margin-bottom: 0;">视在功率</label>
+                <input type="checkbox" id="PowerFactor"/><label for="PowerFactor" style="margin-bottom: 0;">功率因数</label>
             </form>
         </div>
         <div id="powersCharts" class="float-card float-card-default" style="padding: 10px;">
             <div id="_A" style="height: 200px;" data-title="AN" class="powerChart">
-                
+
             </div>
             <div id="_B" style="height: 200px;" data-title="BN" class="powerChart">
 
@@ -111,5 +120,8 @@
     <script src="~/Scripts/function/powerAnalysis.js"></script>
     <script type="text/javascript">
         var recordInfo = @Html.Raw(JsonConvert.SerializeObject(Model));
+        $(function() {
+
+        });
     </script>
 }

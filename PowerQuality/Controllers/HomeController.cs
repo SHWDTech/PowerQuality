@@ -29,8 +29,13 @@ namespace PowerQuality.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(RecordSelect model)
+        public ActionResult Index(RecordSelectList model)
         {
+            var process = new RecordProcess();
+            model.Records.AddRange(process.GetRecords(obj =>
+            obj.RecordStartDateTime >= model.Selection.StartDate
+            && obj.RecordStartDateTime <= model.Selection.EndDate
+            && obj.Finalized));
 
             return View(model);
         }

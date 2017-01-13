@@ -47,7 +47,8 @@ namespace PowerProcess
             var repo = Repo<PowerRepository<Harmonic>>();
             repo.Database.CommandTimeout = 14400;
             var harmonics = repo.GetModelsInclude(obj => 
-            obj.RecordIndex >= range.StartIndex 
+            obj.RecordId == range.RecordId
+            && obj.RecordIndex >= range.StartIndex 
             && obj.RecordIndex < range.StartIndex + range.RequestCount,
             new List<string>() { "Record" }).ToList();
             return typeof(Harmonic).GetProperties().Where(prop => prop.PropertyType == typeof(double) || prop.Name == "RecordTime")

@@ -3,6 +3,7 @@
 var voltageCurrentCharts = [];
 var harmonicCharts = [];
 var powerCharts = [];
+var harmonicBarCharts = [];
 
 var chartsConfig = {
     'scale': 0,
@@ -10,7 +11,12 @@ var chartsConfig = {
     'voltageCurrentDataSource': null,
     'harmonicDataSource': null,
     start: 0,
-    end: 14400
+    end: 14400,
+    valueType: {
+        max: true,
+        avg: true,
+        min: true
+    }
 }
 
 var powerDatas = {
@@ -163,16 +169,16 @@ var powerAnalysis = {
             current.setOption(powerAnalysis.getHarmonicChartOption(channel, index));
         });
         echarts.connect(harmonicCharts);
-
         harmonicCharts.forEach(function (chart) {
             chart.on('datazoom', function (params) {
                 var start = params.batch[0].startValue;
                 var end = params.batch[0].endValue;
                 harmonicCharts.forEach(function (crt) {
                     var option = crt.getOption();
-                    var arr = option.series[0].data.slice(start, end)
-                        .concat(option.series[1].data.slice(start, end))
-                        .concat(option.series[2].data.slice(start, end));
+                    var arr = [];
+                    for (var i = 0; i < option.series.length; i ++) {
+                        arr = arr.concat(option.series[i].data.slice(start, end));
+                    }
                     var max = Math.max.apply(null, arr);
                     var min = Math.min.apply(null, arr);
                     var interval = (max - min) / 4;
@@ -184,6 +190,9 @@ var powerAnalysis = {
 
             });
         });
+    },
+    'initHarmonicBarChart': function () {
+
     },
     'initPowersCharts': function () {
         powerCharts.forEach(function (chart) {
@@ -203,9 +212,9 @@ var powerAnalysis = {
         echarts.connect(powerCharts);
     },
     'getVoltageCurrentChartOption': function (channel, index) {
-        var max = chartsConfig.voltageCurrentDataSource[channel + '_Max'].slice(chartsConfig.start, chartsConfig.end);
-        var avg = chartsConfig.voltageCurrentDataSource[channel + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
-        var min = chartsConfig.voltageCurrentDataSource[channel + '_Min'].slice(chartsConfig.start, chartsConfig.end);
+        var max = !chartsConfig.valueType['max'] ? [] : chartsConfig.voltageCurrentDataSource[channel + '_Max'].slice(chartsConfig.start, chartsConfig.end);
+        var avg = !chartsConfig.valueType['avg'] ? [] : chartsConfig.voltageCurrentDataSource[channel + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
+        var min = !chartsConfig.valueType['min'] ? [] : chartsConfig.voltageCurrentDataSource[channel + '_Min'].slice(chartsConfig.start, chartsConfig.end);
         var maxVal = Math.round(Math.max.apply(null, max.concat(avg).concat(min)) * 100) / 100;
         var minVal = Math.round(Math.min.apply(null, max.concat(avg).concat(min)) * 100) / 100;
         var interval = Math.round((maxVal - minVal) / 4 * 100) / 100;
@@ -291,9 +300,9 @@ var powerAnalysis = {
     'preparePowerSeries': function (div) {
         var series = [];
         powerAnalysis.powerCategory.forEach(function (cat) {
-            var max = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Max'].slice(chartsConfig.start, chartsConfig.end);
-            var avg = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
-            var min = chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Min'].slice(chartsConfig.start, chartsConfig.end);
+            var max = !chartsConfig.valueType['max'] ? [] : chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Max'].slice(chartsConfig.start, chartsConfig.end);
+            var avg = !chartsConfig.valueType['avg'] ? [] : chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Avg'].slice(chartsConfig.start, chartsConfig.end);
+            var min = !chartsConfig.valueType['min'] ? [] : chartsConfig.voltageCurrentDataSource[cat + $(div).attr('id') + '_Min'].slice(chartsConfig.start, chartsConfig.end);
             var params = {
                 'name': [cat + $(div).attr('id') + '_Max', cat + $(div).attr('id') + '_Avg', cat + $(div).attr('id') + '_Min'],
                 'data': { 'max': max, 'avg': avg, 'min': min },
@@ -356,6 +365,11 @@ var powerAnalysis = {
 };
 
 $(function () {
+    voltageCurrentCharts = [];
+    harmonicCharts = [];
+    powerCharts = [];
+    harmonicBarCharts = [];
+    loadPercentage = 0;
     $('#channelOptions input[type="checkbox"]').on('change', function (event) {
         if ($(event.target).attr('data-vol-type') === 'star') {
             $('[data-vol-type="triangle"]').prop('checked', false);
@@ -364,6 +378,19 @@ $(function () {
         }
         powerAnalysis.setVoltageCurrentChannels();
         powerAnalysis.initVoltageCurrentCharts();
+    });
+    $('#valueTypeOptions input[type="checkbox"]').on('change', function(event) {
+        if ($(event.target).attr('id') === 'showMax') {
+            chartsConfig.valueType['max'] = $(event.target).prop('checked');
+        }
+        if ($(event.target).attr('id') === 'showAvg') {
+            chartsConfig.valueType['avg'] = $(event.target).prop('checked');
+        }
+        if ($(event.target).attr('id') === 'showMin') {
+            chartsConfig.valueType['min'] = $(event.target).prop('checked');
+        }
+        powerAnalysis.initVoltageCurrentCharts();
+        powerAnalysis.initPowersCharts();
     });
     $('#harmonicChannelOptions input[type="checkbox"]').on('change', function () {
         powerAnalysis.setHarmonicChannels();

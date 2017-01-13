@@ -11,7 +11,8 @@
                 <h4 style="text-align: center;">选择记录</h4>
             </div>
             <div class="panel-body">
-                <form>
+                @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                {
                     <div class="form-inline" style="border-bottom: 1px solid #e3e3e3; padding-bottom: 15px;">
                         <div class="form-group">
                             <span class="glyphicon glyphicon-time" style="font-size: 20px;"></span>
@@ -27,7 +28,7 @@
                             <input type="submit" value="查询" class="btn btn-info" />
                         </div>
                     </div>
-                </form>
+                }
                 <div style="display: flex; margin: 15px 0; position: relative;">
                     <div style="width: 30%; border: 1px solid #e3e3d3; min-height: 500px; padding: 5px;">
                         <ul class="recordList" style="padding: 0">
@@ -55,8 +56,8 @@
                         <div style="position: absolute; bottom: 0; right: 0;">
                             @using (Html.BeginForm("Record", "PowerAnalysis"))
                             {
-                                <input type="hidden" id="recordId" name="recordId"/>
-                                <input type="submit" class="btn btn-info" id="loadRecord" value="确定" disabled/>
+                                <input type="hidden" id="recordId" name="recordId" />
+                                <input type="submit" class="btn btn-info" id="loadRecord" value="确定" disabled />
                             }
                         </div>
                     </div>

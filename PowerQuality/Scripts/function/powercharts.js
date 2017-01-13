@@ -76,47 +76,7 @@ chartsOption.StepLine = function (params) {
             filterMode: 'filter',
             zoomLock: true
         },
-        series: [
-            {
-                name: '最大值',
-                type: 'line',
-                step: 'start',
-                xAxisIndex: 0,
-                yAxisIndex: 0,
-                lineStyle: {
-                    normal: {
-                        width: 1
-                    }
-                },
-                data: params['max']
-            },
-            {
-                name: '平均值',
-                type: 'line',
-                step: 'start',
-                xAxisIndex: 0,
-                yAxisIndex: 0,
-                lineStyle: {
-                    normal: {
-                        width: 1
-                    }
-                },
-                data: params['avg']
-            },
-            {
-                name: '最小值',
-                type: 'line',
-                step: 'start',
-                xAxisIndex: 0,
-                yAxisIndex: 0,
-                lineStyle: {
-                    normal: {
-                        width: 1
-                    }
-                },
-                data: params['min']
-            }
-        ]
+        series: []
     };
 
     opt['toolbox'] = {
@@ -135,6 +95,55 @@ chartsOption.StepLine = function (params) {
     if (params['index'] !== 0) {
         opt.toolbox.top = -10000;
     }
+
+    if (params['max'].length > 0) {
+        opt.series.push({
+            name: '最大值',
+            type: 'line',
+            step: 'start',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            },
+            data: params['max']
+        });
+    }
+
+    if (params['avg'].length > 0) {
+        opt.series.push({
+            name: '平均值',
+            type: 'line',
+            step: 'start',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            },
+            data: params['avg']
+        });
+    }
+
+    if (params['min'].length > 0) {
+        opt.series.push({
+            name: '最小值',
+            type: 'line',
+            step: 'start',
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            },
+            data: params['min']
+        });
+    }
+
     return opt;
 };
 
@@ -356,8 +365,10 @@ chartsOption.LineSeries = function (params) {
 }
 
 chartsOption.StepSeries = function(params) {
-    var serier = [
-        {
+    var serier = [];
+
+    if (params['data']['max'].length > 0) {
+        serier.push({
             name: params['name'][0],
             type: 'line',
             step: 'start',
@@ -369,8 +380,10 @@ chartsOption.StepSeries = function(params) {
                 }
             },
             data: params['data']['max']
-        },
-        {
+        });
+    }
+    if (params['data']['avg'].length > 0) {
+        serier.push({
             name: params['name'][1],
             type: 'line',
             step: 'start',
@@ -382,8 +395,10 @@ chartsOption.StepSeries = function(params) {
                 }
             },
             data: params['data']['avg']
-        },
-        {
+        });
+    }
+    if (params['data']['min'].length > 0) {
+        serier.push({
             name: params['name'][2],
             type: 'line',
             step: 'start',
@@ -395,9 +410,8 @@ chartsOption.StepSeries = function(params) {
                 }
             },
             data: params['data']['min']
-        }
-    ];
-
+        });
+    }
     return serier;
 }
 
