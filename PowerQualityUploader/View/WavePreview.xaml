@@ -91,14 +91,14 @@
                 <Grid Row="0">
                     <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" >
                         <StackPanel Orientation="Horizontal" x:Name="SpCheck" VerticalAlignment="Center">
-                            <CheckBox x:Name="VolA" Tag="0" IsChecked="True" VerticalAlignment="Center" Content="AN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox x:Name="VolB" Tag="1" IsChecked="True" VerticalAlignment="Center" Content="BN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox x:Name="VolC" Tag="2" IsChecked="True" VerticalAlignment="Center" Content="CN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox x:Name="VolN" Tag="3" IsChecked="True" VerticalAlignment="Center" Content="NG(V)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="4" IsChecked="True" VerticalAlignment="Center" Content="A(A)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="5" IsChecked="True" VerticalAlignment="Center" Content="B(A)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="6" IsChecked="True" VerticalAlignment="Center" Content="C(A)" Click="RefreashChartOnChannelChange"></CheckBox>
-                            <CheckBox Tag="7" IsChecked="True" VerticalAlignment="Center" Content="N(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="0" IsChecked="True" VerticalAlignment="Center" Content="N(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="1" IsChecked="True" VerticalAlignment="Center" Content="C(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="2" IsChecked="True" VerticalAlignment="Center" Content="B(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox Tag="3" IsChecked="True" VerticalAlignment="Center" Content="A(A)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolN" Tag="4" IsChecked="True" VerticalAlignment="Center" Content="NG(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolC" Tag="5" IsChecked="True" VerticalAlignment="Center" Content="CN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolB" Tag="6" IsChecked="True" VerticalAlignment="Center" Content="BN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
+                            <CheckBox x:Name="VolA" Tag="7" IsChecked="True" VerticalAlignment="Center" Content="AN(V)" Click="RefreashChartOnChannelChange"></CheckBox>
                         </StackPanel>
                     </Border>
                 </Grid>
