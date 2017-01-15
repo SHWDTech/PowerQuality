@@ -151,8 +151,13 @@ var powerAnalysis = {
         harmonicCharts.forEach(function (chart) {
             echarts.dispose(chart);
         });
+        harmonicBarCharts.forEach(function (chart) {
+            echarts.dispose(chart);
+        });
         harmonicCharts = [];
+        harmonicBarCharts = [];
         $('#harmonicCharts').empty();
+        $('#harmonicBarCharts').empty();
         var maxHeight = 800;
         var chartHeights = maxHeight / powerAnalysis.harmonicChannel.length;
         powerAnalysis.harmonicChannel.forEach(function (channel, index) {
@@ -166,7 +171,16 @@ var powerAnalysis = {
                 $(chart).css('margin-top', '-20px');
             }
             harmonicCharts.push(current);
-            current.setOption(powerAnalysis.getHarmonicChartOption(channel, index));
+            var barchart = document.createElement('div');
+            $(barchart).attr('id', channel + '_chart');
+            $('#harmonicBarCharts').append(barchart);
+            $(barchart).height(chartHeights);
+            $(barchart).width($('#chartHolder').width() - 50);
+            var barcurrent = echarts.init(barchart);
+            harmonicBarCharts.push(barcurrent);
+            var options = powerAnalysis.getHarmonicChartOption(channel, index);
+            current.setOption(options[0]);
+            barcurrent.setOption(options[1]);
         });
         echarts.connect(harmonicCharts);
         harmonicCharts.forEach(function (chart) {
@@ -190,9 +204,6 @@ var powerAnalysis = {
 
             });
         });
-    },
-    'initHarmonicBarChart': function () {
-
     },
     'initPowersCharts': function () {
         powerCharts.forEach(function (chart) {
@@ -240,6 +251,7 @@ var powerAnalysis = {
         return chartsOption.StepLine(par);
     },
     'getHarmonicChartOption': function (channel, index) {
+        var options = [];
         var series = powerAnalysis.prepareSeries(channel);
         var par = {
             'category': chartsConfig.harmonicDataSource['RecordTime'].slice(chartsConfig.start, chartsConfig.end).map(function (date) {
@@ -255,8 +267,21 @@ var powerAnalysis = {
         if (index < powerAnalysis.harmonicChannel.length - 1) {
             par['axisLabel'] = false;
         }
+        options.push(chartsOption.LineChart(par));
 
-        return chartsOption.LineChart(par);
+        var barSeries = powerAnalysis.harmonicBarSeries(channel);
+        var barPar = {
+            'category': powerAnalysis.harmonicClass,
+            'axisLabel': true,
+            'titleName': channel,
+            'series': barSeries
+        }
+        if (index < powerAnalysis.harmonicChannel.length - 1) {
+            barPar['axisLabel'] = false;
+        }
+        options.push(chartsOption.harmonicBarOption(barPar));
+
+        return options;
     },
     'getPowerChartOption': function (div, index) {
         var series = powerAnalysis.preparePowerSeries(div);
@@ -293,6 +318,26 @@ var powerAnalysis = {
                 })
             }
             series.push(chartsOption.LineSeries(params));
+        });
+
+        return series;
+    },
+    'harmonicBarSeries': function(channel) {
+        var series = {
+            type: 'bar',
+            barWidth: '75%',
+            data:[]
+        };
+        powerAnalysis.harmonicClass.forEach(function (harmonicClass) {
+            var classData = chartsConfig.harmonicDataSource[channel + 'Harmonic' + harmonicClass];
+            var max = Math.round(Math.max.apply(null, classData) * 10000, 3) / 100;
+            var avg = Math.round((classData.reduce(function (a, b) { return a + b; }, 0) / classData.length) * 10000, 3) / 100;
+            var min = Math.round(Math.min.apply(null, classData) * 10000, 3) / 100;
+            var data = {
+                'value': avg,
+                'name': [max, avg, min]
+            }
+            series.data.push(data);
         });
 
         return series;
@@ -416,6 +461,18 @@ $(function () {
         $(nav.target).parent('li').addClass('active');
         $('#' + $(nav.target).attr('data-linkdiv')).show();
     });
+    $('input[type=radio][name=type][value=line]').prop('checked', true);
+    $('input[type=radio][name=type]').change(function() {
+       if (this.value === 'bar') {
+           $('#harmonicBarCharts').show();
+           $('#harmonicCharts').hide();
+       } else {
+           $('#harmonicBarCharts').hide();
+           $('#harmonicCharts').show();
+       }
+    });
+
+
     powerAnalysis.fetch('/PowerAnalysis/RecordData', 0, 14400, powerDatas.activeValues, powerAnalysis.loadComplete());
     powerAnalysis.fetch('/PowerAnalysis/RecordHarmonic', 0, 14400, powerDatas.harmonics, powerAnalysis.loadComplete());
     powerAnalysis.fetch('/PowerAnalysis/VoltageCurrentSecond', 0, 3600, powerDatas.voltageCurrentSecond, powerAnalysis.loadComplete());

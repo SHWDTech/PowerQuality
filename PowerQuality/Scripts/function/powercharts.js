@@ -364,7 +364,7 @@ chartsOption.LineSeries = function (params) {
     return serier;
 }
 
-chartsOption.StepSeries = function(params) {
+chartsOption.StepSeries = function (params) {
     var serier = [];
 
     if (params['data']['max'].length > 0) {
@@ -415,6 +415,67 @@ chartsOption.StepSeries = function(params) {
     return serier;
 }
 
-chartsOption.pushData = function () {
+chartsOption.harmonicBarOption = function (params) {
+    var opt = {
+        title: {
+            text: params['titleName'],
+            show: true,
+            textStyle: {
+                color: '#337ab7',
+                fontSize: 14
+            },
+            textAlign: 'center',
+            left: 'center'
+        },
+        color: ['#FF0000'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter: function (formatParams) {
+                return '<div><span>' + formatParams[0]['name'] + '次谐波</span></br>'
+                    + '<span>Max:' +
+                    formatParams[0]['data']['name'][0] +
+                    '</span></br>' +
+                    '<span>Avg:' +
+                    formatParams[0]['data']['name'][1] +
+                    '</span></br>' +
+                    '<span>Min:' +
+                    formatParams[0]['data']['name'][2] +
+                    '</span></div>';
+            },
+            textStyle: {
+                fontSize: 8
+            },
+            confine: true
+        },
+        grid: {
+            top: '0%',
+            left: '0%',
+            right: '0%',
+            bottom: '0%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: params['category'],
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLabel: {
+                    show: params['axisLabel']
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: params['series']
+    };
 
+    return opt;
 };
