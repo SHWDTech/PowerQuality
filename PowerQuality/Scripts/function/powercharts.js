@@ -437,13 +437,13 @@ chartsOption.harmonicBarOption = function (params) {
                 return '<div><span>' + formatParams[0]['name'] + '次谐波</span></br>'
                     + '<span>Max:' +
                     formatParams[0]['data']['name'][0] +
-                    '</span></br>' +
+                    '%</span></br>' +
                     '<span>Avg:' +
                     formatParams[0]['data']['name'][1] +
-                    '</span></br>' +
+                    '%</span></br>' +
                     '<span>Min:' +
                     formatParams[0]['data']['name'][2] +
-                    '</span></div>';
+                    '%</span></div>';
             },
             textStyle: {
                 fontSize: 8
@@ -451,8 +451,8 @@ chartsOption.harmonicBarOption = function (params) {
             confine: true
         },
         grid: {
-            top: '0%',
-            left: '0%',
+            top: '18%',
+            left: '1%',
             right: '0%',
             bottom: '0%',
             containLabel: true
