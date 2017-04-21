@@ -91,7 +91,7 @@
         </Grid>
         <Grid Row="7">
             <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button x:Name="BtnAdjustTime" Content="校准RTC" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadConfig"></Button>
+                <Button x:Name="BtnAdjustTime" Content="校准RTC" Padding="20, 5" Margin="0, 0, 5, 0" Click="AdjestRtc"></Button>
                 <Button x:Name="BtnReadTime" Content="读取RTC" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadRtc"></Button>
                 <Button x:Name="BtnWriteCfg" Content="读取配置" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadConfig"></Button>
                 <Button x:Name="BtnReadCfg" Content="写入配置" Padding="20, 5" Margin="0, 0, 5, 0" Click="WriteConfig"></Button>

@@ -258,6 +258,25 @@ namespace PowerQualityUploader.View
             }
         }
 
+        private void AdjestRtc(object sender, RoutedEventArgs e)
+        {
+            _serialPortReceiveBuffer.Clear();
+            _isRead = true;
+            _sendingCommand = true;
+            _processWaiting = true;
+            try
+            {
+                var configBuilder = new StringBuilder();
+                configBuilder.Append($"CurrentTime={DateTime.Now:yyyy-MM-dd hh:mm:ss.fff}\r\n");
+                var protocolBytes = Encoding.GetEncoding("GBK").GetBytes(configBuilder.ToString());
+                _currentSerialPort.Write(protocolBytes, 0, protocolBytes.Length);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("发送读取请求失败，请检查串口连接。");
+            }
+        }
+
         private byte[] Crc(byte[] sourceBytes, int dataLenth)
         {
             ushort regCrc = 0xffff;
