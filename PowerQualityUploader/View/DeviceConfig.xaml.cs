@@ -24,6 +24,8 @@ namespace PowerQualityUploader.View
 
         private bool _isRead;
 
+        private bool _sendingCommand;
+
         private bool _readTaskRunning;
 
         private int _lastWriteLength;
@@ -95,6 +97,12 @@ namespace PowerQualityUploader.View
                 }
             }
 
+            if (_sendingCommand)
+            {
+                Task.Factory.StartNew(OutputCommand);
+                return;
+            }
+
             if (_isRead && !_readTaskRunning)
             {
                 Task.Factory.StartNew(ReadCheck);
@@ -141,7 +149,6 @@ namespace PowerQualityUploader.View
                     {
                         MessageBox.Show($"读取配置失败。{ex}");
                     }
-                    
                 }
 
                 _readTaskRunning = false;
@@ -157,6 +164,15 @@ namespace PowerQualityUploader.View
                 MessageBox.Show(_serialPortReceiveBuffer.Count != _lastWriteLength ? "写入配置失败。" : "写入配置成功。");
                 _readTaskRunning = false;
             });
+        }
+
+        private void OutputCommand()
+        {
+            _processWaiting = false;
+            var output = Encoding.GetEncoding("GBK")
+                .GetString(_serialPortReceiveBuffer.ToArray());
+            Dispatcher.Invoke(() => TxtCmdResponse.Text = output);
+            _isRead = false;
         }
 
         private void OnClosing(object sender, CancelEventArgs e)
@@ -214,6 +230,25 @@ namespace PowerQualityUploader.View
             {
                 var configBuilder = new StringBuilder();
                 configBuilder.Append("ReadConfig=?\r\n");
+                var protocolBytes = Encoding.GetEncoding("GBK").GetBytes(configBuilder.ToString());
+                _currentSerialPort.Write(protocolBytes, 0, protocolBytes.Length);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("发送读取请求失败，请检查串口连接。");
+            }
+        }
+
+        private void ReadRtc(object sender, RoutedEventArgs e)
+        {
+            _serialPortReceiveBuffer.Clear();
+            _isRead = true;
+            _sendingCommand = true;
+            _processWaiting = true;
+            try
+            {
+                var configBuilder = new StringBuilder();
+                configBuilder.Append("CurrentTime=?\r\n");
                 var protocolBytes = Encoding.GetEncoding("GBK").GetBytes(configBuilder.ToString());
                 _currentSerialPort.Write(protocolBytes, 0, protocolBytes.Length);
             }

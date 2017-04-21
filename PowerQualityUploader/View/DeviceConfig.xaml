@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="设备配置" 
-        Height="375" 
-        Width="500" 
-        ShowInTaskbar="False" 
-        WindowStyle="SingleBorderWindow" 
-        ResizeMode="NoResize" 
-        WindowStartupLocation="CenterOwner" 
+        Title="设备配置"
+        Height="425"
+        Width="500"
+        ShowInTaskbar="False"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
         FontSize="14"
         Closing="OnClosing"
         Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
@@ -22,6 +22,7 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Row="0">
@@ -86,7 +87,12 @@
             </GroupBox>
         </Grid>
         <Grid Row="6">
+            <TextBox x:Name="TxtCmdResponse" IsReadOnly="True" Height="35" Background="#f0f0f0"></TextBox>
+        </Grid>
+        <Grid Row="7">
             <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button x:Name="BtnAdjustTime" Content="校准RTC" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadConfig"></Button>
+                <Button x:Name="BtnReadTime" Content="读取RTC" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadRtc"></Button>
                 <Button x:Name="BtnWriteCfg" Content="读取配置" Padding="20, 5" Margin="0, 0, 5, 0" Click="ReadConfig"></Button>
                 <Button x:Name="BtnReadCfg" Content="写入配置" Padding="20, 5" Margin="0, 0, 5, 0" Click="WriteConfig"></Button>
             </DockPanel>
