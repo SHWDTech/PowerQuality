@@ -30,7 +30,8 @@ namespace PowerQualityUploader.View
         {
             foreach (var record in records)
             {
-                RecordNameList.Items.Add(new ListBoxItem() {Content = record.Value["RecordName"], Tag = record.Key});
+                var recordName = record.Value.ContainsKey("RecordName") ? record.Value["RecordName"] : "未命名";
+                RecordNameList.Items.Add(new ListBoxItem {Content = recordName, Tag = record.Key});
             }
 
             _records = records;

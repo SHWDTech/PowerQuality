@@ -51,8 +51,14 @@ namespace PowerQualityUploader.View
             _recordTick = 20 * 10000.0 / int.Parse(_record["SampleRate"]);
             _currentModel = double.Parse(record["CurrentModel"]);
             _voltageStep = double.Parse(record["VoltageStep"]);
-            _currentRestore = double.Parse(record["CurrentRestore"]);
-            _voltageRestore = double.Parse(record["VoltageRestore"]);
+            if (!double.TryParse(record["CurrentRestore"], out _currentRestore))
+            {
+                _currentRestore = 1;
+            }
+            if (!double.TryParse(record["VoltageRestore"], out _voltageRestore))
+            {
+                _voltageRestore = 1;
+            }
             SldTimeRange.Minimum = 1;
             if (record["LineType"] != "34")
             {

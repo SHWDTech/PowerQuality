@@ -27,7 +27,7 @@ namespace PowerQualityUploader.Controller
         {
             try
             {
-                var items = configString.Split(new[] { "\r\n" }, StringSplitOptions.None);
+                var items = configString.Split(new[] { "\r\n" }, StringSplitOptions.None).Where(cfg => !string.IsNullOrWhiteSpace(cfg));
                 config = items.Select(cfg => cfg.Split('=')).ToDictionary(values => values[0], values => values[1]);
             }
             catch (Exception)
@@ -57,15 +57,23 @@ namespace PowerQualityUploader.Controller
             var records = new Dictionary<Guid, Dictionary<string, string>>();
             foreach (var dir in directories.Where(obj => File.Exists($"{obj}\\power.cfg")))
             {
-                var fileCount = Directory.GetFiles(dir, "*.HEX", SearchOption.AllDirectories).Length;
-                Dictionary<string, string> recordConfigs;
-                if (!TryParseConfig(File.ReadAllText($"{dir}\\power.cfg"), out recordConfigs)) continue;
-                var duration = GetDuration(recordConfigs, fileCount);
-                recordConfigs.Add("Duration", string.Format("{0:dd}d {0:hh}h {0:mm}m {0:ss}s {0:fff}ms", duration));
-                recordConfigs.Add("RecordDuration", $"{duration:G}");
-                recordConfigs.Add("EndDateTime", $"{(DateTime.Parse(recordConfigs["StartDateTime"]) + duration):yyyy-MM-dd HH:mm:ss.fff}");
-                recordConfigs.Add("Directory", dir);
-                records.Add(Guid.NewGuid(), recordConfigs);
+                try
+                {
+                    var fileCount = Directory.GetFiles(dir, "*.HEX", SearchOption.AllDirectories).Length;
+                    Dictionary<string, string> recordConfigs;
+                    if (!TryParseConfig(File.ReadAllText($"{dir}\\power.cfg"), out recordConfigs)) continue;
+                    var duration = GetDuration(recordConfigs, fileCount);
+                    recordConfigs.Add("Duration", string.Format("{0:dd}d {0:hh}h {0:mm}m {0:ss}s {0:fff}ms", duration));
+                    recordConfigs.Add("RecordDuration", $"{duration:G}");
+                    recordConfigs.Add("EndDateTime",
+                        $"{(DateTime.Parse(recordConfigs["StartDateTime"]) + duration):yyyy-MM-dd HH:mm:ss.fff}");
+                    recordConfigs.Add("Directory", dir);
+                    records.Add(Guid.NewGuid(), recordConfigs);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
 
             return records;

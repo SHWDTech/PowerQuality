@@ -39,31 +39,31 @@
                             <Label>配置</Label>
                         </Grid>
                         <Grid Row="1">
-                            <TextBox x:Name="TxtLineType"></TextBox>
+                            <TextBox x:Name="TxtLineType" IsReadOnly="True"></TextBox>
                         </Grid>
                         <Grid Row="2">
                             <Label>间隔</Label>
                         </Grid>
                         <Grid Row="3">
-                            <TextBox x:Name="TxtPeroid"></TextBox>
+                            <TextBox x:Name="TxtPeroid" IsReadOnly="True"></TextBox>
                         </Grid>
                         <Grid Row="4">
                             <Label>持续时间</Label>
                         </Grid>
                         <Grid Row="5">
-                            <TextBox x:Name="TxtDuration"></TextBox>
+                            <TextBox x:Name="TxtDuration" IsReadOnly="True"></TextBox>
                         </Grid>
                         <Grid Row="6">
                             <Label>开始时间</Label>
                         </Grid>
                         <Grid Row="7">
-                            <TextBox x:Name="TxtStartDateTime"></TextBox>
+                            <TextBox x:Name="TxtStartDateTime" IsReadOnly="True"></TextBox>
                         </Grid>
                         <Grid Row="8">
                             <Label>结束时间</Label>
                         </Grid>
                         <Grid Row="9">
-                            <TextBox x:Name="TxtEndDateTime"></TextBox>
+                            <TextBox x:Name="TxtEndDateTime" IsReadOnly="True"></TextBox>
                         </Grid>
                     </Grid>
                 </GroupBox>

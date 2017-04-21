@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PowerQualityModel;
 using PowerQualityModel.DataModel;
 
 namespace PowerProcess
