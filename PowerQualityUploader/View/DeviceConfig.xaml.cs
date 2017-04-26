@@ -267,7 +267,7 @@ namespace PowerQualityUploader.View
             try
             {
                 var configBuilder = new StringBuilder();
-                configBuilder.Append($"CurrentTime={DateTime.Now:yyyy-MM-dd hh:mm:ss.fff}\r\n");
+                configBuilder.Append($"CurrentTime={DateTime.Now:yyyy-MM-dd hh:mm:ss}\r\n");
                 var protocolBytes = Encoding.GetEncoding("GBK").GetBytes(configBuilder.ToString());
                 _currentSerialPort.Write(protocolBytes, 0, protocolBytes.Length);
             }

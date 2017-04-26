@@ -472,7 +472,6 @@ $(function () {
        }
     });
 
-
     powerAnalysis.fetch('/PowerAnalysis/RecordData', 0, 14400, powerDatas.activeValues, powerAnalysis.loadComplete());
     powerAnalysis.fetch('/PowerAnalysis/RecordHarmonic', 0, 14400, powerDatas.harmonics, powerAnalysis.loadComplete());
     powerAnalysis.fetch('/PowerAnalysis/VoltageCurrentSecond', 0, 3600, powerDatas.voltageCurrentSecond, powerAnalysis.loadComplete());
