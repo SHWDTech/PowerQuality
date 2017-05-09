@@ -19,109 +19,117 @@ namespace PowerProcess
 
         public void InitialRecordData(RecordParams recordParams, Guid stageId)
         {
-            Stage.Add(stageId, RecordProcessStage.OnCreatingRecord);
-            var recordRepo = Repo<PowerRepository<Record>>();
-            var newRecord = new Record
+            try
             {
-                RecordName = recordParams.RecordName,
-                RecordStartDateTime = DateTime.Parse(recordParams.RecordConfigs["StartDateTime"]),
-                RecordDuration = TimeSpan.Parse(recordParams.RecordConfigs["RecordDuration"]),
-                RecordEndDateTime = DateTime.Parse(recordParams.RecordConfigs["EndDateTime"])
-            };
-            recordRepo.AddOrUpdateDoCommit(newRecord);
-            newRecord.ModelState = ModelState.Changed;
-
-            var configRepo = Repo<PowerRepository<SystemConfig>>();
-            var configs = configRepo.GetModelList(obj => obj.ConfigType == "RecordInitial")
-                .ToDictionary(obj => obj.ConfigName, item => item.ConfigValue);
-
-            var initialzation = $"{newRecord.Id}\r\n{recordParams.RecordConfigs["Period"]}\r\n{recordParams.RecordConfigs["Frequency"]}\r\n{recordParams.RecordConfigs["LineType"]}";
-
-            foreach (var file in Directory.GetFiles(configs["dataDirectory"]))
-            {
-                if(!recordParams.FileList.Contains(Path.GetFileNameWithoutExtension(file)))
+                Stage.Add(stageId, RecordProcessStage.OnCreatingRecord);
+                var recordRepo = Repo<PowerRepository<Record>>();
+                var newRecord = new Record
                 {
-                    File.Delete(file);
-                }
-            }
+                    RecordName = recordParams.RecordName,
+                    RecordStartDateTime = DateTime.Parse(recordParams.RecordConfigs["StartDateTime"]),
+                    RecordDuration = TimeSpan.Parse(recordParams.RecordConfigs["RecordDuration"]),
+                    RecordEndDateTime = DateTime.Parse(recordParams.RecordConfigs["EndDateTime"])
+                };
+                recordRepo.AddOrUpdateDoCommit(newRecord);
+                newRecord.ModelState = ModelState.Changed;
 
-            if (Directory.GetFiles(configs["dataDirectory"]).Length != recordParams.FileList.Count)
-            {
-                Stage[stageId] = RecordProcessStage.MissingFile;
-                return;
-            }
+                var configRepo = Repo<PowerRepository<SystemConfig>>();
+                var configs = configRepo.GetModelList(obj => obj.ConfigType == "RecordInitial")
+                    .ToDictionary(obj => obj.ConfigName, item => item.ConfigValue);
 
-            File.WriteAllText(configs["InitialzationFile"], initialzation);
+                var initialzation =
+                    $"{newRecord.Id}\r\n{recordParams.RecordConfigs["Period"]}\r\n{recordParams.RecordConfigs["Frequency"]}\r\n{recordParams.RecordConfigs["LineType"]}";
 
-            if (!Globals.IsProcessRunning(configs["MainProcessName"]))
-            {
-                Process.Start(configs["MainProcessPath"]);
-            }
-
-            File.WriteAllText(configs["FinishFile"], "0");
-            File.WriteAllText(configs["StartFile"], "1");
-
-            Stage[stageId] = RecordProcessStage.OnCaclating;
-
-            while (File.ReadAllText(configs["FinishFile"]).Substring(0, 1) != "1")
-            {
-                Thread.Sleep(1000);
-            }
-
-            using (var connection = new MySqlConnection(configs["MySqlConnString"]))
-            {
-                Stage[stageId] = RecordProcessStage.OnAfterCaclating;
-                connection.Open();
-                using (var transction = connection.BeginTransaction())
+                foreach (var file in Directory.GetFiles(configs["dataDirectory"]))
                 {
-                    try
+                    if (!recordParams.FileList.Contains(Path.GetFileNameWithoutExtension(file)))
                     {
-                        using (var loadCmd = connection.CreateCommand())
+                        File.Delete(file);
+                    }
+                }
+
+                if (Directory.GetFiles(configs["dataDirectory"]).Length != recordParams.FileList.Count)
+                {
+                    Stage[stageId] = RecordProcessStage.MissingFile;
+                    return;
+                }
+
+                File.WriteAllText(configs["InitialzationFile"], initialzation);
+
+                if (!Globals.IsProcessRunning(configs["MainProcessName"]))
+                {
+                    Process.Start(configs["MainProcessPath"]);
+                }
+
+                File.WriteAllText(configs["FinishFile"], "0");
+                File.WriteAllText(configs["StartFile"], "1");
+
+                Stage[stageId] = RecordProcessStage.OnCaclating;
+
+                while (File.ReadAllText(configs["FinishFile"]).Substring(0, 1) != "1")
+                {
+                    Thread.Sleep(1000);
+                }
+
+                using (var connection = new MySqlConnection(configs["MySqlConnString"]))
+                {
+                    Stage[stageId] = RecordProcessStage.OnAfterCaclating;
+                    connection.Open();
+                    using (var transction = connection.BeginTransaction())
+                    {
+                        try
                         {
-                            loadCmd.CommandType = CommandType.Text;
-                            loadCmd.CommandText = $"LOAD DATA LOCAL INFILE '{configs["ActiveFilePath"]}' INTO TABLE activevalues";
-                            loadCmd.ExecuteNonQuery();
-                            loadCmd.CommandText = $"LOAD DATA LOCAL INFILE '{configs["HarmonicFilePath"]}' INTO TABLE harmonics";
-                            loadCmd.ExecuteNonQuery();
-                        }
-                        using (var cmd = connection.CreateCommand())
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.CommandText = "transferPowers";
-                            cmd.CommandTimeout = int.MaxValue;
-                            cmd.Parameters.Add(new MySqlParameter()
+                            using (var loadCmd = connection.CreateCommand())
                             {
-                                DbType = DbType.Int64,
-                                Direction = ParameterDirection.Input,
-                                ParameterName = "relativeRecordId",
-                                Value = newRecord.Id
-                            });
-                            cmd.ExecuteNonQuery();
-                            cmd.CommandText = "calcvoltageseconds";
-                            cmd.ExecuteNonQuery();
-                            cmd.CommandText = "calcvoltagethreeseconds";
-                            cmd.ExecuteNonQuery();
-                        }
+                                loadCmd.CommandType = CommandType.Text;
+                                loadCmd.CommandText = $"LOAD DATA LOCAL INFILE '{configs["ActiveFilePath"]}' INTO TABLE activevalues";
+                                loadCmd.ExecuteNonQuery();
+                                loadCmd.CommandText = $"LOAD DATA LOCAL INFILE '{configs["HarmonicFilePath"]}' INTO TABLE harmonics";
+                                loadCmd.ExecuteNonQuery();
+                            }
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.CommandText = "transferPowers";
+                                cmd.CommandTimeout = int.MaxValue;
+                                cmd.Parameters.Add(new MySqlParameter()
+                                {
+                                    DbType = DbType.Int64,
+                                    Direction = ParameterDirection.Input,
+                                    ParameterName = "relativeRecordId",
+                                    Value = newRecord.Id
+                                });
+                                cmd.ExecuteNonQuery();
+                                cmd.CommandText = "calcvoltageseconds";
+                                cmd.ExecuteNonQuery();
+                                cmd.CommandText = "calcvoltagethreeseconds";
+                                cmd.ExecuteNonQuery();
+                            }
 
-                        transction.Commit();
+                            transction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transction.Rollback();
+                            File.WriteAllText(configs["ActiveFilePath"], string.Empty);
+                            File.WriteAllText(configs["HarmonicFilePath"], string.Empty);
+                            LogService.Instance.Error("数据库操作执行失败。", ex);
+                            Stage[stageId] = RecordProcessStage.Failed;
+                            return;
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        transction.Rollback();
-                        File.WriteAllText(configs["ActiveFilePath"], string.Empty);
-                        File.WriteAllText(configs["HarmonicFilePath"], string.Empty);
-                        LogService.Instance.Error("数据库操作执行失败。", ex);
-                        Stage[stageId] = RecordProcessStage.Failed;
-                        return;
-                    }
+                    File.WriteAllText(configs["ActiveFilePath"], string.Empty);
+                    File.WriteAllText(configs["HarmonicFilePath"], string.Empty);
+                    File.WriteAllText(configs["StartFile"], "0");
                 }
-                File.WriteAllText(configs["ActiveFilePath"], string.Empty);
-                File.WriteAllText(configs["HarmonicFilePath"], string.Empty);
-                File.WriteAllText(configs["StartFile"], "0");
+                Stage[stageId] = RecordProcessStage.ProcessCompleted;
+                newRecord.Finalized = true;
+                recordRepo.AddOrUpdateDoCommit(newRecord);
             }
-            Stage[stageId] = RecordProcessStage.ProcessCompleted;
-            newRecord.Finalized = true;
-            recordRepo.AddOrUpdateDoCommit(newRecord);
+            catch (Exception ex)
+            {
+                LogService.Instance.Error("生成记录失败。", ex);
+            }
         }
     }
 }
