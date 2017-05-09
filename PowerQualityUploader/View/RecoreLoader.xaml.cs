@@ -75,6 +75,7 @@ namespace PowerQualityUploader.View
             record["Duration"] = string.Format("{0:dd}d {0:hh}h {0:mm}m {0:ss}s {0:fff}ms", duration);
             record["RecordDuration"] = $"{duration:G}";
             record["EndDateTime"] = $"{startDateTime + duration: yyyy-MM-dd HH:mm:ss.fff}";
+            AdjustRecordConfigs(record);
 
             var progress = new Progress { LblMessage = { Content = "正在上传文件。" } };
             Task.Factory.StartNew(() =>
@@ -83,6 +84,27 @@ namespace PowerQualityUploader.View
             });
             progress.Owner = Application.Current.MainWindow;
             progress.ShowDialog();
+        }
+
+        private static void  AdjustRecordConfigs(Dictionary<string, string> record)
+        {
+            if (!double.TryParse(record["CurrentRestore"], out double currentRestore))
+            {
+                record["CurrentRestore"] = "1";
+            }
+            else
+            {
+                record["CurrentRestore"] = $"{currentRestore}";
+            }
+
+            if (!double.TryParse(record["VoltageRestore"], out double voltageRestore))
+            {
+                record["VoltageRestore"] = "1";
+            }
+            else
+            {
+                record["VoltageRestore"] = $"{voltageRestore}";
+            }
         }
 
         private void StartPreView(object sender, RoutedEventArgs e)

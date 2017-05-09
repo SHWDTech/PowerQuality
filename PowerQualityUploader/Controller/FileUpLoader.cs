@@ -118,7 +118,6 @@ namespace PowerQualityUploader.Controller
             var fileNameList = new List<string>();
             foreach (var uploadFile in fileList)
             {
-                var client = new PostClient($"{ServerAddr}RecordFile");
                 var file = new RecordFile
                 {
                     FileName = uploadFile["fileName"].ToString("D8"),
@@ -137,7 +136,7 @@ namespace PowerQualityUploader.Controller
                 while (response != "255")
                 {
                     if (tryTimes > 10) return;
-                    response = client.Post(JsonConvert.SerializeObject(file));
+                    response = new PostClient($"{ServerAddr}RecordFile").Post(JsonConvert.SerializeObject(file));
                     tryTimes++;
                 }
 
