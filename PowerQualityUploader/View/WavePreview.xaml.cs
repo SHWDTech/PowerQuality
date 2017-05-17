@@ -105,6 +105,18 @@ namespace PowerQualityUploader.View
             TxtEndTime.Text = $"{_startDateTime + new TimeSpan((long)(_recordTick * DataRangeEnd)):yyyy-MM-dd HH:mm:ss.fff}";
         }
 
+        private void StartTimeTextChanged(object sender, RoutedEventArgs e)
+        {
+            if (DateTime.TryParse(TxtStartTime.Text, out DateTime inputTime))
+            {
+                SldTimeRange.ValueChanged -= SliderValueChange;
+                SldTimeRange.Value = (int)((inputTime - _startDateTime).Ticks / _recordTick);
+                SldTimeRange.ValueChanged += SliderValueChange;
+                TxtEndTime.Text = $"{_startDateTime + new TimeSpan((long)(_recordTick * DataRangeEnd)):yyyy-MM-dd HH:mm:ss.fff}";
+                ResetDateText(sender, e);
+            }
+        }
+
         private void RefreashChartOnChannelChange(object sender, RoutedEventArgs e)
         {
             for (var i = 0; i < SpCheck.Children.Count; i++)

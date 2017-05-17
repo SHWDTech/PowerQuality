@@ -6,9 +6,9 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="波形预览" 
-        Height="768" 
-        Width="1024" 
+        Title="波形预览"
+        Height="768"
+        Width="1024"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Icon="/PowerQualityUploader;component/Circle-icons-upload.svg.png.ico">
@@ -19,14 +19,14 @@
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0, 0, 0, 5">
                             <Label Content="Start"></Label>
-                            <TextBox x:Name="TxtStartTime" 
-                                     IsReadOnly="True" 
-                                     Width="200" 
+                            <TextBox x:Name="TxtStartTime"
+                                     Width="200"
+                                     TextChanged="StartTimeTextChanged"
                                      VerticalContentAlignment="Center"></TextBox>
                             <Label Content="Stop"></Label>
-                            <TextBox x:Name="TxtEndTime" 
-                                     IsReadOnly="True" 
-                                     Width="200" 
+                            <TextBox x:Name="TxtEndTime"
+                                     Width="200"
+                                     IsReadOnly="True"
                                      VerticalContentAlignment="Center"></TextBox>
                             <Label Content="Range"></Label>
                             <ComboBox Width="60" x:Name="CmbRange" SelectionChanged="ResetDateText">
@@ -71,9 +71,9 @@
                         <Border BorderBrush="LightGray" BorderThickness="0, 1, 0, 0" Padding="5">
                             <DockPanel x:Name="DpSlider" VerticalAlignment="Center">
                                 <Label x:Name="LblSlider" Content="开始时间"></Label>
-                                <Slider x:Name="SldTimeRange" 
-                                        HorizontalAlignment="Stretch" 
-                                        ValueChanged="SliderValueChange" 
+                                <Slider x:Name="SldTimeRange"
+                                        HorizontalAlignment="Stretch"
+                                        ValueChanged="SliderValueChange"
                                         TickFrequency ="1"
                                         IsSnapToTickEnabled="True"
                                         PreviewMouseDown="SliderMouseDown"
