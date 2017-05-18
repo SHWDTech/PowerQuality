@@ -124,7 +124,7 @@ namespace PowerQualityUploader.Controller
                     Configs = recordConfigs
                 };
                 fileNameList.Add(uploadFile["fileName"].ToString("D8"));
-                using (var reader = new BinaryReader(new FileStream(files[uploadFile["file"]], FileMode.Open)))
+                using (var reader = new BinaryReader(new FileStream(files[uploadFile["fileName"]], FileMode.Open)))
                 {
                     file.FileDataBytes = new byte[(int)(reader.BaseStream.Length - uploadFile["offset"] * 16)];
                     reader.BaseStream.Seek(uploadFile["offset"] * 16, SeekOrigin.Begin);

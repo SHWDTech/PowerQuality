@@ -20,7 +20,7 @@ namespace PowerQualityModel.ViewModel
 
         [Display(Name = "AB(V)")]
         public bool Voltage_AB { get; set; }
-        
+
         [Display(Name = "BC(V)")]
         public bool Voltage_BC { get; set; }
 
