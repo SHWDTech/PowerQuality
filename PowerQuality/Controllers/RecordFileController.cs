@@ -29,7 +29,7 @@ namespace PowerQuality.Controllers
                         double result;
                         if (channel < 4)
                         {
-                            result = Globals.BytesToInt16(value, 0, false) / 32768.0d * 5.0 * currentModel * currentRestore;
+                            result = (Globals.BytesToInt16(value, 0, false) / 32768.0d * 5.0 - 0.262) * currentModel * currentRestore;
                         }
                         else
                         {

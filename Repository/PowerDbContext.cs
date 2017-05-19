@@ -21,7 +21,7 @@ namespace Repository
         /// <param name="connString">连接字符串或连接字符串名称</param>
         public PowerDbContext(string connString) : base(connString)
         {
-            
+
         }
 
         /// <summary>

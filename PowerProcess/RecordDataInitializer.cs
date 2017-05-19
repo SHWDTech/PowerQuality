@@ -71,6 +71,17 @@ namespace PowerProcess
                     Thread.Sleep(1000);
                 }
 
+                var config = new RecordConfig
+                {
+                    LineType = (LineType)byte.Parse(recordParams.RecordConfigs["LineType"]),
+                    CalcPrecision = ushort.Parse(recordParams.RecordConfigs["Period"]),
+                    Frequency = ushort.Parse(recordParams.RecordConfigs["SampleRate"]),
+                    RecordId = newRecord.Id
+                };
+                var ctx = new PowerDbContext();
+                ctx.RecordConfigs.Add(config);
+                ctx.SaveChanges();
+
                 using (var connection = new MySqlConnection(configs["MySqlConnString"]))
                 {
                     Stage[stageId] = RecordProcessStage.OnAfterCaclating;

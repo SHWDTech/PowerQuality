@@ -18,13 +18,13 @@ namespace PowerQualityModel.DataModel
         /// 采集频率
         /// </summary>
         [Required]
-        public ushort Frequency { get; set; }
+        public int Frequency { get; set; }
 
         /// <summary>
         /// 计算精度
         /// </summary>
         [Required]
-        public ushort CalcPrecision { get; set; }
+        public int CalcPrecision { get; set; }
 
         /// <summary>
         /// 记录对应ID

@@ -188,7 +188,7 @@ namespace PowerQualityUploader.View
                 {
                     ((LineSeries) PvWavePreview.Model.Series[seriesIndex]).Points.Add(
                         new DataPoint(DateTimeAxis.ToDouble(_startDateTime.AddTicks((long) (currentLine*_recordTick))),
-                            Globals.BytesToInt16(fileBytes, i * 2, false) / 32768.0d * 5.0 * _currentModel * _currentRestore));
+                            (Globals.BytesToInt16(fileBytes, i * 2, false) / 32768.0d * 5.0 - 0.262) * _currentModel * _currentRestore));
                 }
                 else
                 {
